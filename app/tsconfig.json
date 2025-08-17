@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2017",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "lib": ["dom", "esnext"],
+    "resolveJsonModule": true,
+    "moduleResolution": "Node",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

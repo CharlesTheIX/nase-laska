@@ -1,0 +1,77 @@
+import Character from "@/lib/classes/Character";
+import InputHandler from "@/lib/classes/InputHandler";
+import { player_input_timeout, tile_size } from "@/lib/globals";
+import cycleCharacter from "@/lib/classes/Character/helpers/cycleCharacter";
+import { KeySetMap, getInputKeySets, getMovementKeys } from "@/lib/inputKeys";
+
+export default (props: {
+  time_step: number;
+  character: Character;
+  type: PlayerMovementType;
+  input_handler: InputHandler;
+}): void => {
+  const { time_step, type, character, input_handler } = props;
+  var state: CharacterState = "idle";
+  const key_sets: KeySetMap = getInputKeySets();
+  var direction: Direction = character.direction;
+  const last_key: string = input_handler.last_key;
+  const movement_key_pressed: boolean = [...input_handler.keys].some((key) => getMovementKeys().has(key));
+
+  if (movement_key_pressed) state = "walking";
+  if (key_sets.up.has(last_key)) direction = "up";
+  else if (key_sets.down.has(last_key)) direction = "down";
+  else if (key_sets.left.has(last_key)) direction = "left";
+  else if (key_sets.right.has(last_key)) direction = "right";
+
+  if (key_sets.dev.has(last_key) && process.env.DEV) {
+    cycleCharacter(character);
+    character.input_timeout = 300;
+    return;
+  }
+
+  switch (type) {
+    case "omni":
+      if ([...input_handler.keys].some((key) => key_sets.up.has(key))) character.velocity.y = -character.max_speed;
+      if ([...input_handler.keys].some((key) => key_sets.down.has(key))) character.velocity.y = character.max_speed;
+      if ([...input_handler.keys].some((key) => key_sets.left.has(key))) character.velocity.x = -character.max_speed;
+      if ([...input_handler.keys].some((key) => key_sets.right.has(key))) character.velocity.x = character.max_speed;
+      if (character.velocity.length > character.max_speed) character.velocity.normalize;
+      character.dest_position.add(character.velocity);
+      break;
+
+    case "mono":
+      if (key_sets.up.has(last_key)) character.velocity.y = -character.max_speed / time_step;
+      else if (key_sets.down.has(last_key)) character.velocity.y = character.max_speed / time_step;
+      else if (key_sets.left.has(last_key)) character.velocity.x = -character.max_speed / time_step;
+      else if (key_sets.right.has(last_key)) character.velocity.x = character.max_speed / time_step;
+      character.dest_position.add(character.velocity);
+      break;
+
+    case "tiled":
+      if (character.direction === direction) {
+        if (movement_key_pressed) {
+          character.animating = true;
+
+          if (key_sets.up.has(last_key)) {
+            character.velocity.y = -character.max_speed;
+            character.dest_position.y -= tile_size.h;
+          } else if (key_sets.down.has(last_key)) {
+            character.velocity.y = character.max_speed;
+            character.dest_position.y += tile_size.h;
+          } else if (key_sets.left.has(last_key)) {
+            character.velocity.x = -character.max_speed;
+            character.dest_position.x -= tile_size.w;
+          } else if (key_sets.right.has(last_key)) {
+            character.velocity.x = character.max_speed;
+            character.dest_position.x += tile_size.w;
+          }
+        }
+      } else {
+        character.input_timeout = player_input_timeout;
+      }
+      break;
+  }
+
+  character.state = state;
+  character.direction = direction;
+};

@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "name": "Nase_Laska",
+  "author": "CharlesTheIX",
+  "description": "The app service for the nase-laska project.",
+  "scripts": {
+    "dev": "./.app.sh dev",
+    "build": "./.app.sh build",
+    "start": "./.app.sh start",
+    "clean": "./.app.sh clean"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.1",
+    "mini-css-extract-plugin": "^2.9.4",
+    "sass": "^1.90.0",
+    "sass-loader": "^16.0.5",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.9.2",
+    "webpack": "^5.101.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}

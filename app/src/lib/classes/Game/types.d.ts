@@ -1,0 +1,2 @@
+/* G */
+type GameState = "playing";
