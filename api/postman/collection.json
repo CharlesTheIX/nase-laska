@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "3d56ff3f-7c95-4a2b-80e6-9a954fca278e",
+		"name": "Nase Laska",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39609913"
+	},
+	"item": [
+		{
+			"name": "Characters",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{username}} {{password}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"select\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/characters",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"characters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by-id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{username}} {{password}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"68a2066805a0cc0b111dc502\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/characters/by-id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"characters",
+								"by-id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by-id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{username}} {{password}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"68a2066805a0cc0b111dc502\",\n    \"update\": {\n        \"width\": 1\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/characters/by-id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"characters",
+								"by-id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by-id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{username}} {{password}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"68a2066805a0cc0b111dc502\",\n    \"select\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/characters/by-id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"characters",
+								"by-id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by-name",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{username}} {{password}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"pavla\",\n    \"select\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/characters/by-name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"characters",
+								"by-name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{username}} {{password}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n    \"name\": \"pavla\",\n    \"width\": 1,\n    \"height\": 2,\n    \"frame_sets\": {\n      \"idle\": {\n        \"frame_count\": 1,\n        \"frames\": {\n          \"up\": {\n            \"lower\": [{ \"y\": 6, \"x\": 5, \"w\": 1, \"h\": 1 }],\n            \"upper\": [{ \"y\": 5, \"x\": 5, \"w\": 1, \"h\": 1 }]\n          },\n          \"down\": {\n            \"lower\": [{ \"y\": 6, \"x\": 1, \"w\": 1, \"h\": 1 }],\n            \"upper\": [{ \"y\": 5, \"x\": 1, \"w\": 1, \"h\": 1 }]\n          },\n          \"left\": {\n            \"lower\": [{ \"y\": 6, \"x\": 9, \"w\": 1, \"h\": 1 }],\n            \"upper\": [{ \"y\": 5, \"x\": 9, \"w\": 1, \"h\": 1 }]\n          },\n          \"right\": {\n            \"lower\": [{ \"y\": 6, \"x\": 13, \"w\": 1, \"h\": 1 }],\n            \"upper\": [{ \"y\": 5, \"x\": 13, \"w\": 1, \"h\": 1 }]\n          }\n        }\n      },\n      \"walking\": {\n        \"frame_count\": 4,\n        \"frames\": {\n          \"up\": {\n            \"lower\": [\n              { \"y\": 6, \"x\": 5, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 6, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 7, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 8, \"w\": 1, \"h\": 1 }\n            ],\n            \"upper\": [\n              { \"y\": 5, \"x\": 5, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 6, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 7, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 8, \"w\": 1, \"h\": 1 }\n            ]\n          },\n          \"down\": {\n            \"lower\": [\n              { \"y\": 6, \"x\": 1, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 2, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 3, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 4, \"w\": 1, \"h\": 1 }\n            ],\n            \"upper\": [\n              { \"y\": 5, \"x\": 1, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 2, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 3, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 4, \"w\": 1, \"h\": 1 }\n            ]\n          },\n          \"left\": {\n            \"lower\": [\n              { \"y\": 6, \"x\": 9, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 10, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 11, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 12, \"w\": 1, \"h\": 1 }\n            ],\n            \"upper\": [\n              { \"y\": 5, \"x\": 9, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 10, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 11, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 12, \"w\": 1, \"h\": 1 }\n            ]\n          },\n          \"right\": {\n            \"lower\": [\n              { \"y\": 6, \"x\": 13, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 14, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 15, \"w\": 1, \"h\": 1 },\n              { \"y\": 6, \"x\": 16, \"w\": 1, \"h\": 1 }\n            ],\n            \"upper\": [\n              { \"y\": 5, \"x\": 13, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 14, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 15, \"w\": 1, \"h\": 1 },\n              { \"y\": 5, \"x\": 16, \"w\": 1, \"h\": 1 }\n            ]\n          }\n        }\n      }\n    }\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/characters/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"characters",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/error",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"error"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
