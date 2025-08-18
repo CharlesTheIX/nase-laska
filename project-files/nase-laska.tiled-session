@@ -3,17 +3,23 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "map-data/test_1.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "map-data/test_1.tmx": {
-            "scale": 0.85,
-            "selectedLayer": 5,
+            "expandedGroupLayers": [
+                11,
+                5,
+                13,
+                7
+            ],
+            "scale": 1.595,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": 341.17647058823536,
-                "y": 288.82352941176475
+                "x": 338.55799373040753,
+                "y": 234.79623824451414
             }
         },
         "map-data/tileset.tsx": {
@@ -32,7 +38,7 @@
             }
         },
         "tileset.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 4.1423,
             "scaleInEditor": 1
         }
     },
@@ -46,12 +52,14 @@
     "map.tileWidth": 16,
     "map.width": 45,
     "openFiles": [
+        "tileset.tsx",
+        "map-data/test_1.tmx"
     ],
     "project": "nase-laska.tiled-project",
     "recentFiles": [
-        "map_tempalte.tmx",
+        "tileset.tsx",
         "map-data/test_1.tmx",
-        "tileset.tsx"
+        "map_tempalte.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
