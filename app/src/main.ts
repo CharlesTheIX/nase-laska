@@ -19,7 +19,7 @@ const init = (): void => {
     if (count < resources.count) return;
 
     const camera: Camera = Camera.init();
-    const canvas: Canvas = Canvas.init({ canvas: canvas_element });
+    const canvas: Canvas = Canvas.init(canvas_element);
     const input_handler: InputHandler = InputHandler.init();
     const game: Game = Game.init({ canvas, resources, input_handler, camera });
     game.start();

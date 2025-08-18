@@ -6,12 +6,6 @@ import { KeySetMap, getInputKeySets } from "@/lib/inputKeys";
 import updatePlayerDestinationPosition from "./helpers/updatePlayerDestinationPosition";
 import { getMapEdgeCollision, getMapCollisions } from "@/lib/classes/Character/helpers/handleCollisions";
 
-export interface IPlayer {
-  camera: Camera;
-  sprite_name?: string;
-  character?: Character;
-}
-
 export default class Player {
   camera: Camera;
   character: Character;
@@ -74,6 +68,7 @@ export default class Player {
       case "idle":
         this.character.frame_index = 0;
         break;
+
       case "walking":
         if (!this.character.sprite.frame_sets) break;
         var next_frame: number = this.character.frame_index + 1;

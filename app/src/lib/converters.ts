@@ -1,6 +1,5 @@
 import { tile_size } from "@/lib/globals";
-import { IRectangle } from "@/lib/classes/Rectangle";
-import Vector2, { IVector2 } from "@/lib/classes/Vector2";
+import Vector2 from "@/lib/classes/Vector2";
 
 export const convertIRectangleToTile = (r: IRectangle): IRectangle => ({
   x: Math.floor(r.x / tile_size.w),

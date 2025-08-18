@@ -30,8 +30,24 @@ clean() {
   echo ""
 }
 
+convert_map_data() {
+  echo "Converting Tiled map data to game map data..."
+
+  if command -v python3 &>/dev/null; then
+    python3 ./python/convert_map_data.py
+  elif command -v python &>/dev/null; then
+    python ./python/convert_map_data.py 
+  else
+    echo "Python is not installed - please install Python to use this script"
+    exit 1
+  fi
+
+  echo "Conversion complete."
+  echo ""
+}
+
 help() {
-  echo "Usage: $0 [build | clean]"
+  echo "Usage: $0 [build | clean | convert_map_data | start]"
   echo ""
   exit 1
 }
@@ -74,6 +90,7 @@ fi
 case "$1" in
   build) build ;;
   clean) clean ;;
+  convert_map_data) convert_map_data ;;
   start) start ;;
   *) help ;;
 esac

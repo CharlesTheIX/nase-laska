@@ -1,2 +1,0 @@
-/* G */
-type GameState = "playing";

@@ -1,8 +1,7 @@
 import { tile_size } from "@/lib/globals";
 import Canvas from "@/lib/classes/Canvas";
 import Sprite from "@/lib/classes/Sprite";
-import { IRectangle } from "@/lib/classes/Rectangle";
-import Vector2, { IVector2 } from "@/lib/classes/Vector2";
+import Vector2 from "@/lib/classes/Vector2";
 import { convertTileToIRectangle, convertWorldPositionToCameraPosition } from "@/lib/converters";
 
 export interface ICharacter {
@@ -52,13 +51,13 @@ export default class Character {
       case "lower":
         src_frame = this.sprite.frame_sets[this.state].frames[this.direction].lower[this.frame_index];
         r_src = convertTileToIRectangle(src_frame);
-        canvas.drawImage({ image, r_src, r_dest });
+        canvas.drawImage(image, r_src, r_dest);
         break;
       case "upper":
         r_dest.y = convertWorldPositionToCameraPosition(this.position).value.y - tile_size.h;
         src_frame = this.sprite.frame_sets[this.state].frames[this.direction].upper[this.frame_index];
         r_src = convertTileToIRectangle(src_frame);
-        canvas.drawImage({ image, r_src, r_dest });
+        canvas.drawImage(image, r_src, r_dest);
     }
   };
 

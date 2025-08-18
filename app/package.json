@@ -6,12 +6,12 @@
   "main": "dist/main.js",
   "name": "Nase_Laska",
   "author": "CharlesTheIX",
-  "description": "The app service for the nase-laska project.",
+  "description": "The app service for the Naše Láska project.",
   "scripts": {
-    "dev": "./.app.sh dev",
     "build": "./.app.sh build",
     "start": "./.app.sh start",
-    "clean": "./.app.sh clean"
+    "clean": "./.app.sh clean",
+    "convert_map_data": "./.app.sh convert_map_data"
   },
   "devDependencies": {
     "css-loader": "^7.1.2",

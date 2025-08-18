@@ -3,91 +3,80 @@
     "collision": [
       [
         {
-          "spritesheet_index": 117,
-          "tile_position": {
-            "x": 19,
-            "y": 13
-          },
           "px_position": {
             "x": 304,
             "y": 208
+          },
+          "sprite_px_position": {
+            "x": 272,
+            "y": 16
           }
         },
         {
-          "spritesheet_index": 117,
-          "tile_position": {
-            "x": 20,
-            "y": 13
-          },
           "px_position": {
             "x": 320,
             "y": 208
+          },
+          "sprite_px_position": {
+            "x": 272,
+            "y": 16
           }
         },
         {
-          "spritesheet_index": 117,
-          "tile_position": {
-            "x": 21,
-            "y": 13
-          },
           "px_position": {
             "x": 336,
             "y": 208
+          },
+          "sprite_px_position": {
+            "x": 272,
+            "y": 16
           }
         },
         {
-          "spritesheet_index": 117,
-          "tile_position": {
-            "x": 22,
-            "y": 13
-          },
           "px_position": {
             "x": 352,
             "y": 208
+          },
+          "sprite_px_position": {
+            "x": 272,
+            "y": 16
           }
         },
         {
-          "spritesheet_index": 117,
-          "tile_position": {
-            "x": 23,
-            "y": 13
-          },
           "px_position": {
             "x": 368,
             "y": 208
+          },
+          "sprite_px_position": {
+            "x": 272,
+            "y": 16
           }
         },
         {
-          "spritesheet_index": 117,
-          "tile_position": {
-            "x": 24,
-            "y": 13
-          },
           "px_position": {
             "x": 384,
             "y": 208
+          },
+          "sprite_px_position": {
+            "x": 272,
+            "y": 16
           }
         },
         {
-          "spritesheet_index": 117,
-          "tile_position": {
-            "x": 25,
-            "y": 13
-          },
           "px_position": {
             "x": 400,
             "y": 208
+          },
+          "sprite_px_position": {
+            "x": 272,
+            "y": 16
           }
         }
       ]
     ]
   },
-  "size_tiles": {
-    "x": 45,
-    "y": 33
-  },
   "size_px": {
-    "x": 720,
-    "y": 528
+    "w": 720,
+    "h": 528
   }
 }

@@ -13,7 +13,7 @@ export default class Camera {
     this.rectangle = Rectangle.init(0, 0, canvas_size.w, canvas_size.h);
   }
 
-  static init = () => new Camera();
+  static init = (): Camera => new Camera();
 
   get center_position(): Vector2 {
     return Vector2.init(

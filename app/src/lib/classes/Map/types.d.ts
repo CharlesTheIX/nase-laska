@@ -1,12 +1,10 @@
 /* M */
 type MapData = {
-  size_px: IVector2;
-  size_tiles: IVector2;
+  size_px: { w: number; h: number };
   layers: { [key: string]: MapLayerData[][] };
 };
 
 type MapLayerData = {
   px_position: IVector2;
-  tile_position: IVector2;
-  spritesheet_index: number;
+  sprite_px_position: IVector2;
 };

@@ -6,13 +6,6 @@ import Player from "@/lib/classes/Player";
 import Resources from "@/lib/classes/Resources";
 import InputHandler from "@/lib/classes/InputHandler";
 
-export interface IGame {
-  camera: Camera;
-  canvas: Canvas;
-  resources: Resources;
-  input_handler: InputHandler;
-}
-
 export default class Game {
   map: Map;
   raf_id: any;
@@ -73,10 +66,10 @@ export default class Game {
   private draw = () => {
     switch (this.state) {
       case "playing":
+        const image = this.resources.images["spritesheet"].image;
         this.map.drawBackground({ canvas: this.canvas, camera: this.camera });
-        this.map.drawCollisionLayers(this.canvas);
+        this.map.drawCollisionLayers(this.canvas, image);
 
-        var image = this.resources.images["spritesheet"].image;
         this.player.character.drawLayer({
           image,
           layer: "lower",

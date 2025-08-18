@@ -1,12 +1,5 @@
-import Vector2 from "@/lib/classes/Vector2";
 import { tile_size } from "../globals";
-
-export interface IRectangle {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
+import Vector2 from "@/lib/classes/Vector2";
 
 export default class Rectangle {
   x: number;
@@ -22,18 +15,12 @@ export default class Rectangle {
   }
 
   static init = (x: number, y: number, w: number, h: number): Rectangle => new Rectangle(x, y, w, h);
-
-  static contains_vector2 = (r: Rectangle, v: Vector2): boolean =>
-    v.x >= r.x && v.x <= r.x + r.w && v.y >= r.y && v.y <= r.y + r.h;
-
-  static equal = (r1: Rectangle, r2: Rectangle): boolean =>
-    r1.x === r2.x && r1.y === r2.y && r1.w === r2.w && r1.h === r2.h;
-
-  static tile = (v: Vector2): Rectangle => {
-    return Rectangle.init(v.x, v.y, tile_size.w, tile_size.h);
-  };
-
+  static tile = (v: Vector2): Rectangle => new Rectangle(v.x, v.y, tile_size.w, tile_size.h);
   static zero = (): Rectangle => new Rectangle(0, 0, 0, 0);
+
+  static equal = (r1: Rectangle, r2: Rectangle): boolean => {
+    return r1.x === r2.x && r1.y === r2.y && r1.w === r2.w && r1.h === r2.h;
+  };
 
   get position(): Vector2 {
     return Vector2.init(this.x, this.y);

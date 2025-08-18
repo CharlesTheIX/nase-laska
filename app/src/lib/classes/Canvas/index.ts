@@ -1,24 +1,20 @@
-import Rectangle, { IRectangle } from "@/lib/classes/Rectangle";
+import Rectangle from "@/lib/classes/Rectangle";
 import { canvas_size, scale, tile_size, font_family } from "@/lib/globals";
-
-export interface ICanvas {
-  canvas: HTMLCanvasElement;
-}
 
 export default class Canvas {
   rectangle: Rectangle;
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
 
-  private constructor(c: ICanvas) {
-    this.canvas = c.canvas;
+  private constructor(c: HTMLCanvasElement) {
+    this.canvas = c;
     this.canvas.width = canvas_size.w;
     this.canvas.height = canvas_size.h;
     this.rectangle = Rectangle.init(0, 0, canvas_size.w, canvas_size.h);
     this.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
   }
 
-  static init = (c: ICanvas): Canvas => new Canvas(c);
+  static init = (c: HTMLCanvasElement): Canvas => new Canvas(c);
 
   public clear = (rectangle: IRectangle): void => {
     this.context.clearRect(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
@@ -37,8 +33,7 @@ export default class Canvas {
     }
   };
 
-  public drawImage = (props: DrawImageProps): void => {
-    const { image, r_src, r_dest } = props;
+  public drawImage = (image: HTMLImageElement, r_src: IRectangle, r_dest: IRectangle): void => {
     this.context.drawImage(
       image,
       r_src.x,
