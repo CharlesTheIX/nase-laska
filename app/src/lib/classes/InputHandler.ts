@@ -22,10 +22,10 @@ export default class InputHandler {
   static init = (): InputHandler => new InputHandler();
 
   get last_key(): string {
-    const input_keys = getInputKeySets();
+    // const input_keys = getInputKeySets();
     const keys_array = Array.from(this.keys);
-    const comboActive = input_keys["run"].has(keys_array[this.keys.size - 1]) && this.keys.size > 1;
-    if (comboActive) return keys_array[this.keys.size - 2];
+    // const comboActive = input_keys["run"].has(keys_array[this.keys.size - 1]) && this.keys.size > 1;
+    // if (comboActive) return keys_array[this.keys.size - 2];
     return keys_array[this.keys.size - 1];
   }
 

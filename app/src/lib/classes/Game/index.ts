@@ -81,7 +81,7 @@ export default class Game {
   private update = (time_step: number): void => {
     switch (this.state) {
       case "playing":
-        this.map.update(this.input_handler);
+        // this.map.update(this.input_handler);
         this.player.update({ time_step, input_handler: this.input_handler, map: this.map });
         break;
     }

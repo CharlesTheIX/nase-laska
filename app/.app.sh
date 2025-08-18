@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -euo pipefail
-#
+
 # -------------------------------------------------
 # Functions
 # -------------------------------------------------
@@ -28,6 +28,7 @@ build() {
 
 clean() {
   echo "Cleaning..."
+  kill_service
   rm -rf dist node_modules yarn.lock
   echo "Clean complete"
   echo ""
@@ -66,21 +67,25 @@ copy_convert_map_background_images() {
 
 }
 
+kill_service() {
+  echo "Killing service..."
+  lsof -ti:8000 | xargs kill -9
+  echo "Service killed."
+  echo ""
+}
+
 help() {
-  echo "Usage: $0 [build | clean | convert_map_data | copy_convert_map_background_images | start]"
+  echo "Usage: $0 [build | clean | convert_map_data | copy_convert_map_background_images | kill | start]"
   echo ""
   exit 1
 }
 
 start() {
-  PWD=$(pwd)
-
   echo "Starting the server..."
-  read -p "Enter the port number (default is 8000): " user_port
-  read -p "Enter the directory to serve (default is $PWD/dist): " user_dir
 
-  PORT=${user_port:-8000}
-  DIR=${user_dir:-$PWD/dist}
+  PORT=8000
+  PWD=$(pwd)
+  DIR=$PWD/dist
 
   if [ -d "$DIR" ]; then
     cd $DIR
@@ -112,6 +117,7 @@ case "$1" in
   clean) clean ;;
   convert_map_data) convert_map_data ;;
   copy_convert_map_background_images) copy_convert_map_background_images ;;
+  kill_service) kill_service ;;
   start) start ;;
   *) help ;;
 esac

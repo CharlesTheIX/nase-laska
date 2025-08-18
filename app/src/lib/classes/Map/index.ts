@@ -44,8 +44,8 @@ export default class Map {
     canvas.drawImage(this.background_image, r_src, r_dest);
   };
 
-  public update = (input_handler: InputHandler): void => {
-    const key_sets: KeySetMap = getInputKeySets();
-    if ([...input_handler.keys].some((key) => key_sets.dev.has(key))) this.showWeather = !this.showWeather;
-  };
+  // public update = (input_handler: InputHandler): void => {
+  // const key_sets: KeySetMap = getInputKeySets();
+  // if ([...input_handler.keys].some((key) => key_sets.dev.has(key))) this.showWeather = !this.showWeather;
+  // };
 }
