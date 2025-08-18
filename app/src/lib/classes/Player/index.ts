@@ -1,8 +1,8 @@
 import Camera from "@/lib/classes/Camera";
 import Vector2 from "@/lib/classes/Vector2";
 import Character from "@/lib/classes/Character";
-import { player_movement_type } from "@/lib/globals";
-import { KeySetMap, getInputKeySets } from "@/lib/inputKeys";
+// import { getInputKeySets } from "@/lib/inputKeys";
+import { player_movement_type, tile_size } from "@/lib/globals";
 import updatePlayerDestinationPosition from "./helpers/updatePlayerDestinationPosition";
 import { getMapEdgeCollision, getMapCollisions } from "@/lib/classes/Character/helpers/handleCollisions";
 
@@ -23,26 +23,22 @@ export default class Player {
 
   public update = (props: PlayerUpdateProps): void => {
     const { time_step, input_handler, map } = props;
+    this.character.max_speed = Math.ceil(tile_size.w / time_step);
+    // const key_sets: KeySetMap = getInputKeySets();
+    // if ([...input_handler.keys].some((key) => key_sets.run.has(key))) this.character.velocity.scale(2);
+    // if (this.character.input_timeout > 0) {
+    //   this.character.input_timeout -= time_step;
+    //   return;
+    // }
 
-    if (this.character.input_timeout > 0) {
-      this.character.input_timeout -= time_step;
+    // this.character.input_timeout = 0;
+    if (this.character.animating && player_movement_type === "tiled") {
+      this.character.moveToDestination();
+      this.character.updateFrame(time_step);
       return;
     }
 
-    switch (player_movement_type) {
-      case "tiled":
-        if (this.character.animating) {
-          this.character.moveToDestination();
-          return;
-        }
-    }
-
-    this.character.input_timeout = 0;
     this.character.velocity = Vector2.zero();
-    const key_sets: KeySetMap = getInputKeySets();
-    this.character.max_speed = Math.ceil(16 / time_step);
-    if ([...input_handler.keys].some((key) => key_sets.run.has(key))) this.character.max_speed *= 4;
-
     updatePlayerDestinationPosition({
       time_step,
       input_handler,
@@ -55,26 +51,8 @@ export default class Player {
       return;
     }
 
-    switch (player_movement_type) {
-      case "tiled":
-        return;
-      default:
-        this.character.position = this.character.dest_position.duplicate();
-    }
-  };
-
-  public updateFrame = (): void => {
-    switch (this.character.state) {
-      case "idle":
-        this.character.frame_index = 0;
-        break;
-
-      case "walking":
-        if (!this.character.sprite.frame_sets) break;
-        var next_frame: number = this.character.frame_index + 1;
-        if (next_frame >= this.character.sprite.frame_sets[this.character.state].frame_count) next_frame = 0;
-        this.character.frame_index = next_frame;
-        break;
-    }
+    if (player_movement_type === "tiled") return;
+    this.character.updateFrame(time_step);
+    this.character.position = this.character.dest_position.duplicate();
   };
 }

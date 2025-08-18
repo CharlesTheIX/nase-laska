@@ -5,6 +5,14 @@ type Direction = "up" | "down" | "left" | "right";
 type GameState = "playing";
 
 /* I */
+type ICharacter = {
+  position?: Vector2;
+  animating?: boolean;
+  sprite_name: string;
+  direction?: Direction;
+  dest_position?: Vector2;
+};
+
 type IGame = {
   camera: Camera;
   canvas: Canvas;
@@ -16,6 +24,8 @@ type IMap = {
   map_name: string;
   background_image: HTMLImageElement;
 };
+
+type KeySetMap = { [key: string]: Set<string> };
 
 type IPlayer = {
   camera: Camera;

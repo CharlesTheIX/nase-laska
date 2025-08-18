@@ -1,8 +1,7 @@
+import { tile_size } from "@/lib/globals";
 import Character from "@/lib/classes/Character";
 import InputHandler from "@/lib/classes/InputHandler";
-import { player_input_timeout, tile_size } from "@/lib/globals";
-import cycleCharacter from "@/lib/classes/Character/helpers/cycleCharacter";
-import { KeySetMap, getInputKeySets, getMovementKeys } from "@/lib/inputKeys";
+import { getInputKeySets, getMovementKeys } from "@/lib/inputKeys";
 
 export default (props: {
   time_step: number;
@@ -22,12 +21,6 @@ export default (props: {
   else if (key_sets.down.has(last_key)) direction = "down";
   else if (key_sets.left.has(last_key)) direction = "left";
   else if (key_sets.right.has(last_key)) direction = "right";
-
-  if (key_sets.dev.has(last_key) && process.env.DEV) {
-    cycleCharacter(character);
-    character.input_timeout = 300;
-    return;
-  }
 
   switch (type) {
     case "omni":
@@ -67,7 +60,7 @@ export default (props: {
           }
         }
       } else {
-        character.input_timeout = player_input_timeout;
+        // character.input_timeout = player_input_timeout;
       }
       break;
   }

@@ -274,7 +274,7 @@
 
   {
     "_id": "",
-    "name": "girl-1",
+    "name": "girl_1",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -365,7 +365,7 @@
 
   {
     "_id": "",
-    "name": "boy-2",
+    "name": "boy_2",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -456,7 +456,7 @@
 
   {
     "_id": "",
-    "name": "girl-2",
+    "name": "girl_2",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -547,7 +547,7 @@
 
   {
     "_id": "",
-    "name": "girl-3",
+    "name": "girl_3",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -638,7 +638,7 @@
 
   {
     "_id": "",
-    "name": "boy-3",
+    "name": "boy_3",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -729,7 +729,7 @@
 
   {
     "_id": "",
-    "name": "boy-4",
+    "name": "boy_4",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -820,7 +820,7 @@
 
   {
     "_id": "",
-    "name": "girl-4",
+    "name": "girl_4",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -911,7 +911,7 @@
 
   {
     "_id": "",
-    "name": "boy-5",
+    "name": "boy_5",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1002,7 +1002,7 @@
 
   {
     "_id": "",
-    "name": "girl-5",
+    "name": "girl_5",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1093,7 +1093,7 @@
 
   {
     "_id": "",
-    "name": "boy-6",
+    "name": "boy_6",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1183,7 +1183,7 @@
   },
 
   {
-    "_id": "girl-6",
+    "_id": "girl_6",
     "name": "",
     "width": 1,
     "height": 2,
@@ -1275,7 +1275,7 @@
 
   {
     "_id": "",
-    "name": "boy-7",
+    "name": "boy_7",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1366,7 +1366,7 @@
 
   {
     "_id": "",
-    "name": "girl-7",
+    "name": "girl_7",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1457,7 +1457,7 @@
 
   {
     "_id": "",
-    "name": "boy-8",
+    "name": "boy_8",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1548,7 +1548,7 @@
 
   {
     "_id": "",
-    "name": "girl-8",
+    "name": "girl_8",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1639,7 +1639,7 @@
 
   {
     "_id": "",
-    "name": "boy-9",
+    "name": "boy_9",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1730,7 +1730,7 @@
 
   {
     "_id": "",
-    "name": "girl-9",
+    "name": "girl_9",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1821,7 +1821,7 @@
 
   {
     "_id": "",
-    "name": "girl-10",
+    "name": "girl_10",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -1912,7 +1912,7 @@
 
   {
     "_id": "",
-    "name": "girl-11",
+    "name": "girl_11",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2003,7 +2003,7 @@
 
   {
     "_id": "",
-    "name": "boy-10",
+    "name": "boy_10",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2094,7 +2094,7 @@
 
   {
     "_id": "",
-    "name": "boy-11",
+    "name": "boy_11",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2185,7 +2185,7 @@
 
   {
     "_id": "",
-    "name": "boy-12",
+    "name": "boy_12",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2276,7 +2276,7 @@
 
   {
     "_id": "",
-    "name": "boy-13",
+    "name": "boy_13",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2367,7 +2367,7 @@
 
   {
     "_id": "",
-    "name": "boy-14",
+    "name": "boy_14",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2458,7 +2458,7 @@
 
   {
     "_id": "",
-    "name": "boy-15",
+    "name": "boy_15",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2549,7 +2549,7 @@
 
   {
     "_id": "",
-    "name": "girl-12",
+    "name": "girl_12",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2640,7 +2640,7 @@
 
   {
     "_id": "",
-    "name": "boy-16",
+    "name": "boy_16",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2731,7 +2731,7 @@
 
   {
     "_id": "",
-    "name": "boy-17",
+    "name": "boy_17",
     "width": 1,
     "height": 2,
     "frame_sets": {
@@ -2822,7 +2822,7 @@
 
   {
     "_id": "",
-    "name": "boy-18",
+    "name": "boy_18",
     "width": 1,
     "height": 2,
     "frame_sets": {

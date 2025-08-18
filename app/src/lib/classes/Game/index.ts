@@ -66,22 +66,14 @@ export default class Game {
   private draw = () => {
     switch (this.state) {
       case "playing":
-        const image = this.resources.images["spritesheet"].image;
+        const spritesheet = this.resources.images["spritesheet"].image;
         this.map.drawBackground({ canvas: this.canvas, camera: this.camera });
-        this.map.drawCollisionLayers(this.canvas, image);
-
-        this.player.character.drawLayer({
-          image,
-          layer: "lower",
-          canvas: this.canvas
-        });
-
-        this.player.character.drawLayer({
-          image,
-          layer: "upper",
-          canvas: this.canvas
-        });
-
+        if (this.map.showWeather) this.map.drawLayer("weather_bottom", this.canvas, spritesheet);
+        this.map.drawLayer("collision", this.canvas, spritesheet);
+        this.player.character.drawLayer("lower", this.canvas, spritesheet);
+        this.player.character.drawLayer("upper", this.canvas, spritesheet);
+        this.map.drawLayer("canopy", this.canvas, spritesheet);
+        if (this.map.showWeather) this.map.drawLayer("weather_top", this.canvas, spritesheet);
         break;
     }
   };
@@ -89,6 +81,7 @@ export default class Game {
   private update = (time_step: number): void => {
     switch (this.state) {
       case "playing":
+        this.map.update(this.input_handler);
         this.player.update({ time_step, input_handler: this.input_handler, map: this.map });
         break;
     }

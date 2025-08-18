@@ -4,6 +4,8 @@ type MapData = {
   layers: { [key: string]: MapLayerData[][] };
 };
 
+type MapLayer = "collision" | "canopy" | "weather_top" | "weather_bottom";
+
 type MapLayerData = {
   px_position: IVector2;
   sprite_px_position: IVector2;

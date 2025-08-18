@@ -4,36 +4,43 @@ import os
 import json
 from typing import Any, Dict, List
 
+
 def convert_tiled_json_to_map_json(input_file_path: str, output_file_path: str) -> None:
     with open(input_file_path, "r", encoding="utf8") as f:
         data: Dict[str, Any] = json.load(f)
 
-    spritesheet_width = 100;
+    spritesheet_width: int = 100
     m_w: int = data["width"]
     m_h: int = data["height"]
     t_size: int = data["tilewidth"]
-    target_layer_group_names: List[str] = ["collision"]
+    target_layer_group_names: List[str] = ["collision", "canopy", "weather_top", "weather_bottom"]
 
     m_json: Dict[str, Any] = {
         "layers": {},
         "size_px": {"w": m_w * t_size, "h": m_h * t_size}
     }
 
+    # find the top-level "tiles" group
+    tiles_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "tiles"), None)
+    if not tiles_group:
+        return
+
+    # filter subgroups of interest inside "tiles"
     layer_groups: List[Dict[str, Any]] = [
-        lg for lg in data["layers"] if lg["name"] in target_layer_group_names
+        lg for lg in tiles_group.get("layers", []) if lg.get("name") in target_layer_group_names
     ]
 
     for layer_group in layer_groups:
         layers: List[List[Dict[str, Dict[str, int]]]] = []
 
-        for layer in layer_group["layers"]:
+        for layer in layer_group.get("layers", []):
             tiles: List[Dict[str, Dict[str, int]]] = []
 
-            for index, tile in enumerate(layer["data"]):
+            for index, tile in enumerate(layer.get("data", [])):
                 if tile == 0:
                     continue
                 m_col: int = index % m_w
-                s_col: int = (tile - 1)  % spritesheet_width
+                s_col: int = (tile - 1) % spritesheet_width
                 s_row: int = (tile - 1) // spritesheet_width
                 m_row: int = index // m_w
                 t: Dict[str, Dict[str, int]] = {
@@ -49,6 +56,7 @@ def convert_tiled_json_to_map_json(input_file_path: str, output_file_path: str) 
     with open(output_file_path, "w", encoding="utf8") as f:
         json.dump(m_json, f, indent=2)
 
+
 def batch_convert(src_dir: str, dest_dir: str) -> None:
     for file in os.listdir(src_dir):
         if not file.endswith(".json"):
@@ -56,6 +64,7 @@ def batch_convert(src_dir: str, dest_dir: str) -> None:
         src_path: str = os.path.join(src_dir, file)
         dest_path: str = os.path.join(dest_dir, file)
         convert_tiled_json_to_map_json(src_path, dest_path)
+
 
 if __name__ == "__main__":
     batch_convert("../project-files/map-data", "./src/lib/data/maps")

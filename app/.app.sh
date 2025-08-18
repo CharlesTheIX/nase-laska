@@ -14,6 +14,9 @@ build() {
     rm -rf dist
   fi
 
+  convert_map_data
+  copy_convert_map_background_images
+
   mkdir dist
   yarn webpack --config webpack.config.mjs --mode production
   cp ./src/favicon.ico ./dist/favicon.ico
@@ -46,8 +49,25 @@ convert_map_data() {
   echo ""
 }
 
+copy_convert_map_background_images() {
+  echo "Copying and converting Tiled map background images to assets..."
+
+  if command -v python3 &>/dev/null; then
+    python3 ./python/copy_convert_map_background_images.py
+  elif command -v python &>/dev/null; then
+    python ./python/copy_convert_map_background_images.py 
+  else
+    echo "Python is not installed - please install Python to use this script"
+    exit 1
+  fi
+
+  echo "Copy and conversion complete."
+  echo ""
+
+}
+
 help() {
-  echo "Usage: $0 [build | clean | convert_map_data | start]"
+  echo "Usage: $0 [build | clean | convert_map_data | copy_convert_map_background_images | start]"
   echo ""
   exit 1
 }
@@ -91,6 +111,7 @@ case "$1" in
   build) build ;;
   clean) clean ;;
   convert_map_data) convert_map_data ;;
+  copy_convert_map_background_images) copy_convert_map_background_images ;;
   start) start ;;
   *) help ;;
 esac

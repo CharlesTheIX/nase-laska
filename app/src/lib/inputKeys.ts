@@ -1,5 +1,3 @@
-export type KeySetMap = { [key: string]: Set<string> };
-
 export const getInputKeys = (): Set<string> => {
   const input_key_set: Set<string> = new Set();
   const input_key_sets: KeySetMap = getInputKeySets();
@@ -11,15 +9,15 @@ export const getInputKeys = (): Set<string> => {
 
 export const getInputKeySets = (): KeySetMap => {
   return {
-    dev: new Set<string>().add("z"),
-    run: new Set<string>().add("l").add("L"),
-    menu: new Set<string>().add("m").add("M"),
-    action: new Set<string>().add(" ").add("Enter"),
-    up: new Set<string>().add("w").add("W").add("ArrowUp"),
-    down: new Set<string>().add("s").add("S").add("ArrowDown"),
-    left: new Set<string>().add("a").add("A").add("ArrowLeft"),
-    settings: new Set<string>().add("p").add("P").add("Escape"),
-    right: new Set<string>().add("d").add("D").add("ArrowRight")
+    // dev: new Set<string>().add("z"),
+    // run: new Set<string>().add("l").add("L"),
+    // menu: new Set<string>().add("m").add("M"),
+    // action: new Set<string>().add(" ").add("Enter"),
+    // settings: new Set<string>().add("p").add("P").add("Escape"),
+    up: new Set<string>().add("w").add("W"), //.add("ArrowUp"),
+    down: new Set<string>().add("s").add("S"), //.add("ArrowDown"),
+    left: new Set<string>().add("a").add("A"), //.add("ArrowLeft"),
+    right: new Set<string>().add("d").add("D") //.add("ArrowRight")
   };
 };
 
