@@ -4,11 +4,11 @@ import os
 import json
 from typing import Any, Dict, List
 
-
 def convert_tiled_json_to_map_json(input_file_path: str, output_file_path: str) -> None:
     with open(input_file_path, "r", encoding="utf8") as f:
         data: Dict[str, Any] = json.load(f)
 
+    spritesheet_width = 100;
     m_w: int = data["width"]
     m_h: int = data["height"]
     t_size: int = data["tilewidth"]
@@ -33,8 +33,8 @@ def convert_tiled_json_to_map_json(input_file_path: str, output_file_path: str) 
                 if tile == 0:
                     continue
                 m_col: int = index % m_w
-                s_col: int = tile % 100
-                s_row: int = tile // 100
+                s_col: int = (tile - 1)  % spritesheet_width
+                s_row: int = (tile - 1) // spritesheet_width
                 m_row: int = index // m_w
                 t: Dict[str, Dict[str, int]] = {
                     "px_position": {"x": m_col * t_size, "y": m_row * t_size},
@@ -49,7 +49,6 @@ def convert_tiled_json_to_map_json(input_file_path: str, output_file_path: str) 
     with open(output_file_path, "w", encoding="utf8") as f:
         json.dump(m_json, f, indent=2)
 
-
 def batch_convert(src_dir: str, dest_dir: str) -> None:
     for file in os.listdir(src_dir):
         if not file.endswith(".json"):
@@ -57,7 +56,6 @@ def batch_convert(src_dir: str, dest_dir: str) -> None:
         src_path: str = os.path.join(src_dir, file)
         dest_path: str = os.path.join(dest_dir, file)
         convert_tiled_json_to_map_json(src_path, dest_path)
-
 
 if __name__ == "__main__":
     batch_convert("../project-files/map-data", "./src/lib/data/maps")
