@@ -1,4 +1,4 @@
-import { tile_size } from "../globals";
+import { tile_size } from "@/lib/globals";
 import Vector2 from "@/lib/classes/Vector2";
 
 export default class Rectangle {

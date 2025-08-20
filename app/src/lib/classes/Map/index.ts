@@ -1,23 +1,27 @@
 import Camera from "@/lib/classes/Camera";
 import Canvas from "@/lib/classes/Canvas";
-import { canvas_size } from "@/lib/globals";
 import Vector2 from "@/lib/classes/Vector2";
 import getMapData from "./helpers/getMapData";
 import Rectangle from "@/lib/classes/Rectangle";
 import { getInputKeySets } from "@/lib/inputKeys";
 import InputHandler from "@/lib/classes/InputHandler";
+import { canvas_size, tile_size } from "@/lib/globals";
 
 export default class Map {
+  camera: Camera;
+  size: Rectangle;
   map_data: MapData;
-  rectangle: Rectangle;
   showWeather: boolean;
+  background_position: Vector2;
   background_image: HTMLImageElement | null;
 
   private constructor(m: IMap) {
+    this.camera = m.camera;
     this.showWeather = false;
     this.map_data = getMapData(m.map_name);
     this.background_image = m.background_image;
-    this.rectangle = Rectangle.init(0, 0, this.map_data.size_px.w, this.map_data.size_px.h);
+    this.background_position = this.camera.position;
+    this.size = Rectangle.init(0, 0, this.map_data.size_px.w, this.map_data.size_px.h);
   }
 
   static init = (m: IMap): Map => new Map(m);
@@ -39,8 +43,21 @@ export default class Map {
   public drawBackground = (props: { canvas: Canvas; camera: Camera }): void => {
     const { canvas, camera } = props;
     if (!this.background_image) return;
-    var r_dest: IRectangle = camera.rectangle.value;
-    var r_src: IRectangle = { ...camera.position, ...canvas_size };
+    var r_dest: IRectangle = { x: 0, y: 0, w: canvas_size.w, h: canvas_size.h };
+    const v_src = {
+      x: camera.position.x - canvas_size.w / 2 / camera.scale,
+      y: camera.position.y - canvas_size.h / 2 / camera.scale
+    };
+    if (v_src.x < 0) v_src.x = 0;
+    if (v_src.y < 0) v_src.y = 0;
+    if (v_src.x > this.size.w - canvas_size.w / camera.scale) v_src.x = this.size.w - canvas_size.w / camera.scale;
+    if (v_src.y > this.size.h - canvas_size.h / camera.scale) v_src.y = this.size.h - canvas_size.h / camera.scale;
+    var r_src: IRectangle = {
+      x: v_src.x,
+      y: v_src.y,
+      w: canvas_size.w / camera.scale,
+      h: canvas_size.h / camera.scale
+    };
     canvas.drawImage(this.background_image, r_src, r_dest);
   };
 

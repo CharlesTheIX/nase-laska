@@ -1,4 +1,3 @@
-import Camera from "@/lib/classes/Camera";
 import Vector2 from "@/lib/classes/Vector2";
 import Character from "@/lib/classes/Character";
 // import { getInputKeySets } from "@/lib/inputKeys";
@@ -7,15 +6,13 @@ import updatePlayerDestinationPosition from "./helpers/updatePlayerDestinationPo
 import { getMapEdgeCollision, getMapCollisions } from "@/lib/classes/Character/helpers/handleCollisions";
 
 export default class Player {
-  camera: Camera;
   character: Character;
 
   private constructor(p: IPlayer) {
-    this.camera = p.camera;
     this.character = Character.init({
       animating: false,
       sprite_name: p.sprite_name ?? "david",
-      position: this.camera.center_position
+      position: Vector2.init(22 * tile_size.w, 16 * tile_size.h)
     });
   }
 

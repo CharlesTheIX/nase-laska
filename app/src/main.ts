@@ -1,6 +1,6 @@
 import "./main.scss";
 import Game from "@/lib/classes/Game";
-import Camera from "./lib/classes/Camera";
+import Camera from "@/lib/classes/Camera";
 import Canvas from "@/lib/classes/Canvas";
 import Resources from "@/lib/classes/Resources";
 import InputHandler from "@/lib/classes/InputHandler";

@@ -21,6 +21,7 @@ type IGame = {
 };
 
 type IMap = {
+  camera: Camera;
   map_name: string;
   background_image: HTMLImageElement;
 };

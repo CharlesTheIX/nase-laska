@@ -1,5 +1,6 @@
+import Camera from "@/lib/classes/Camera";
 import Rectangle from "@/lib/classes/Rectangle";
-import { canvas_size, scale, tile_size, font_family } from "@/lib/globals";
+import { canvas_size, tile_size, font_family } from "@/lib/globals";
 
 export default class Canvas {
   rectangle: Rectangle;
@@ -12,6 +13,7 @@ export default class Canvas {
     this.canvas.height = canvas_size.h;
     this.rectangle = Rectangle.init(0, 0, canvas_size.w, canvas_size.h);
     this.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
+    this.context.imageSmoothingEnabled = false;
   }
 
   static init = (c: HTMLCanvasElement): Canvas => new Canvas(c);
@@ -20,31 +22,20 @@ export default class Canvas {
     this.context.clearRect(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
   };
 
-  public drawGrid = (): void => {
-    for (var row = 0; row < canvas_size.h / tile_size.h / scale; row++) {
-      for (var column = 0; column < canvas_size.w / tile_size.w / scale; column++) {
-        this.context.strokeRect(
-          column * tile_size.w * scale,
-          row * tile_size.h * scale,
-          tile_size.w * scale,
-          tile_size.h * scale
-        );
+  public drawGrid = (camera: Camera): void => {
+    const size_w = tile_size.w * camera.scale;
+    const size_h = tile_size.h * camera.scale;
+    const row_count = canvas_size.h / tile_size.h / camera.scale;
+    const col_count = canvas_size.w / tile_size.w / camera.scale;
+    for (var row = 0; row < row_count; row++) {
+      for (var column = 0; column < col_count; column++) {
+        this.context.strokeRect(column * size_w, row * size_h, size_w, size_h);
       }
     }
   };
 
   public drawImage = (image: HTMLImageElement, r_src: IRectangle, r_dest: IRectangle): void => {
-    this.context.drawImage(
-      image,
-      r_src.x,
-      r_src.y,
-      r_src.w,
-      r_src.h,
-      r_dest.x * scale,
-      r_dest.y * scale,
-      r_dest.w * scale,
-      r_dest.h * scale
-    );
+    this.context.drawImage(image, r_src.x, r_src.y, r_src.w, r_src.h, r_dest.x, r_dest.y, r_dest.w, r_dest.h);
   };
 
   public drawRectangle = (props: DrawRectangleProps): void => {
@@ -59,9 +50,9 @@ export default class Canvas {
     this.context.textAlign = align;
     this.context.fillStyle = color;
     this.context.textBaseline = "middle";
-    const startX: number = position.x / scale;
-    this.context.font = `bold ${font_family.font_size / scale}px ${font_family.name}, monospace`;
-    const getStartY = (index: number): number => Math.floor((position.y + font_family.font_size * 2.5 * index) / scale);
+    const startX: number = position.x;
+    this.context.font = `bold ${font_family.font_size}px ${font_family.name}, monospace`;
+    const getStartY = (index: number): number => Math.floor(position.y + font_family.font_size * 2.5 * index);
     lines.forEach((line: string, index: number) => {
       this.context.fillText(`${line.toUpperCase()}`, startX, getStartY(index));
       count++;

@@ -20,5 +20,5 @@ export const getMapCollisions = (c: Character, m: Map): boolean => {
 
 export const getMapEdgeCollision = (c: Character, m: Map): boolean => {
   const r = Rectangle.tile(c.dest_position);
-  return !m.rectangle.containsRectangle(r);
+  return !m.size.containsRectangle(r);
 };
