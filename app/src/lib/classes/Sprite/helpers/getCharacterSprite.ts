@@ -1,6 +1,6 @@
 import Sprite from "..";
-import emotions from "@/lib/data/emotions.json";
-import characters from "@/lib/data/characters.json";
+import emotions from "@/data/emotions.json";
+import characters from "@/data/characters.json";
 
 export const getCharacterSpriteById = (_id: string): Sprite => {
   const sprite = characters.find((item: SpriteData) => item._id === _id);

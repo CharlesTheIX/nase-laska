@@ -1,5 +1,5 @@
 import Character from "..";
-import characters from "@/lib/data/characters.json";
+import characters from "@/data/characters.json";
 
 export default (c: Character): void => {
   c.state = "idle";
