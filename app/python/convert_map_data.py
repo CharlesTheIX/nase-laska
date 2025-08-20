@@ -67,4 +67,4 @@ def batch_convert(src_dir: str, dest_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    batch_convert("../project-files/map-data", "./src/lib/data/maps")
+    batch_convert("../project-files/map-data", "./src/data/maps")

@@ -1,18 +1,19 @@
 import { tile_size } from "@/lib/globals";
 import Canvas from "@/lib/classes/Canvas";
 import Sprite from "@/lib/classes/Sprite";
+import Emotion from "@/lib/classes/Emotion";
 import Vector2 from "@/lib/classes/Vector2";
 import { convertTileToIRectangle, convertWorldPositionToCameraPosition } from "@/lib/converters";
 
 export default class Character {
   sprite: Sprite;
+  emotion: Emotion;
   max_speed: number;
   velocity: Vector2;
   position: Vector2;
   animating: boolean;
   frame_index: number;
   direction: Direction;
-  // input_timeout: number;
   state: CharacterState;
   dest_position: Vector2;
   animation_timers: { [key: string]: { count: number; timeout: number } };
@@ -21,14 +22,17 @@ export default class Character {
     this.max_speed = 0;
     this.state = "idle";
     this.frame_index = 0;
-    // this.input_timeout = 0;
     this.velocity = Vector2.zero();
     this.animating = c.animating ?? false;
     this.direction = c.direction ?? "down";
     this.position = c.position ?? Vector2.zero();
+    this.emotion = Emotion.init("blank_2", false);
     this.animation_timers = { walking: { count: 0, timeout: 60 } };
     this.dest_position = c.dest_position ?? this.position.duplicate();
     this.sprite = Sprite.init({ name: c.sprite_name, type: "character" });
+
+    this.emotion.setEmotionData("happy");
+    this.emotion.setTimer(2000);
   }
 
   static init = (c: ICharacter): Character => new Character(c);
@@ -51,6 +55,13 @@ export default class Character {
         src_frame = this.sprite.frame_sets[this.state].frames[this.direction].upper[this.frame_index];
         r_src = convertTileToIRectangle(src_frame);
         canvas.drawImage(spritesheet, r_src, r_dest);
+        break;
+      case "emotion":
+        if (!this.emotion.visible) break;
+        r_src = { w: tile_size.w, h: tile_size.h, x: this.emotion.t_pos.x, y: this.emotion.t_pos.y };
+        r_dest = { x: this.position.x, y: this.position.y - tile_size.h, w: tile_size.w, h: tile_size.h };
+        canvas.drawImage(spritesheet, r_src, r_dest);
+        break;
     }
   };
 

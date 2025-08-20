@@ -1,3 +1,7 @@
+/* E */
+type EmotionData = { _id?: string; name: string; sprite_px_position: IVector2 };
+
+/* S */
 type SpriteData = {
   _id?: string;
   name?: string;
@@ -6,7 +10,7 @@ type SpriteData = {
   frame_sets: SpriteFrameSets;
 };
 
-type SpriteFrameName = "upper" | "lower";
+type SpriteFrameName = "upper" | "lower" | "emotion";
 
 type SpriteFrame = {
   upper: any[];

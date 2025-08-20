@@ -1,0 +1,130 @@
+[
+  {
+    "_id": "",
+    "name": "speaking",
+    "sprite_px_position": {
+      "x": 16,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "singing",
+    "sprite_px_position": {
+      "x": 32,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "smile",
+    "sprite_px_position": {
+      "x": 48,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "happy",
+    "sprite_px_position": {
+      "x": 64,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "grumpy",
+    "sprite_px_position": {
+      "x": 80,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "pleased",
+    "sprite_px_position": {
+      "x": 96,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "laughing",
+    "sprite_px_position": {
+      "x": 112,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "exclaim",
+    "sprite_px_position": {
+      "x": 128,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "question",
+    "sprite_px_position": {
+      "x": 144,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "love",
+    "sprite_px_position": {
+      "x": 160,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "sick",
+    "sprite_px_position": {
+      "x": 176,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "cry",
+    "sprite_px_position": {
+      "x": 192,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "sad",
+    "sprite_px_position": {
+      "x": 208,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "angry",
+    "sprite_px_position": {
+      "x": 224,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "blank_1",
+    "sprite_px_position": {
+      "x": 240,
+      "y": 48
+    }
+  },
+  {
+    "_id": "",
+    "name": "blank_2",
+    "sprite_px_position": {
+      "x": 256,
+      "y": 48
+    }
+  }
+]

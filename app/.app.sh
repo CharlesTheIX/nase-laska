@@ -15,7 +15,9 @@ build() {
   fi
 
   convert_map_data
+  convert_emotions_data
   copy_convert_map_background_images
+
 
   mkdir dist
   yarn webpack --config webpack.config.mjs --mode production
@@ -31,6 +33,22 @@ clean() {
   kill_service
   rm -rf dist node_modules yarn.lock
   echo "Clean complete"
+  echo ""
+}
+
+convert_emotions_data() {
+  echo "Converting Tiled Emotion data to game emotion data..."
+
+  if command -v python3 &>/dev/null; then
+    python3 ./python/convert_emotions_data.py
+  elif command -v python &>/dev/null; then
+    python ./python/convert_emotions_data.py 
+  else
+    echo "Python is not installed - please install Python to use this script"
+    exit 1
+  fi
+
+  echo "Conversion complete."
   echo ""
 }
 
@@ -75,7 +93,7 @@ kill_service() {
 }
 
 help() {
-  echo "Usage: $0 [build | clean | convert_map_data | copy_convert_map_background_images | kill | start]"
+  echo "Usage: $0 [build | clean | convert_emotions_data | convert_map_data | copy_convert_map_background_images | kill | start]"
   echo ""
   exit 1
 }
@@ -115,6 +133,7 @@ fi
 case "$1" in
   build) build ;;
   clean) clean ;;
+  convert_emotions_data) convert_emotions_data ;;
   convert_map_data) convert_map_data ;;
   copy_convert_map_background_images) copy_convert_map_background_images ;;
   kill_service) kill_service ;;

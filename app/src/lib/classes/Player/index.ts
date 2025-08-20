@@ -20,6 +20,7 @@ export default class Player {
 
   public update = (props: PlayerUpdateProps): void => {
     const { time_step, input_handler, map } = props;
+    this.character.emotion.update(time_step);
     this.character.max_speed = Math.ceil(tile_size.w / time_step);
     // const key_sets: KeySetMap = getInputKeySets();
     // if ([...input_handler.keys].some((key) => key_sets.run.has(key))) this.character.velocity.scale(2);

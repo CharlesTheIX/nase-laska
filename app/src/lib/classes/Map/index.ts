@@ -26,15 +26,16 @@ export default class Map {
 
   static init = (m: IMap): Map => new Map(m);
 
-  public drawLayer = (layer: MapLayer, canvas: Canvas, spritesheet: HTMLImageElement) => {
+  public drawLayer = (layer: MapLayer, canvas: Canvas, spritesheet: HTMLImageElement, camera: Camera) => {
     const collisionLayers = this.map_data.layers[layer];
     if (!collisionLayers || !collisionLayers.length) return;
     collisionLayers.map((l: MapLayerData[]) => {
       l.map((d: MapLayerData) => {
         const v_dest: Vector2 = Vector2.init(d.px_position.x, d.px_position.y);
+        const r_dest: IRectangle = Rectangle.tile(v_dest).value;
+
         const v_src: Vector2 = Vector2.init(d.sprite_px_position.x, d.sprite_px_position.y);
         const r_src: IRectangle = Rectangle.tile(v_src).value;
-        const r_dest: IRectangle = Rectangle.tile(v_dest).value;
         canvas.drawImage(spritesheet, r_src, r_dest);
       });
     });

@@ -12,6 +12,7 @@
     "start": "./.app.sh start",
     "clean": "./.app.sh clean",
     "kill_service": "./.app.sh kill_service",
+    "convert_emotions_data": "./.app.sh convert_emotions_data",
     "convert_map_data": "./.app.sh convert_map_data",
     "copy_convert_map_background_images": "./.app.sh copy_convert_map_background_images"
   },
