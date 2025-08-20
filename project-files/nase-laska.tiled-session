@@ -10,16 +10,16 @@
     "fileStates": {
         "map-data/test_1.tmx": {
             "expandedGroupLayers": [
+                13,
                 11,
                 5,
-                13,
                 7
             ],
             "scale": 1.595,
             "selectedLayer": 10,
             "viewCenter": {
-                "x": 338.55799373040753,
-                "y": 234.79623824451414
+                "x": 339.18495297805646,
+                "y": 244.51410658307213
             }
         },
         "map-data/tileset.tsx": {
@@ -42,7 +42,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/map-data",
+    "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/data",
     "last.externalTilesetPath": "/Users/davidcharles/Projects/nase-laska/project-files",
     "last.imagePath": "/Users/davidcharles/Projects/nase-laska/app/assets/images",
     "map.height": 33,

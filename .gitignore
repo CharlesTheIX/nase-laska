@@ -1,15 +1,5 @@
 .vscode
-
-api/dist
-api/node_modules
-api/postman/environment.json
-api/.env
-api/error.log
-api/yarn.lock
-
 app/dist
 app/node_modules
 app/.env
 app/yarn.lock
-
-project-files/dev
