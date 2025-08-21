@@ -59,7 +59,7 @@ export default class Game {
       this.accumulated_time -= this.time_step;
     }
     this.draw();
-    this.canvas.drawGrid(this.camera);
+    // this.canvas.drawGrid(this.camera);
     this.raf_id = requestAnimationFrame(this.mainLoop);
   };
 
@@ -88,9 +88,9 @@ export default class Game {
         this.canvas.context.translate(-this.camera.position.x, -this.camera.position.y);
         if (this.map.showWeather) this.map.drawLayer("weather_bottom", this.canvas, spritesheet, this.camera);
         this.map.drawLayer("collision", this.canvas, spritesheet, this.camera);
-        this.player.character.drawLayer("lower", this.canvas, spritesheet);
-        this.player.character.drawLayer("upper", this.canvas, spritesheet);
-        this.player.character.drawLayer("emotion", this.canvas, spritesheet);
+        this.player.character.drawLayer("lower", this.canvas, spritesheet, this.camera, this.map);
+        this.player.character.drawLayer("upper", this.canvas, spritesheet, this.camera, this.map);
+        this.player.character.drawLayer("emotion", this.canvas, spritesheet, this.camera, this.map);
         this.map.drawLayer("canopy", this.canvas, spritesheet, this.camera);
         if (this.map.showWeather) this.map.drawLayer("weather_top", this.canvas, spritesheet, this.camera);
         this.canvas.context.restore();

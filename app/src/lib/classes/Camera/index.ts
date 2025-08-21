@@ -8,7 +8,7 @@ export default class Camera {
   dest_position: Vector2;
 
   private constructor() {
-    this.scale = 3;
+    this.scale = 2;
     this.focus_player = true;
     this.position = Vector2.zero();
     this.dest_position = Vector2.zero();
