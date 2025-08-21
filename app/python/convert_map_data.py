@@ -2,7 +2,7 @@
 
 import os
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List 
 
 
 def convert_tiled_json_to_map_json(input_file_path: str, output_file_path: str) -> None:

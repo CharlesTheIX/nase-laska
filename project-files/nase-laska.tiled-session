@@ -8,6 +8,22 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "emotions.tmx": {
+            "scale": 1.45,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 360.00000000000006,
+                "y": 264.1379310344828
+            }
+        },
+        "inventory_items.tmx": {
+            "scale": 1.4537878787878786,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 311.5997915581032,
+                "y": 221.49035956227206
+            }
+        },
         "map-data/test_1.tmx": {
             "expandedGroupLayers": [
                 13,
