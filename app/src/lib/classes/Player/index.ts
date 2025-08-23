@@ -10,7 +10,8 @@ export default class Player {
   private constructor(p: IPlayer) {
     this.character = Character.init({
       animating: false,
-      position: Vector2.init(352, 256),
+      // position: Vector2.init(352, 256),
+      position: Vector2.init(176, 128),
       sprite_name: p.sprite_name ?? "david"
     });
   }
@@ -20,7 +21,7 @@ export default class Player {
   public update = (props: PlayerUpdateProps): void => {
     const { time_step, input_handler, map } = props;
     this.character.emotion.update(time_step);
-    this.character.max_speed = Math.ceil(tile_size / time_step);
+    this.character.max_speed = Math.ceil((tile_size * 20) / time_step);
     if (this.character.animating && player_movement_type === "tiled") {
       this.character.moveToDestination();
       this.character.updateFrame(time_step);

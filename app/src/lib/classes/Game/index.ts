@@ -43,6 +43,7 @@ export default class Game {
 
     const sprite_name = this.storage.data.save_data?.sprite_name || "pavla";
     this.player = Player.init({ sprite_name, camera: this.camera });
+    // this.loadMap("test_1");
   }
 
   static init = (g: IGame): Game => new Game(g);
