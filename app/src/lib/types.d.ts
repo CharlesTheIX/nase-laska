@@ -6,11 +6,19 @@ type GameState = "playing";
 
 /* I */
 type ICharacter = {
-  position?: Vector2;
-  animating?: boolean;
+  sprite: Sprite;
+  emotion: Emotion;
+  max_speed: number;
+  velocity: Vector2;
+  position: Vector2;
+  animating: boolean;
   sprite_name: string;
-  direction?: Direction;
-  dest_position?: Vector2;
+  frame_index: number;
+  direction: Direction;
+  state: CharacterState;
+  dest_position: Vector2;
+  frame_index_count: number;
+  animation_timers: { [key: string]: { count: number; timeout: number } };
 };
 
 type IGame = {
@@ -21,7 +29,6 @@ type IGame = {
 };
 
 type IMap = {
-  camera: Camera;
   map_name: string;
   background_image: HTMLImageElement;
 };

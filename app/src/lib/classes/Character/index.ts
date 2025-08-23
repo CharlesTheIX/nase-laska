@@ -1,12 +1,10 @@
-import Map from "@/lib/classes/Map";
+import { tile_size } from "@/lib/globals";
 import Camera from "@/lib/classes/Camera";
 import Canvas from "@/lib/classes/Canvas";
 import Sprite from "@/lib/classes/Sprite";
 import Emotion from "@/lib/classes/Emotion";
 import Vector2 from "@/lib/classes/Vector2";
 import Rectangle from "@/lib/classes/Rectangle";
-import { tile_size, canvas_size } from "@/lib/globals";
-import { convertTileToIRectangle } from "@/lib/converters";
 
 export default class Character {
   sprite: Sprite;
@@ -19,61 +17,60 @@ export default class Character {
   direction: Direction;
   state: CharacterState;
   dest_position: Vector2;
+  frame_index_count: number;
   animation_timers: { [key: string]: { count: number; timeout: number } };
 
-  private constructor(c: ICharacter) {
+  private constructor(c: Partial<ICharacter>) {
     this.max_speed = 0;
     this.state = "idle";
     this.frame_index = 0;
+    this.frame_index_count = 0;
     this.velocity = Vector2.zero();
     this.animating = c.animating ?? false;
     this.direction = c.direction ?? "down";
     this.position = c.position ?? Vector2.zero();
-    this.emotion = Emotion.init("blank_2", false);
+    this.emotion = Emotion.init("blank_1", false);
     this.animation_timers = { walking: { count: 0, timeout: 60 } };
+    this.sprite = Sprite.init("character", c.sprite_name ?? "pavla");
     this.dest_position = c.dest_position ?? this.position.duplicate();
-    this.sprite = Sprite.init({ name: c.sprite_name, type: "character" });
   }
 
-  static init = (c: ICharacter): Character => new Character(c);
+  static init = (c: Partial<ICharacter>): Character => new Character(c);
 
-  public drawLayer = (
-    layer: SpriteFrameName,
-    canvas: Canvas,
-    spritesheet: HTMLImageElement,
-    camera: Camera,
-    map: Map
-  ): void => {
-    if (!this.sprite.frame_sets) return;
-
+  public drawLayer = (props: {
+    layer: SpriteFrameName;
+    canvas: Canvas;
+    spritesheet: HTMLImageElement;
+    camera: Camera;
+    m_size: IRectangle;
+  }): void => {
+    const { layer, canvas, spritesheet, camera, m_size } = props;
+    if (!this.sprite.srcs) return;
     var r_src: IRectangle;
-    var src_frame: IRectangle;
+    var src_pos: IVector2;
     const v_dest: Vector2 = this.position.duplicate();
-    t_layer(v_dest, camera, map);
+    camera.applyVectorTranslation("layer", v_dest, m_size);
     var r_dest: IRectangle = Rectangle.tile(v_dest).value;
     switch (layer) {
       case "lower":
-        src_frame = this.sprite.frame_sets[this.state].frames[this.direction].lower[this.frame_index];
-        r_src = convertTileToIRectangle(src_frame);
-        canvas.drawImage(spritesheet, r_src, r_dest);
+        src_pos = this.sprite.srcs[this.frame_index + 16];
         break;
       case "upper":
-        r_dest.y -= tile_size.h;
-        src_frame = this.sprite.frame_sets[this.state].frames[this.direction].upper[this.frame_index];
-        r_src = convertTileToIRectangle(src_frame);
-        canvas.drawImage(spritesheet, r_src, r_dest);
+        r_dest.y -= tile_size;
+        src_pos = this.sprite.srcs[this.frame_index];
         break;
       case "emotion":
-        if (!this.emotion.visible) break;
-        r_dest.y -= tile_size.h;
-        r_src = { w: tile_size.w, h: tile_size.h, x: this.emotion.t_pos.x, y: this.emotion.t_pos.y };
-        canvas.drawImage(spritesheet, r_src, r_dest);
+        if (!this.emotion.visible || !this.emotion.sprite.srcs) return;
+        r_dest.y -= tile_size;
+        src_pos = this.emotion.sprite.srcs[0];
         break;
     }
+    r_src = { w: tile_size, h: tile_size, x: src_pos.x, y: src_pos.y };
+    canvas.drawImage(spritesheet, r_src, r_dest);
   };
 
   public drawDestination = (canvas: Canvas): void => {
-    const r_dest: IRectangle = { ...this.dest_position.value, ...tile_size };
+    const r_dest: IRectangle = { ...this.dest_position.value, w: tile_size, h: tile_size };
     canvas.drawRectangle({ rectangle: r_dest });
   };
 
@@ -93,29 +90,41 @@ export default class Character {
   };
 
   public updateFrame = (time_step: number): void => {
+    var offset: number = 0;
+    switch (this.direction) {
+      case "up":
+        offset = 4;
+        break;
+      case "down":
+        offset = 0;
+        break;
+      case "left":
+        offset = 8;
+        break;
+      case "right":
+        offset = 12;
+        break;
+    }
+
     switch (this.state) {
       case "idle":
-        this.frame_index = 0;
+        this.frame_index = offset;
+        this.frame_index_count = 0;
         break;
 
       case "walking":
-        if (!this.sprite.frame_sets) break;
+        if (!this.sprite.srcs) break;
         this.animation_timers.walking.count += this.velocity.length * time_step;
         if (this.animation_timers.walking.count < this.animation_timers.walking.timeout) return;
         this.animation_timers.walking.count = 0;
-        var next_frame: number = this.frame_index + 1;
-        if (next_frame >= this.sprite.frame_sets[this.state].frame_count) next_frame = 0;
-        this.frame_index = next_frame;
+
+        this.frame_index_count += 1;
+        this.frame_index = offset + this.frame_index_count;
+        if (this.frame_index_count % 4 === 0) {
+          this.frame_index = offset;
+          this.frame_index_count = 0;
+        }
         break;
     }
   };
 }
-
-const t_layer = (v: Vector2, c: Camera, m: Map): void => {
-  var v_t = Vector2.init(canvas_size.w / 2 / c.scale, canvas_size.h / 2 / c.scale);
-  v_t = Vector2.subtract(c.position, v_t);
-  if (v_t.x < 0) v.x += v_t.x;
-  if (v_t.y < 0) v.y += v_t.y;
-  if (v_t.x > m.size.w - canvas_size.w / c.scale) v.x += v_t.x - (m.size.w - canvas_size.w / c.scale);
-  if (v_t.y > m.size.h - canvas_size.h / c.scale) v.y += v_t.y - (m.size.h - canvas_size.h / c.scale);
-};

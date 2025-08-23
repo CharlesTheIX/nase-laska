@@ -15,7 +15,7 @@ export default class Rectangle {
   }
 
   static init = (x: number, y: number, w: number, h: number): Rectangle => new Rectangle(x, y, w, h);
-  static tile = (v: Vector2): Rectangle => new Rectangle(v.x, v.y, tile_size.w, tile_size.h);
+  static tile = (v: Vector2): Rectangle => new Rectangle(v.x, v.y, tile_size, tile_size);
   static zero = (): Rectangle => new Rectangle(0, 0, 0, 0);
 
   static equal = (r1: Rectangle, r2: Rectangle): boolean => {

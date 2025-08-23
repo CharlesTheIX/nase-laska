@@ -1,21 +1,21 @@
-import { getEmotionSpriteData } from "@/lib/classes/Sprite/helpers/getCharacterSprite";
+import { getEmotionSpriteData } from "@/lib/classes/Sprite/helpers/getSprite";
+import Sprite from "./Sprite";
 
 export default class Emotion {
   timer: number;
-  t_pos: IVector2;
+  sprite: Sprite;
   visible: boolean;
 
   constructor() {
     this.timer = 0;
     this.visible = false;
-    this.t_pos = { x: 16, y: 3 };
+    this.sprite = Sprite.empty();
   }
 
   static init = (name: string, visible?: boolean): Emotion => {
     const emotion = new Emotion();
-    const emotion_sprite_data: EmotionData = getEmotionSpriteData(name);
     emotion.visible = !!visible;
-    emotion.t_pos = emotion_sprite_data.sprite_px_position;
+    emotion.sprite = getEmotionSpriteData(name);
     return emotion;
   };
 
@@ -30,9 +30,8 @@ export default class Emotion {
   };
 
   public setEmotionData = (name: string): this => {
-    const emotion_sprite_data: EmotionData = getEmotionSpriteData(name);
     this.visible = false;
-    this.t_pos = emotion_sprite_data.sprite_px_position;
+    this.sprite = getEmotionSpriteData(name);
     return this;
   };
 

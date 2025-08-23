@@ -13,7 +13,8 @@ const init = (): void => {
   const loading_interval = setInterval(() => {
     var count: number = 0;
     Object.keys(resources.images).forEach((key: string) => {
-      if (resources.images[key].loaded) count++;
+      if (!resources.images[key]) count++;
+      else if (resources.images[key].loaded) count++;
     });
     resources.progress_element.style.width = `${(100 * count) / resources.count}%`;
     if (count < resources.count) return;
@@ -52,5 +53,4 @@ function getRefreshRate(samples = 60): Promise<number> {
   });
 }
 
-// usage
 getRefreshRate().then((rate) => console.log(`~${rate.toFixed(2)} Hz`));

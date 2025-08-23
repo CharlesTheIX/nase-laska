@@ -9,9 +9,9 @@ export default class Canvas {
 
   private constructor(c: HTMLCanvasElement) {
     this.canvas = c;
-    this.canvas.width = canvas_size.w;
-    this.canvas.height = canvas_size.h;
-    this.rectangle = Rectangle.init(0, 0, canvas_size.w, canvas_size.h);
+    this.canvas.width = canvas_size.x;
+    this.canvas.height = canvas_size.y;
+    this.rectangle = Rectangle.init(0, 0, canvas_size.x, canvas_size.y);
     this.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.context.imageSmoothingEnabled = false;
   }
@@ -23,10 +23,10 @@ export default class Canvas {
   };
 
   public drawGrid = (camera: Camera): void => {
-    const size_w = tile_size.w * camera.scale;
-    const size_h = tile_size.h * camera.scale;
-    const row_count = canvas_size.h / tile_size.h / camera.scale;
-    const col_count = canvas_size.w / tile_size.w / camera.scale;
+    const size_w = tile_size * camera.scale;
+    const size_h = tile_size * camera.scale;
+    const row_count = canvas_size.y / tile_size / camera.scale;
+    const col_count = canvas_size.x / tile_size / camera.scale;
     for (var row = 0; row < row_count; row++) {
       for (var column = 0; column < col_count; column++) {
         this.context.strokeRect(column * size_w, row * size_h, size_w, size_h);

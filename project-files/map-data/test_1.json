@@ -454,6 +454,16 @@
          "name":"tiles",
          "opacity":1,
          "type":"group",
+         "visible":false,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":19,
+         "layers":[],
+         "name":"spawn_points",
+         "opacity":1,
+         "type":"group",
          "visible":true,
          "x":0,
          "y":0
@@ -508,11 +518,11 @@
          "name":"dev",
          "opacity":1,
          "type":"group",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
- "nextlayerid":19,
+ "nextlayerid":20,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",

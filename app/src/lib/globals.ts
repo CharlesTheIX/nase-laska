@@ -1,10 +1,12 @@
-export const tile_size = { w: 16, h: 16 };
+import Vector2 from "./classes/Vector2";
+
+export const tile_size = 16;
 
 /* C */
-export const canvas_size = { w: 45 * tile_size.w, h: 33 * tile_size.h };
+export const canvas_size = Vector2.init(45, 33).scale(tile_size);
 
 /* F */
-export const font_family = { name: "GameFont", font_size: tile_size.h };
+export const font_family = { name: "GameFont", font_size: tile_size };
 export const fps = 1000 / 60;
 
 /* L */

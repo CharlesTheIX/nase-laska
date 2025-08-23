@@ -47,20 +47,18 @@ export default (props: {
 
           if (key_sets.up.has(last_key)) {
             character.velocity.y = -character.max_speed;
-            character.dest_position.y -= tile_size.h;
+            character.dest_position.y -= tile_size;
           } else if (key_sets.down.has(last_key)) {
             character.velocity.y = character.max_speed;
-            character.dest_position.y += tile_size.h;
+            character.dest_position.y += tile_size;
           } else if (key_sets.left.has(last_key)) {
             character.velocity.x = -character.max_speed;
-            character.dest_position.x -= tile_size.w;
+            character.dest_position.x -= tile_size;
           } else if (key_sets.right.has(last_key)) {
             character.velocity.x = character.max_speed;
-            character.dest_position.x += tile_size.w;
+            character.dest_position.x += tile_size;
           }
         }
-      } else {
-        // character.input_timeout = player_input_timeout;
       }
       break;
   }

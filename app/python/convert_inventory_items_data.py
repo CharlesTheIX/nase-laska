@@ -5,37 +5,35 @@ import json
 from typing import Any, Dict, List
 
 
-def convert_inventory_items_json(input_file_path: str, output_file_path: str) -> None:
-    with open(input_file_path, "r", encoding="utf8") as f:
+def convert_json(src_path: str, dest_path: str) -> None:
+    with open(src_path, "r", encoding="utf8") as f:
         data: Dict[str, Any] = json.load(f)
 
-    spritesheet_width: int = 100
+    ss_w: int = 100
     m_w: int = data["width"]
-    t_size: int = data["tilewidth"]
-    inventory_items_list: List[str] = ["white_mushroom", "brown_mushroom", "red_mushroom", "brown_bottle", "yellow_bottle", "red_bottle", "empty_bottle_right", "empty_bottle_left", "blank_1", "blank_2"];
+    t_w: int = data["tilewidth"]
+    names: List[str] = ["white_mushroom", "brown_mushroom", "red_mushroom", "brown_bottle", "yellow_bottle", "red_bottle", "empty_bottle_right", "empty_bottle_left", "blank_1", "blank_2"];
 
-    # find the "inventory_items" group
-    tiles_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "inventory_items"), None)
-    if not tiles_group:
+    t_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "inventory_items"), None)
+    if not t_group:
         return
 
-    tiles: List[Dict[str, Any]] = []
-    for index, tile in enumerate(tiles_group.get("data", [])):
+    json_content: List[Dict[str, Any]] = []
+    for index, tile in enumerate(t_group.get("data", [])):
         if tile == 0:
             continue
-        name = inventory_items_list[index] if 0 <= index < len(inventory_items_list) else "blank_2"
-        s_col: int = (tile - 1) % spritesheet_width
-        s_row: int = (tile - 1) // spritesheet_width
+        name = names[index] if 0 <= index < len(names) else "blank_1"
+        ss_col: int = (tile - 1) % ss_w
+        ss_row: int = (tile - 1) // ss_w
         t: Dict[str, Any] = {
-            "_id": "",
             "name": name,
-            "sprite_px_position": {"x": s_col * t_size, "y": s_row * t_size},
+            "srcs": [{"x": ss_col * t_w, "y": ss_row * t_w}],
         }
-        tiles.append(t)
+        json_content.append(t)
 
-    with open(output_file_path, "w", encoding="utf8") as f:
-        json.dump(tiles, f, indent=2)
+    with open(dest_path, "w", encoding="utf8") as f:
+        json.dump(json_content, f, indent=2)
 
 
 if __name__ == "__main__":
-    convert_inventory_items_json("../project-files/data/inventory_items.json", "./src/data/inventory_items.json")
+    convert_json("../project-files/data/inventory_items.json", "./src/data/inventory_items.json")

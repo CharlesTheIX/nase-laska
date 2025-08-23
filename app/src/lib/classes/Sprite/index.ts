@@ -1,28 +1,23 @@
-import { getCharacterSpriteById, getCharacterSpriteByName } from "./helpers/getCharacterSprite";
+import { getCharacterSpriteData, getEmotionSpriteData } from "./helpers/getSprite";
 
 export default class Sprite {
-  width: number;
-  height: number;
-  _id: string | null;
-  name: string | null;
-  frame_sets: SpriteFrameSets | null;
+  name: string;
+  srcs: IVector2[] | null;
 
-  constructor(s: Partial<SpriteData>) {
-    this._id = s._id ?? null;
-    this.width = s.width ?? 0;
-    this.name = s.name ?? null;
-    this.height = s.height ?? 0;
-    this.frame_sets = s.frame_sets ?? null;
+  constructor(name: string, srcs?: IVector2[]) {
+    this.name = name;
+    this.srcs = srcs ?? null;
   }
 
-  static init = (props: { _id?: string; name?: string; type: SpriteType }): Sprite => {
-    const { _id, name, type } = props;
-    if (!_id && !name) return new Sprite({});
+  static init = (type: SpriteType, name: string): Sprite => {
+    if (!name) return Sprite.empty();
     switch (type) {
       case "character":
-        if (_id) return getCharacterSpriteById(_id);
-        if (name) return getCharacterSpriteByName(name);
-        return new Sprite({});
+        return getCharacterSpriteData(name);
+      case "emotion":
+        return getEmotionSpriteData(name);
     }
   };
+
+  static empty = (): Sprite => new Sprite("_empty_");
 }

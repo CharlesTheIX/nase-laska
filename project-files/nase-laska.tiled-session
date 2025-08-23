@@ -8,6 +8,25 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "_tempalte.tmx": {
+            "expandedGroupLayers": [
+                7
+            ],
+            "scale": 1.4537878787878786,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": 359.7498697238145,
+                "y": 264.137571651902
+            }
+        },
+        "characters.tmx": {
+            "scale": 0.88,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 61.363636363636374,
+                "y": 248.86363636363637
+            }
+        },
         "emotions.tmx": {
             "scale": 1.45,
             "selectedLayer": 0,
@@ -26,16 +45,40 @@
         },
         "map-data/test_1.tmx": {
             "expandedGroupLayers": [
-                13,
-                11,
-                5,
-                7
+                11
             ],
             "scale": 1.595,
-            "selectedLayer": 10,
+            "selectedLayer": 15,
             "viewCenter": {
                 "x": 339.18495297805646,
-                "y": 244.51410658307213
+                "y": 235.42319749216304
+            }
+        },
+        "map-data/test_2.tmx": {
+            "expandedGroupLayers": [
+                9,
+                3,
+                7
+            ],
+            "scale": 1.0926,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 274.5744096650192,
+                "y": 308.89621087314663
+            }
+        },
+        "map-data/test_3.tmx": {
+            "expandedGroupLayers": [
+                9,
+                11,
+                3,
+                7
+            ],
+            "scale": 1.0926,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 309.353834889255,
+                "y": 338.184147904082
             }
         },
         "map-data/tileset.tsx": {
@@ -44,36 +87,40 @@
         "map_tempalte.tmx": {
             "expandedGroupLayers": [
                 2,
-                4
+                7
             ],
             "scale": 1,
-            "selectedLayer": 0,
+            "selectedLayer": 4,
             "viewCenter": {
                 "x": 378,
-                "y": 280.5
+                "y": 280
             }
         },
         "tileset.tsx": {
             "scaleInDock": 4.1423,
-            "scaleInEditor": 1
+            "scaleInEditor": 7.9
         }
     },
-    "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/data",
+    "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/map-data",
     "last.externalTilesetPath": "/Users/davidcharles/Projects/nase-laska/project-files",
     "last.imagePath": "/Users/davidcharles/Projects/nase-laska/app/assets/images",
-    "map.height": 33,
+    "map.height": 17,
     "map.lastUsedExportFilter": "All Files (*)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 45,
+    "map.width": 23,
     "openFiles": [
         "tileset.tsx",
         "map-data/test_1.tmx"
     ],
     "project": "nase-laska.tiled-project",
     "recentFiles": [
+        "_tempalte.tmx",
         "tileset.tsx",
+        "characters.tmx",
+        "inventory_items.tmx",
+        "emotions.tmx",
         "map-data/test_1.tmx",
         "map_tempalte.tmx"
     ],

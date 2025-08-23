@@ -17,7 +17,7 @@ build() {
   convert_map_data
   convert_emotions_data
   copy_convert_map_background_images
-
+  convert_characters_data
 
   mkdir dist
   yarn webpack --config webpack.config.mjs --mode production
@@ -33,6 +33,22 @@ clean() {
   kill_service
   rm -rf dist node_modules yarn.lock
   echo "Clean complete"
+  echo ""
+}
+
+convert_characters_data() {
+  echo "Converting Tiled Characters data to game characters data..."
+
+  if command -v python3 &>/dev/null; then
+    python3 ./python/convert_characters_data.py
+  elif command -v python &>/dev/null; then
+    python ./python/convert_characters_data.py 
+  else
+    echo "Python is not installed - please install Python to use this script"
+    exit 1
+  fi
+
+  echo "Conversion complete."
   echo ""
 }
 
@@ -115,11 +131,11 @@ start() {
   if command -v python3 &>/dev/null; then
     echo "Serving $DIR at http://localhost:$PORT"
     python3 -m http.server $PORT &
-    open "http://localhost:$PORT" &
+    # open "http://localhost:$PORT" &
   elif command -v python &>/dev/null; then
     echo "Serving $DIR at http://localhost:$PORT"
     python -m SimpleHTTPServer $PORT &
-    open "http://localhost:$PORT" &
+    # open "http://localhost:$PORT" &
   else
     echo "Python is not installed - please install Python to use this script"
     exit 1

@@ -1,29 +1,11 @@
-/* E */
-type EmotionData = { _id?: string; name: string; sprite_px_position: IVector2 };
-
 /* S */
 type SpriteData = {
-  _id?: string;
-  name?: string;
-  width: number;
-  height: number;
-  frame_sets: SpriteFrameSets;
+  name: string;
+  srcs: IVector2[];
 };
 
 type SpriteFrameName = "upper" | "lower" | "emotion";
 
-type SpriteFrame = {
-  upper: any[];
-  lower: any[];
-};
-
 type SpriteFrameSetName = "idle" | "walking";
 
-type SpriteFrameSets = {
-  [set: string]: {
-    frame_count: number;
-    frames: { [direction: string]: SpriteFrame };
-  };
-};
-
-type SpriteType = "character";
+type SpriteType = "character" | "emotion";

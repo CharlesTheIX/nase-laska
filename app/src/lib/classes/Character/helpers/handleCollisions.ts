@@ -9,7 +9,7 @@ export const getMapCollisions = (c: Character, m: Map): boolean => {
   const collisionLayers = m.map_data.layers["collision"];
   collisionLayers.forEach((l: MapLayerData[]) => {
     l.forEach((d: MapLayerData) => {
-      const r_d = Rectangle.init(d.px_position.x, d.px_position.y, tile_size.w, tile_size.h);
+      const r_d = Rectangle.init(d.dest.x, d.dest.y, tile_size, tile_size);
       if (r.equal(r_d)) collision = true;
       if (collision) return;
     });

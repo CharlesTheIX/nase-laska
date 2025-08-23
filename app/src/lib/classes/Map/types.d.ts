@@ -1,12 +1,13 @@
 /* M */
 type MapData = {
-  size_px: { w: number; h: number };
+  size: { w: number; h: number };
   layers: { [key: string]: MapLayerData[][] };
+  spawn_points: { name: string; dest: IVector2 }[];
 };
 
 type MapLayer = "collision" | "canopy" | "weather_top" | "weather_bottom";
 
 type MapLayerData = {
-  px_position: IVector2;
-  sprite_px_position: IVector2;
+  dest: IVector2;
+  src: IVector2;
 };
