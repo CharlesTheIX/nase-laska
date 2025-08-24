@@ -49,12 +49,12 @@ export default class Canvas {
     var count: number = 1;
     this.context.textAlign = align;
     this.context.fillStyle = color;
-    this.context.textBaseline = "middle";
+    this.context.textBaseline = "top";
     const startX: number = position.x;
     this.context.font = `bold ${font_family.font_size}px ${font_family.name}, monospace`;
     const getStartY = (index: number): number => Math.floor(position.y + font_family.font_size * 2.5 * index);
     lines.forEach((line: string, index: number) => {
-      this.context.fillText(`${line.toUpperCase()}`, startX, getStartY(index));
+      this.context.fillText(`${line}`, startX, getStartY(index));
       count++;
     });
   };

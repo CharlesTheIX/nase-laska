@@ -5,14 +5,15 @@ import updatePlayerDestinationPosition from "./helpers/updatePlayerDestinationPo
 import { getMapEdgeCollision, getMapCollisions } from "@/lib/classes/Character/helpers/handleCollisions";
 
 export default class Player {
+  position: IVector2;
   character: Character;
 
   private constructor(p: IPlayer) {
+    this.position = Vector2.init(p.position.x, p.position.y);
     this.character = Character.init({
       animating: false,
-      // position: Vector2.init(352, 256),
-      position: Vector2.init(176, 128),
-      sprite_name: p.sprite_name ?? "david"
+      position: this.position,
+      sprite_name: p.sprite_name
     });
   }
 

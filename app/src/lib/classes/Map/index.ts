@@ -22,6 +22,13 @@ export default class Map {
 
   static init = (m: IMap): Map => new Map(m);
 
+  public getSpawnPoint(name: string): Vector2 {
+    const spawn_points = this.map_data.spawn_points;
+    const sp = spawn_points.find((i) => i.name === name);
+    if (!sp) return Vector2.zero();
+    return Vector2.init(sp.dest.x, sp.dest.y);
+  }
+
   public drawLayer = (layer: MapLayer, canvas: Canvas, spritesheet: HTMLImageElement, camera: Camera) => {
     const collisionLayers = this.map_data.layers[layer];
     if (!collisionLayers || !collisionLayers.length) return;

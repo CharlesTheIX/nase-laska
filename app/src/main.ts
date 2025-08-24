@@ -1,6 +1,5 @@
 import "./main.scss";
 import Game from "@/lib/classes/Game";
-import Camera from "@/lib/classes/Camera";
 import Canvas from "@/lib/classes/Canvas";
 import Resources from "@/lib/classes/Resources";
 import InputHandler from "@/lib/classes/InputHandler";
@@ -19,10 +18,9 @@ const init = (): void => {
     resources.progress_element.style.width = `${(100 * count) / resources.count}%`;
     if (count < resources.count) return;
 
-    const camera: Camera = Camera.init();
     const canvas: Canvas = Canvas.init(canvas_element);
     const input_handler: InputHandler = InputHandler.init();
-    const game: Game = Game.init({ canvas, resources, input_handler, camera });
+    const game: Game = Game.init({ canvas, resources, input_handler });
     game.start();
 
     clearInterval(loading_interval);

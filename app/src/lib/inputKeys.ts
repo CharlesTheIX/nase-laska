@@ -9,10 +9,10 @@ export const getInputKeys = (): Set<string> => {
 
 export const getInputKeySets = (): KeySetMap => {
   return {
-    // dev: new Set<string>().add("z"),
+    dev: new Set<string>().add("z"),
     // run: new Set<string>().add("l").add("L"),
     // menu: new Set<string>().add("m").add("M"),
-    // action: new Set<string>().add(" ").add("Enter"),
+    action: new Set<string>().add(" ").add("Enter"),
     // settings: new Set<string>().add("p").add("P").add("Escape"),
     up: new Set<string>().add("w").add("W"), //.add("ArrowUp"),
     down: new Set<string>().add("s").add("S"), //.add("ArrowDown"),

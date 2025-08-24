@@ -1,6 +1,8 @@
 type SaveData = {
   map_name: string;
+  position: IVector2;
   sprite_name: string;
+  time_played: number;
 };
 type StorageData = {
   save_data: Partial<SaveData>;
@@ -17,20 +19,27 @@ export default class Storage {
 
   static init = (): Storage => {
     const s = new Storage();
-    const d = Storage.getStorageData();
+    const d = this.getStorageData();
     s.data = d;
     s.temp = d;
     return s;
   };
 
-  static defaultStorageData: StorageData = { save_data: {} };
+  static defaultStorageData = {
+    save_data: {
+      position: { x: 144, y: 96 },
+      sprite_name: "pavla",
+      map_name: "test_2",
+      time_played: 0
+    }
+  };
 
-  static getStorageData = (): Partial<StorageData> => {
+  private static getStorageData = (): Partial<StorageData> => {
     const d_string = localStorage.getItem(`${process.env.STORAGE_KEY}`);
     if (!d_string) return this.defaultStorageData;
     try {
       const data = JSON.parse(d_string);
-      return JSON.parse(data);
+      return data;
     } catch (error: any) {
       return this.defaultStorageData;
     }

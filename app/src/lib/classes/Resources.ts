@@ -1,7 +1,9 @@
+import Storage from "@/lib/classes/Storage";
 import { loading_element_data, spritesheet_srcs } from "@/lib/globals";
 
 export default class Resources {
   count: number;
+  storage: Storage;
   loading_element: HTMLDivElement;
   progress_element: HTMLDivElement;
   image_srcs: { [key: string]: string };
@@ -10,13 +12,14 @@ export default class Resources {
   private constructor() {
     this.count = 0;
     this.images = {};
-    this.image_srcs = { spritesheet: spritesheet_srcs.png, map: "./assets/maps/test_2.png" };
+    this.storage = Storage.init();
+    this.image_srcs = { spritesheet: spritesheet_srcs.png, map: "" };
     this.loading_element = document.getElementById(loading_element_data.id) as HTMLDivElement;
     this.progress_element = document.getElementById(loading_element_data.progress_bar_id) as HTMLDivElement;
 
     Object.keys(this.image_srcs).forEach((key: string) => {
-      this.count++;
       if (!this.image_srcs[key]) return;
+      this.count++;
       const image = new Image();
       image.src = this.image_srcs[key];
       this.images[key] = { image, loaded: false };

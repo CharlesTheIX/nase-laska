@@ -2,7 +2,7 @@
 type Direction = "up" | "down" | "left" | "right";
 
 /* G */
-type GameState = "playing";
+type GameState = "playing" | "start" | "loading";
 
 /* I */
 type ICharacter = {
@@ -22,7 +22,6 @@ type ICharacter = {
 };
 
 type IGame = {
-  camera: Camera;
   canvas: Canvas;
   resources: Resources;
   input_handler: InputHandler;
@@ -37,7 +36,8 @@ type KeySetMap = { [key: string]: Set<string> };
 
 type IPlayer = {
   camera: Camera;
-  sprite_name?: string;
+  position: IVector2;
+  sprite_name: string;
   character?: Character;
 };
 
