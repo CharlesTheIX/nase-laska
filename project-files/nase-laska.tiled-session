@@ -9,14 +9,11 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "_tempalte.tmx": {
-            "expandedGroupLayers": [
-                7
-            ],
             "scale": 1.4537878787878786,
-            "selectedLayer": 8,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 359.7498697238145,
-                "y": 264.137571651902
+                "x": 509.70297029702976,
+                "y": 317.10265763418454
             }
         },
         "characters.tmx": {
@@ -45,40 +42,37 @@
         },
         "map-data/test_1.tmx": {
             "expandedGroupLayers": [
-                11
+                27
             ],
-            "scale": 1.595,
-            "selectedLayer": 15,
+            "scale": 0.75,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 213.47962382445144,
-                "y": 282.44514106583074
+                "x": 236,
+                "y": 164
             }
         },
         "map-data/test_2.tmx": {
             "expandedGroupLayers": [
                 9,
-                3,
-                7
+                3
             ],
             "scale": 2,
-            "selectedLayer": 3,
+            "selectedLayer": 11,
             "viewCenter": {
-                "x": 171,
-                "y": 153.75
+                "x": 279.75,
+                "y": 197.5
             }
         },
         "map-data/test_3.tmx": {
             "expandedGroupLayers": [
                 9,
-                11,
-                3,
-                7
+                3
             ],
             "scale": 1.0926,
-            "selectedLayer": 12,
+            "selectedLayer": 14,
             "viewCenter": {
-                "x": 309.353834889255,
-                "y": 338.184147904082
+                "x": 508.4202818963939,
+                "y": 418.26835072304596
             }
         },
         "map-data/tileset.tsx": {
@@ -97,7 +91,7 @@
             }
         },
         "tileset.tsx": {
-            "scaleInDock": 4.1423,
+            "scaleInDock": 1.0864,
             "scaleInEditor": 7.9
         }
     },
@@ -111,17 +105,19 @@
     "map.tileWidth": 16,
     "map.width": 23,
     "openFiles": [
-        "tileset.tsx",
-        "map-data/test_1.tmx"
+        "map-data/test_1.tmx",
+        "_tempalte.tmx"
     ],
     "project": "nase-laska.tiled-project",
     "recentFiles": [
         "_tempalte.tmx",
+        "map-data/test_1.tmx",
+        "map-data/test_2.tmx",
+        "map-data/test_3.tmx",
         "tileset.tsx",
         "characters.tmx",
         "inventory_items.tmx",
         "emotions.tmx",
-        "map-data/test_1.tmx",
         "map_tempalte.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

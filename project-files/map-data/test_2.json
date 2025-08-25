@@ -173,7 +173,17 @@
          "name":"tiles",
          "opacity":1,
          "type":"group",
-         "visible":false,
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":18,
+         "layers":[],
+         "name":"static_items",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -276,7 +286,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":18,
+ "nextlayerid":19,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
