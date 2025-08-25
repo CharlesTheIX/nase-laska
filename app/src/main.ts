@@ -7,7 +7,6 @@ import InputHandler from "@/lib/classes/InputHandler";
 const init = (): void => {
   const canvas_element = document.getElementById("canvas") as HTMLCanvasElement;
   if (!canvas_element) return;
-
   const resources: Resources = Resources.init();
   const loading_interval = setInterval(() => {
     var count: number = 0;
@@ -17,14 +16,12 @@ const init = (): void => {
     });
     resources.progress_element.style.width = `${(100 * count) / resources.count}%`;
     if (count < resources.count) return;
-
+    clearInterval(loading_interval);
+    resources.clearLoadingScreen();
     const canvas: Canvas = Canvas.init(canvas_element);
     const input_handler: InputHandler = InputHandler.init();
     const game: Game = Game.init({ canvas, resources, input_handler });
     game.start();
-
-    clearInterval(loading_interval);
-    resources.clearLoadingScreen();
   }, 100);
 };
 

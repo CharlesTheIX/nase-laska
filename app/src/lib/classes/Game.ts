@@ -49,7 +49,7 @@ export default class Game {
     this.input_handler = g.input_handler;
     this.message_screen = MessageScreen.init();
     this.play_timer = Timer.init("game", 1000);
-    this.input_timer = Timer.init("count_down", 150);
+    this.input_timer = Timer.init("count_down", 250);
   }
 
   static init = (g: IGame): Game => new Game(g);

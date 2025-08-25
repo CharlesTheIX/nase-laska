@@ -2,7 +2,7 @@ export default (game_time: number): { name: string; opacity: number } => {
   const segment_size = 12;
   var opacity: number = 0;
   var name: string = "day";
-  const day_cycle_time = 5 * 60;
+  const day_cycle_time = 20 * 60;
   const time_of_day = game_time % day_cycle_time;
   const limits = {
     day: day_cycle_time * (6 / segment_size) - 1,
