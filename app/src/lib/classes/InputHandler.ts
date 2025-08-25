@@ -1,4 +1,4 @@
-import { getInputKeys, getInputKeySets } from "@/lib/inputKeys";
+import { getInputKeys } from "@/lib/inputKeys";
 
 export default class InputHandler {
   keys: Set<string>;

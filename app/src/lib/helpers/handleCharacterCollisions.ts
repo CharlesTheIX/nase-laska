@@ -2,14 +2,22 @@ import Map from "@/lib/classes/Map";
 import { tile_size } from "@/lib/globals";
 import Character from "@/lib/classes/Character";
 import Rectangle from "@/lib/classes/Rectangle";
+import StaticItem from "@/lib/classes/Items/StaticItem";
 
-export const getMapCollisions = (c: Character, m: Map): boolean => {
+export const getCharacterMapCollisions = (c: Character, m: Map): boolean => {
   var collision: boolean = false;
   const r = Rectangle.tile(c.dest_position);
-  const collisionLayers = m.map_data.layers["collision"];
-  collisionLayers.forEach((l: MapLayerData[]) => {
+  m.map_data.layers["collision"].forEach((l: MapLayerData[]) => {
     l.forEach((d: MapLayerData) => {
       const r_d = Rectangle.init(d.dest.x, d.dest.y, tile_size, tile_size);
+      if (r.equal(r_d)) collision = true;
+      if (collision) return;
+    });
+    if (collision) return;
+  });
+  m.static_items.forEach((l: StaticItem) => {
+    l.dests.forEach((dest) => {
+      const r_d = Rectangle.init(dest.x, dest.y, tile_size, tile_size);
       if (r.equal(r_d)) collision = true;
       if (collision) return;
     });
@@ -18,7 +26,7 @@ export const getMapCollisions = (c: Character, m: Map): boolean => {
   return collision;
 };
 
-export const getMapEdgeCollision = (c: Character, m: Map): boolean => {
+export const getCharacterMapEdgeCollision = (c: Character, m: Map): boolean => {
   const r = Rectangle.tile(c.dest_position);
   return !m.size.containsRectangle(r);
 };

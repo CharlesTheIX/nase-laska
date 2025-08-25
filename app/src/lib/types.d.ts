@@ -1,8 +1,28 @@
+/* C */
+type CharacterState = "idle" | "walking";
+
 /* D */
 type Direction = "up" | "down" | "left" | "right";
 
+type DrawCharacterLayerProps = {
+  canvas: Canvas;
+  camera: Camera;
+  m_size: IRectangle;
+  layer: SpriteFrameName;
+  spritesheet: HTMLImageElement;
+};
+
+type DrawRectangleProps = { rectangle: IRectangle; color?: string };
+
+type DrawTextLinesProps = {
+  color?: string;
+  lines: string[];
+  position: IVector2;
+  align?: CanvasTextAlign;
+};
+
 /* G */
-type GameState = "playing" | "start" | "loading";
+type GameState = "playing" | "start" | "loading" | "settings" | "message";
 
 /* I */
 type ICharacter = {
@@ -30,6 +50,7 @@ type IGame = {
 type IMap = {
   map_name: string;
   background_image: HTMLImageElement;
+  overlay_images: { [key: string]: HTMLImageElement };
 };
 
 type KeySetMap = { [key: string]: Set<string> };
@@ -46,3 +67,49 @@ type IRectangle = { x: number; y: number; w: number; h: number };
 type ImageResource = { loaded: boolean; image: HTMLImageElement };
 
 type IVector2 = { x: number; y: number };
+
+/* M */
+type MapData = {
+  static_items: StaticItemData[];
+  size: { w: number; h: number };
+  layers: { [key: string]: MapLayerData[][] };
+  spawn_points: { name: string; dest: IVector2 }[];
+};
+
+type MapLayer = "collision" | "canopy" | "weather_top" | "weather_bottom" | "static_items";
+
+type MapLayerData = {
+  name?: string;
+  src?: IVector2;
+  dest: IVector2;
+};
+
+/* P */
+type PlayerMovementType = "mono" | "omni" | "tiled";
+
+type PlayerUpdateProps = { time_step: number; input_handler: InputHandler; map: Map };
+
+/* S */
+type SaveData = {
+  map_name: string;
+  position: IVector2;
+  sprite_name: string;
+  time_played: number;
+};
+
+type SpriteData = {
+  name: string;
+  srcs: IVector2[];
+};
+
+type SpriteFrameName = "upper" | "lower" | "emotion";
+
+type SpriteFrameSetName = "idle" | "walking";
+
+type SpriteType = "character" | "emotion";
+
+type StaticItemData = {
+  name: string;
+  srcs: Vector2[];
+  dests: Vector2[];
+};

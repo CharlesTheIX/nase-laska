@@ -13,7 +13,7 @@ export default class Resources {
     this.count = 0;
     this.images = {};
     this.storage = Storage.init();
-    this.image_srcs = { spritesheet: spritesheet_srcs.png, map: "" };
+    this.image_srcs = { spritesheet: spritesheet_srcs.png, map: "", map_day_cycle: "" };
     this.loading_element = document.getElementById(loading_element_data.id) as HTMLDivElement;
     this.progress_element = document.getElementById(loading_element_data.progress_bar_id) as HTMLDivElement;
 

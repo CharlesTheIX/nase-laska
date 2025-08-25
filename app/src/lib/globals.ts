@@ -1,4 +1,4 @@
-import Vector2 from "./classes/Vector2";
+import Vector2 from "@/lib/classes/Vector2";
 
 export const tile_size = 16;
 

@@ -1,0 +1,10 @@
+[
+  {
+    "name": "message_1",
+    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
+  },
+  {
+    "name": "message_2",
+    "message": "test"
+  }
+]

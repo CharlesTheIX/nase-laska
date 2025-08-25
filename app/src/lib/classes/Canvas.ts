@@ -45,7 +45,7 @@ export default class Canvas {
   };
 
   public drawTextLines = (props: DrawTextLinesProps): void => {
-    const { lines, color = "#000000", align = "left", position } = props;
+    const { lines, color = "#bbbbbb", align = "left", position } = props;
     var count: number = 1;
     this.context.textAlign = align;
     this.context.fillStyle = color;
@@ -57,5 +57,14 @@ export default class Canvas {
       this.context.fillText(`${line}`, startX, getStartY(index));
       count++;
     });
+  };
+
+  public drawText = (props: { text: string; color?: string; align?: CanvasTextAlign; position: IVector2 }): void => {
+    const { text, color = "#bbbbbb", align = "left", position } = props;
+    this.context.textAlign = align;
+    this.context.fillStyle = color;
+    this.context.textBaseline = "top";
+    this.context.font = `bold ${font_family.font_size}px ${font_family.name}, monospace`;
+    this.context.fillText(text, position.x, position.y);
   };
 }

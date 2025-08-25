@@ -1,10 +1,10 @@
 import { tile_size } from "@/lib/globals";
-import Camera from "@/lib/classes/Camera";
 import Canvas from "@/lib/classes/Canvas";
 import Sprite from "@/lib/classes/Sprite";
 import Emotion from "@/lib/classes/Emotion";
 import Vector2 from "@/lib/classes/Vector2";
 import Rectangle from "@/lib/classes/Rectangle";
+import applyCameraVectorTranslation from "@/lib/helpers/applyCameraVectorTranslation";
 
 export default class Character {
   sprite: Sprite;
@@ -37,20 +37,16 @@ export default class Character {
 
   static init = (c: Partial<ICharacter>): Character => new Character(c);
 
-  public drawLayer = (props: {
-    layer: SpriteFrameName;
-    canvas: Canvas;
-    spritesheet: HTMLImageElement;
-    camera: Camera;
-    m_size: IRectangle;
-  }): void => {
+  public drawLayer = (props: DrawCharacterLayerProps): void => {
     const { layer, canvas, spritesheet, camera, m_size } = props;
     if (!this.sprite.srcs) return;
+
     var r_src: IRectangle;
     var src_pos: IVector2;
     const v_dest: Vector2 = this.position.duplicate();
-    camera.applyVectorTranslation("layer", v_dest, m_size);
+    applyCameraVectorTranslation({ type: "layer", camera, v: v_dest, m_size });
     var r_dest: IRectangle = Rectangle.tile(v_dest).value;
+
     switch (layer) {
       case "lower":
         src_pos = this.sprite.srcs[this.frame_index + 16];
@@ -65,6 +61,7 @@ export default class Character {
         src_pos = this.emotion.sprite.srcs[0];
         break;
     }
+
     r_src = { w: tile_size, h: tile_size, x: src_pos.x, y: src_pos.y };
     canvas.drawImage(spritesheet, r_src, r_dest);
   };

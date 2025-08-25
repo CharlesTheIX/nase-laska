@@ -1,5 +1,5 @@
-import { getEmotionSpriteData } from "@/lib/classes/Sprite/helpers/getSprite";
-import Sprite from "./Sprite";
+import Sprite from "@/lib/classes/Sprite";
+import getEmotionSpriteData from "@/lib/helpers/getEmotionSpriteData";
 
 export default class Emotion {
   timer: number;

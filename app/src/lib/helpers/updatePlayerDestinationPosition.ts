@@ -1,15 +1,9 @@
-import { tile_size } from "@/lib/globals";
 import Character from "@/lib/classes/Character";
 import InputHandler from "@/lib/classes/InputHandler";
+import { tile_size, player_movement_type } from "@/lib/globals";
 import { getInputKeySets, getMovementKeys } from "@/lib/inputKeys";
 
-export default (props: {
-  time_step: number;
-  character: Character;
-  type: PlayerMovementType;
-  input_handler: InputHandler;
-}): void => {
-  const { time_step, type, character, input_handler } = props;
+export default (time_step: number, input_handler: InputHandler, character: Character): void => {
   var state: CharacterState = "idle";
   const key_sets: KeySetMap = getInputKeySets();
   var direction: Direction = character.direction;
@@ -22,7 +16,7 @@ export default (props: {
   else if (key_sets.left.has(last_key)) direction = "left";
   else if (key_sets.right.has(last_key)) direction = "right";
 
-  switch (type) {
+  switch (player_movement_type) {
     case "omni":
       if ([...input_handler.keys].some((key) => key_sets.up.has(key))) character.velocity.y = -character.max_speed;
       if ([...input_handler.keys].some((key) => key_sets.down.has(key))) character.velocity.y = character.max_speed;

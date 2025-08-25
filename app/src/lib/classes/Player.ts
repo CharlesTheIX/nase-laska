@@ -1,0 +1,55 @@
+import Game from "@/lib/classes/Game";
+import Vector2 from "@/lib/classes/Vector2";
+import Character from "@/lib/classes/Character";
+import { player_movement_type, tile_size } from "@/lib/globals";
+import updatePlayerAction from "@/lib/helpers/updatePlayerAction";
+import updatePlayerDestinationPosition from "@/lib/helpers/updatePlayerDestinationPosition";
+import { getCharacterMapCollisions, getCharacterMapEdgeCollision } from "@/lib/helpers/handleCharacterCollisions";
+
+export default class Player {
+  name: string;
+  game_speed: number;
+  character: Character;
+
+  private constructor(p: IPlayer) {
+    this.game_speed = 20;
+    this.name = p.sprite_name;
+    this.character = Character.init({
+      animating: false,
+      sprite_name: p.sprite_name,
+      position: Vector2.init(p.position.x, p.position.y)
+    });
+  }
+
+  static init = (p: IPlayer): Player => new Player(p);
+
+  public update = (time_step: number, game: Game): void => {
+    if (!game.map) return;
+    this.character.emotion.update(time_step);
+    this.character.max_speed = Math.ceil((tile_size * this.game_speed) / time_step);
+    if (this.character.animating && player_movement_type === "tiled") {
+      this.character.moveToDestination();
+      this.character.updateFrame(time_step);
+      return;
+    }
+
+    this.character.velocity = Vector2.zero();
+    const static_item = updatePlayerAction(this.character, game.map, game.input_handler);
+    if (static_item && game.message_screen) {
+      game.state = "message";
+      this.character.emotion.setEmotionData("speaking");
+      this.character.emotion.show();
+      game.input_timer.start();
+      game.message_screen.message = static_item.message;
+      return;
+    }
+
+    updatePlayerDestinationPosition(time_step, game.input_handler, this.character);
+    this.character.updateFrame(time_step);
+    const has_map_collision = getCharacterMapCollisions(this.character, game.map);
+    const has_map_edge_collision = getCharacterMapEdgeCollision(this.character, game.map);
+    if (has_map_collision || has_map_edge_collision) this.character.dest_position = this.character.position.duplicate();
+    if (player_movement_type === "tiled") return;
+    this.character.position = this.character.dest_position.duplicate();
+  };
+}

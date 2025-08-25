@@ -1,4 +1,5 @@
-import { getCharacterSpriteData, getEmotionSpriteData } from "./helpers/getSprite";
+import getEmotionSpriteData from "@/lib/helpers/getEmotionSpriteData";
+import getCharacterSpriteData from "@/lib/helpers/getCharacterSpriteData";
 
 export default class Sprite {
   name: string;

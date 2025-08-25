@@ -1,9 +1,3 @@
-type SaveData = {
-  map_name: string;
-  position: IVector2;
-  sprite_name: string;
-  time_played: number;
-};
 type StorageData = {
   save_data: Partial<SaveData>;
 };
@@ -29,7 +23,7 @@ export default class Storage {
     save_data: {
       position: { x: 144, y: 96 },
       sprite_name: "pavla",
-      map_name: "test_2",
+      map_name: "test_1",
       time_played: 0
     }
   };
