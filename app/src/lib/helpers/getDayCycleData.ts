@@ -2,7 +2,7 @@ export default (game_time: number): { name: string; opacity: number } => {
   const segment_size = 12;
   var opacity: number = 0;
   var name: string = "day";
-  const day_cycle_time = 20 * 60;
+  const day_cycle_time = 5 * 60;
   const time_of_day = game_time % day_cycle_time;
   const limits = {
     day: day_cycle_time * (6 / segment_size) - 1,
@@ -13,13 +13,13 @@ export default (game_time: number): { name: string; opacity: number } => {
 
   if (time_of_day > limits.day && time_of_day <= limits.dusk) {
     name = "dusk";
-    opacity = ((limits.dusk - limits.day) / 100) * (time_of_day - limits.day);
+    opacity = (time_of_day - limits.day) / (limits.dusk - limits.day);
   } else if (time_of_day > limits.dusk && time_of_day <= limits.night) {
     opacity = 1;
     name = "night";
   } else if (time_of_day > limits.night) {
     name = "dawn";
-    opacity = 1 - ((limits.dawn - limits.night) / 100) * (time_of_day - limits.night);
+    opacity = 1 - (time_of_day - limits.night) / (limits.dawn - limits.night);
   }
 
   if (opacity < 0) opacity = 0;

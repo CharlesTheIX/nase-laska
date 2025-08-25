@@ -1,6 +1,8 @@
 import Game from "@/lib/classes/Game";
 import Vector2 from "@/lib/classes/Vector2";
 import Character from "@/lib/classes/Character";
+import Inventory from "@/lib/classes/Inventory";
+import RespawnItem from "@/lib/classes/Items/RespawnItem";
 import { player_movement_type, tile_size } from "@/lib/globals";
 import updatePlayerAction from "@/lib/helpers/updatePlayerAction";
 import updatePlayerDestinationPosition from "@/lib/helpers/updatePlayerDestinationPosition";
@@ -10,10 +12,12 @@ export default class Player {
   name: string;
   game_speed: number;
   character: Character;
+  inventory: Inventory;
 
   private constructor(p: IPlayer) {
-    this.game_speed = 20;
+    this.game_speed = 1;
     this.name = p.sprite_name;
+    this.inventory = Inventory.init();
     this.character = Character.init({
       animating: false,
       sprite_name: p.sprite_name,
@@ -34,13 +38,27 @@ export default class Player {
     }
 
     this.character.velocity = Vector2.zero();
-    const static_item = updatePlayerAction(this.character, game.map, game.input_handler);
-    if (static_item && game.message_screen) {
+    const item = updatePlayerAction(this.character, game.map, game.input_handler);
+    if (item.item && game.message_screen) {
+      switch (item.type) {
+        case "static":
+          this.character.emotion.setEmotionData("speaking");
+          break;
+        case "respawn":
+          const respawn_item = item.item as RespawnItem;
+          respawn_item.hidden = true;
+          respawn_item.collected_at = Date.now();
+          this.inventory.addItem(respawn_item);
+          this.character.emotion.setEmotionData("pleased");
+          break;
+        default:
+          return;
+      }
+
       game.state = "message";
-      this.character.emotion.setEmotionData("speaking");
-      this.character.emotion.show();
       game.input_timer.start();
-      game.message_screen.message = static_item.message;
+      this.character.emotion.show();
+      game.message_screen.message = item.item.message;
       return;
     }
 

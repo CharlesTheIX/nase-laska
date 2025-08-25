@@ -64,14 +64,26 @@ type IPlayer = {
 
 type IRectangle = { x: number; y: number; w: number; h: number };
 
+type IRespawnItem = {
+  name: string;
+  value: number;
+  count?: number;
+  message: string;
+  srcs: IVector2[];
+  dests: IVector2[];
+  respawn_time: number;
+  inventory_message: string;
+};
+
 type ImageResource = { loaded: boolean; image: HTMLImageElement };
 
 type IVector2 = { x: number; y: number };
 
 /* M */
 type MapData = {
-  static_items: StaticItemData[];
   size: { w: number; h: number };
+  static_items: StaticItemData[];
+  respawn_items: RespawnItemData[];
   layers: { [key: string]: MapLayerData[][] };
   spawn_points: { name: string; dest: IVector2 }[];
 };
@@ -88,6 +100,13 @@ type MapLayerData = {
 type PlayerMovementType = "mono" | "omni" | "tiled";
 
 type PlayerUpdateProps = { time_step: number; input_handler: InputHandler; map: Map };
+
+/* R */
+type RespawnItemData = {
+  name: string;
+  srcs: Vector2[];
+  dests: Vector2[];
+};
 
 /* S */
 type SaveData = {

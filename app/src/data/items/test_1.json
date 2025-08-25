@@ -1,10 +1,28 @@
-[
-  {
-    "name": "message_1",
-    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
-  },
-  {
-    "name": "message_2",
-    "message": "test"
-  }
-]
+{
+  "static_items": [
+    {
+      "name": "message_1",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
+    },
+    {
+      "name": "message_2",
+      "message": "test"
+    }
+  ],
+  "respawn_items": [
+    {
+      "value": 5,
+      "name": "carrot_1",
+      "respawn_time": 1000,
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem.",
+      "inventory_message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
+    },
+    {
+      "value": 7,
+      "name": "parsnip_1",
+      "respawn_time": 2000,
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem.",
+      "inventory_message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
+    }
+  ]
+}

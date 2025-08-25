@@ -3,6 +3,7 @@ import { tile_size } from "@/lib/globals";
 import Character from "@/lib/classes/Character";
 import Rectangle from "@/lib/classes/Rectangle";
 import StaticItem from "@/lib/classes/Items/StaticItem";
+import RespawnItem from "@/lib/classes/Items/RespawnItem";
 
 export const getCharacterMapCollisions = (c: Character, m: Map): boolean => {
   var collision: boolean = false;
@@ -16,6 +17,15 @@ export const getCharacterMapCollisions = (c: Character, m: Map): boolean => {
     if (collision) return;
   });
   m.static_items.forEach((l: StaticItem) => {
+    l.dests.forEach((dest) => {
+      const r_d = Rectangle.init(dest.x, dest.y, tile_size, tile_size);
+      if (r.equal(r_d)) collision = true;
+      if (collision) return;
+    });
+    if (collision) return;
+  });
+  m.respawn_items.forEach((l: RespawnItem) => {
+    if (l.hidden) return;
     l.dests.forEach((dest) => {
       const r_d = Rectangle.init(dest.x, dest.y, tile_size, tile_size);
       if (r.equal(r_d)) collision = true;

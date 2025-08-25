@@ -4,7 +4,6 @@ import os
 import json
 from typing import Any, Dict, List 
 
-
 def convert_json(src_path: str, dest_path: str) -> None:
     with open(src_path, "r", encoding="utf8") as f:
         data: Dict[str, Any] = json.load(f)
@@ -14,11 +13,11 @@ def convert_json(src_path: str, dest_path: str) -> None:
     m_h: int = data["height"]
     t_w: int = data["tilewidth"]
     names: List[str] = ["collision", "canopy", "weather_top", "weather_bottom"]
-
     json_content: Dict[str, Any] = {
         "layers": {},
         "spawn_points": [],
         "static_items": [],
+        "respawn_items": [],
         "size": {"w": m_w * t_w, "h": m_h * t_w}
     }
    
@@ -76,6 +75,39 @@ def convert_json(src_path: str, dest_path: str) -> None:
         static_items.append(si)
         
     json_content["static_items"] = static_items
+
+    # Respawn items
+    ri_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "respawn_items"), None)
+    if not ri_group:
+        return
+    
+    respawn_items: List[Dict[str, Any]] = [] 
+    for layer in ri_group.get("layers", []):
+        srcs: List[Dict[str, int]] = []
+        dests: List[Dict[str, int]] = []
+        ri: Dict[str, Any] = {
+            "srcs": [],
+            "dests": [],
+            "name": layer.get("name"),
+        }
+
+        for index, tile in enumerate(layer.get("data", [])):
+            if tile == 0:
+                continue
+            m_col: int = index % m_w
+            m_row: int = index // m_w
+            ss_col: int = (tile - 1) % ss_w
+            ss_row: int = (tile - 1) // ss_w
+            dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
+            src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
+            srcs.append(src)
+            dests.append(dest)
+
+        ri["srcs"] = srcs
+        ri["dests"] = dests
+        respawn_items.append(ri)
+        
+    json_content["respawn_items"] = respawn_items
 
     # Tiles Group
     t_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "tiles"), None)

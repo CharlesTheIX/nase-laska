@@ -5,31 +5,20 @@ import Vector2 from "@/lib/classes/Vector2";
 import Rectangle from "@/lib/classes/Rectangle";
 import getMapData from "@/lib/helpers/getMapData";
 import StaticItem from "@/lib/classes/Items/StaticItem";
-import getStaticItem from "@/lib/helpers/getStaticItemData";
+import RespawnItem from "@/lib/classes/Items/RespawnItem";
 import getDayCycleData from "@/lib/helpers/getDayCycleData";
+import getMapStaticItems from "@/lib/helpers/getMapStaticItems";
+import getMapRespawnItems from "@/lib/helpers/getMapRespawnItems";
 import applyCameraVectorTranslation from "@/lib/helpers/applyCameraVectorTranslation";
-
-const getMapStaticItems = (data: StaticItemData[], map_name: string): StaticItem[] => {
-  const items: StaticItem[] = [];
-  const static_item_data = getStaticItem(map_name);
-  data.forEach((i) => {
-    static_item_data.forEach((j) => {
-      if (i.name === j.name && i.srcs) {
-        const item = StaticItem.init(i.name, i.srcs, i.dests, j.message);
-        items.push(item);
-      }
-    });
-  });
-  return items;
-};
 
 export default class Map {
   name: string;
+  size: Rectangle;
   map_data: MapData;
   showWeather: boolean;
-  size: Rectangle;
   day_cycle_opacity: number;
   static_items: StaticItem[];
+  respawn_items: RespawnItem[];
   background_position: Vector2;
   background_image: HTMLImageElement | null;
   overlay_images: { [key: string]: HTMLImageElement };
@@ -44,6 +33,7 @@ export default class Map {
     this.background_image = m.background_image;
     this.static_items = getMapStaticItems(this.map_data.static_items, this.name);
     this.size = Rectangle.init(0, 0, this.map_data.size.w, this.map_data.size.h);
+    this.respawn_items = getMapRespawnItems(this.map_data.respawn_items, this.name);
   }
 
   static init = (m: IMap): Map => new Map(m);
@@ -83,7 +73,25 @@ export default class Map {
     layers.map((d: StaticItem) => {
       if (!d.srcs || d.srcs.length === 0 || !d.dests || d.dests.length === 0) return;
       if (d.srcs.length !== d.dests.length) return;
-      d.srcs.forEach((item, i) => {
+      d.srcs.forEach((_, i) => {
+        const v_src: Vector2 = Vector2.init(d.srcs[i].x, d.srcs[i].y);
+        const r_src: IRectangle = Rectangle.tile(v_src).value;
+        const v_dest: Vector2 = Vector2.init(d.dests[i].x, d.dests[i].y);
+        applyCameraVectorTranslation({ type: "layer", camera, v: v_dest, m_size: this.size.value });
+        const r_dest: IRectangle = Rectangle.tile(v_dest).value;
+        canvas.drawImage(spritesheet, r_src, r_dest);
+      });
+    });
+  };
+
+  public drawRespawnItems = (canvas: Canvas, spritesheet: HTMLImageElement, camera: Camera) => {
+    const layers = this.respawn_items;
+    if (!layers || !layers.length) return;
+    layers.map((d: RespawnItem) => {
+      if (!d.srcs || d.srcs.length === 0 || !d.dests || d.dests.length === 0) return;
+      if (d.srcs.length !== d.dests.length) return;
+      if (d.hidden) return;
+      d.srcs.forEach((_, i) => {
         const v_src: Vector2 = Vector2.init(d.srcs[i].x, d.srcs[i].y);
         const r_src: IRectangle = Rectangle.tile(v_src).value;
         const v_dest: Vector2 = Vector2.init(d.dests[i].x, d.dests[i].y);

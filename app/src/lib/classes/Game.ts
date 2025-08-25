@@ -179,6 +179,7 @@ export default class Game {
         if (this.map.showWeather) this.map.drawLayer("weather_bottom", this.canvas, spritesheet, this.camera);
         this.map.drawLayer("collision", this.canvas, spritesheet, this.camera);
         this.map.drawStaticItems(this.canvas, spritesheet, this.camera);
+        this.map.drawRespawnItems(this.canvas, spritesheet, this.camera);
 
         this.player.character.drawLayer({
           spritesheet,
