@@ -1,52 +1,46 @@
-type StorageData = {
-  save_data: Partial<SaveData>;
-};
-
 export default class Storage {
-  data: Partial<StorageData>;
-  temp: Partial<StorageData>;
+  map_data: any;
+  player_save_state: Partial<SaveData>;
+  player_temp_state: Partial<SaveData>;
 
   constructor() {
-    this.data = {};
-    this.temp = {};
+    this.map_data = {};
+    this.player_save_state = {};
+    this.player_temp_state = {};
   }
 
   static init = (): Storage => {
     const s = new Storage();
     const d = this.getStorageData();
-    s.data = d;
-    s.temp = d;
+    s.player_save_state = d;
+    s.player_temp_state = d;
     return s;
   };
 
   static defaultStorageData = {
-    save_data: {
-      position: { x: 144, y: 96 },
-      sprite_name: "pavla",
-      map_name: "test_1",
-      time_played: 0
-    }
+    time_played: 0,
+    inventory: null,
+    map_name: "test_1",
+    sprite_name: "pavla",
+    position: { x: 144, y: 96 }
   };
 
-  private static getStorageData = (): Partial<StorageData> => {
+  private static getStorageData = (): Partial<SaveData> => {
     const d_string = localStorage.getItem(`${process.env.STORAGE_KEY}`);
     if (!d_string) return this.defaultStorageData;
     try {
-      const data = JSON.parse(d_string);
-      return data;
+      return JSON.parse(d_string);
     } catch (error: any) {
       return this.defaultStorageData;
     }
   };
 
-  public saveTempData = () => {
-    try {
-      localStorage.setItem(`${process.env.STORAGE_KEY}`, JSON.stringify(this.temp));
-      this.data = { ...this.temp };
-    } catch (error: any) {}
+  public savePlayerTempData = (): void => {
+    localStorage.setItem(`${process.env.STORAGE_KEY}`, JSON.stringify(this.player_temp_state));
+    this.player_save_state = { ...this.player_temp_state };
   };
 
-  public updateSaveData = (update: Partial<SaveData>) => {
-    this.temp.save_data = { ...this.temp.save_data, ...update };
+  public updatePlayerTempData = (update: Partial<SaveData>) => {
+    this.player_temp_state = { ...this.player_temp_state, ...update };
   };
 }

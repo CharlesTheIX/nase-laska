@@ -1,6 +1,6 @@
 import test_1 from "@/data/items/test_1.json";
 
-type Return = { name: string; message: string; respawn_time: number; value: number; inventory_message: string };
+type Return = { name: string; message: string; respawn_time: number; value: number; count: number; item_name: string };
 
 export default (map_name: string): Return[] => {
   switch (map_name) {

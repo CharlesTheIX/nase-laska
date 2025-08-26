@@ -22,7 +22,7 @@ type DrawTextLinesProps = {
 };
 
 /* G */
-type GameState = "playing" | "start" | "loading" | "settings" | "message";
+type GameState = "playing" | "start" | "loading" | "settings" | "message" | "inventory";
 
 /* I */
 type ICharacter = {
@@ -53,13 +53,22 @@ type IMap = {
   overlay_images: { [key: string]: HTMLImageElement };
 };
 
-type KeySetMap = { [key: string]: Set<string> };
+type InventoryItem = {
+  name: string;
+  value: number;
+  count: number;
+  message: string;
+  srcs: IVector2[];
+};
+
+type InventoryItemData = { name: string; srcs: IVector2[]; value: number; message: string; count: number };
 
 type IPlayer = {
   camera: Camera;
   position: IVector2;
   sprite_name: string;
   character?: Character;
+  inventory: { name: string; count: number }[] | null;
 };
 
 type IRectangle = { x: number; y: number; w: number; h: number };
@@ -67,17 +76,20 @@ type IRectangle = { x: number; y: number; w: number; h: number };
 type IRespawnItem = {
   name: string;
   value: number;
-  count?: number;
+  count: number;
   message: string;
   srcs: IVector2[];
   dests: IVector2[];
+  item_name: string;
   respawn_time: number;
-  inventory_message: string;
 };
 
 type ImageResource = { loaded: boolean; image: HTMLImageElement };
 
 type IVector2 = { x: number; y: number };
+
+/* K */
+type KeySetMap = { [key: string]: Set<string> };
 
 /* M */
 type MapData = {
@@ -114,6 +126,7 @@ type SaveData = {
   position: IVector2;
   sprite_name: string;
   time_played: number;
+  inventory: { name: string; count: number }[] | null;
 };
 
 type SpriteData = {

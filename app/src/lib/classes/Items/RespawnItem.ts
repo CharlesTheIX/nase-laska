@@ -8,9 +8,9 @@ export default class RespawnItem {
   hidden: boolean;
   srcs: Vector2[];
   dests: Vector2[];
+  item_name: string;
   respawn_time: number;
   collected_at: number;
-  inventory_message: string;
 
   constructor(ri: IRespawnItem) {
     this.srcs = [];
@@ -21,8 +21,8 @@ export default class RespawnItem {
     this.collected_at = 0;
     this.message = ri.message;
     this.count = ri.count || 1;
+    this.item_name = ri.item_name;
     this.respawn_time = ri.respawn_time;
-    this.inventory_message = ri.inventory_message;
     ri.srcs.forEach((i) => {
       const v = Vector2.init(i.x, i.y);
       this.srcs.push(v);

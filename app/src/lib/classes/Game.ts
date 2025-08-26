@@ -12,6 +12,7 @@ import getDayCycleData from "@/lib/helpers/getDayCycleData";
 import StartScreen from "@/lib/classes/Screens/StartScreen";
 import MessageScreen from "@/lib/classes/Screens/MessageScreen";
 import SettingsScreen from "@/lib/classes/Screens/SettingsScreen";
+import InventoryScreen from "@/lib/classes/Screens/InventoryScreen";
 
 export default class Game {
   raf_id: any;
@@ -31,6 +32,7 @@ export default class Game {
   start_screen: StartScreen | null;
   message_screen: MessageScreen | null;
   settings_screen: SettingsScreen | null;
+  inventory_screen: InventoryScreen | null;
 
   private constructor(g: IGame) {
     this.map = null;
@@ -45,6 +47,7 @@ export default class Game {
     this.accumulated_time = 0;
     this.settings_screen = null;
     this.camera = Camera.init();
+    this.inventory_screen = null;
     this.resources = g.resources;
     this.input_handler = g.input_handler;
     this.message_screen = MessageScreen.init();
@@ -55,17 +58,18 @@ export default class Game {
   static init = (g: IGame): Game => new Game(g);
 
   public continueGame = (): void => {
-    const save_data = this.resources.storage.data.save_data;
-    const default_data = Storage.defaultStorageData.save_data;
-    const map_name = save_data?.map_name ?? default_data.map_name;
+    const save_data = this.resources.storage.player_save_state;
+    const map_name = save_data.map_name ?? "";
     this.loadMap(map_name, "playing");
     if (!this.map) return;
-    const sprite_name = save_data?.sprite_name ?? default_data.sprite_name;
+    const sprite_name = save_data.sprite_name ?? "";
     const position = save_data?.position ?? this.map.getSpawnPoint("initial");
+    const inventory = save_data?.inventory ?? null;
     this.player = Player.init({
-      camera: this.camera,
+      position,
+      inventory,
       sprite_name,
-      position
+      camera: this.camera
     });
     this.play_timer.value = save_data?.time_played ?? 0;
     this.map.day_cycle_opacity = getDayCycleData(this.play_timer.value).opacity;
@@ -123,14 +127,16 @@ export default class Game {
   };
 
   public save = (): void => {
+    const inventory = this.player?.inventory.items.map((i: InventoryItem) => ({ name: i.name, count: i.count }));
     const update = {
+      inventory,
       map_name: this.map?.name,
       sprite_name: this.player?.name,
       time_played: this.play_timer.value,
       position: this.player?.character.position.value
     };
-    this.resources.storage.updateSaveData(update);
-    this.resources.storage.saveTempData();
+    this.resources.storage.updatePlayerTempData(update);
+    this.resources.storage.savePlayerTempData();
   };
 
   public start = (): void => {
@@ -140,16 +146,17 @@ export default class Game {
   };
 
   public startNewGame = (): void => {
-    const save_data = Storage.defaultStorageData.save_data;
+    const save_data = Storage.defaultStorageData;
     this.loadMap(save_data.map_name, "playing");
     if (!this.map) return;
     const position = this.map.getSpawnPoint("initial");
     this.player = Player.init({
       position,
+      inventory: null,
       camera: this.camera,
       sprite_name: save_data.sprite_name
     });
-    this.resources.storage.updateSaveData({ position });
+    this.resources.storage.updatePlayerTempData({ position });
     this.save();
     this.start_screen = null;
     this.play_timer.start();
@@ -166,6 +173,7 @@ export default class Game {
         if (!this.start_screen) return;
         this.start_screen.draw(this.canvas);
         break;
+      case "inventory":
       case "message":
       case "playing":
         if (!this.map || !this.player) return;
@@ -210,6 +218,8 @@ export default class Game {
 
         if (this.state === "message") {
           this.message_screen?.draw(this.canvas);
+        } else if (this.state === "inventory") {
+          this.inventory_screen?.draw(this.canvas, this.player.inventory);
         }
         break;
     }
@@ -222,7 +232,7 @@ export default class Game {
     const last_key: string = this.input_handler.last_key;
     if (key_sets.dev.has(last_key)) {
       const update = { time_played: 1000, position: { x: 10, y: 10 } };
-      this.resources.storage.updateSaveData(update);
+      this.resources.storage.updatePlayerTempData(update);
       return this.save();
     }
 
@@ -230,7 +240,7 @@ export default class Game {
     switch (this.state) {
       case "start":
         if (!this.start_screen) {
-          const has_save_data = !!this.resources.storage.data.save_data?.time_played;
+          const has_save_data = !!this.resources.storage.player_save_state.time_played;
           this.start_screen = StartScreen.init(has_save_data);
         }
         this.start_screen.update(this);
@@ -239,6 +249,13 @@ export default class Game {
         if (!this.settings_screen) this.settings_screen = SettingsScreen.init();
         this.settings_screen.update(this);
         return;
+      case "inventory":
+        if (!this.player?.inventory || key_sets.inventory.has(last_key)) {
+          this.state = "playing";
+          this.input_timer.start();
+          return;
+        }
+        return;
       case "message":
       case "playing":
         if (!this.map || !this.player) break;
@@ -246,6 +263,10 @@ export default class Game {
           this.message_screen?.update(this);
           return;
         } else {
+          if (key_sets.inventory.has(last_key)) {
+            this.state = "inventory";
+            this.input_timer.start();
+          }
           this.player.update(time_step, this);
           this.camera.update(this.player.character.position);
           return;

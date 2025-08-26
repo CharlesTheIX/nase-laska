@@ -5,6 +5,7 @@ import Inventory from "@/lib/classes/Inventory";
 import RespawnItem from "@/lib/classes/Items/RespawnItem";
 import { player_movement_type, tile_size } from "@/lib/globals";
 import updatePlayerAction from "@/lib/helpers/updatePlayerAction";
+import getInventoryItemData from "@/lib/helpers/getInventoryItemData";
 import updatePlayerDestinationPosition from "@/lib/helpers/updatePlayerDestinationPosition";
 import { getCharacterMapCollisions, getCharacterMapEdgeCollision } from "@/lib/helpers/handleCharacterCollisions";
 
@@ -17,7 +18,7 @@ export default class Player {
   private constructor(p: IPlayer) {
     this.game_speed = 1;
     this.name = p.sprite_name;
-    this.inventory = Inventory.init();
+    this.inventory = Inventory.init(p.inventory);
     this.character = Character.init({
       animating: false,
       sprite_name: p.sprite_name,
@@ -48,7 +49,8 @@ export default class Player {
           const respawn_item = item.item as RespawnItem;
           respawn_item.hidden = true;
           respawn_item.collected_at = Date.now();
-          this.inventory.addItem(respawn_item);
+          const inventory_item_data: InventoryItemData = getInventoryItemData(respawn_item.item_name);
+          this.inventory.addItem(inventory_item_data);
           this.character.emotion.setEmotionData("pleased");
           break;
         default:

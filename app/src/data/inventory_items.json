@@ -1,0 +1,23 @@
+[
+  {
+    "value": 1,
+    "count": 1,
+    "name": "money",
+    "message": "Money",
+    "srcs": []
+  },
+  {
+    "value": 5,
+    "count": 1,
+    "name": "carrot",
+    "message": "A fresh carrot for the carrot salad!",
+    "srcs": []
+  },
+  {
+    "value": 6,
+    "count": 1,
+    "name": "parsnip",
+    "message": "An albino carrot?! oh no, it's just a parsnip...",
+    "srcs": []
+  }
+]

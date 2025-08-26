@@ -8,14 +8,14 @@ export default (data: RespawnItemData[], map_name: string): RespawnItem[] => {
     respawn_item_data.forEach((j) => {
       if (i.name === j.name && i.srcs) {
         const item = RespawnItem.init({
-          count: 1,
           name: i.name,
           srcs: i.srcs,
           dests: i.dests,
           value: j.value,
+          count: j.count,
           message: j.message,
-          respawn_time: j.respawn_time,
-          inventory_message: j.inventory_message
+          item_name: j.item_name,
+          respawn_time: j.respawn_time
         });
         items.push(item);
       }

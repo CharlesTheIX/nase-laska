@@ -1,14 +1,17 @@
 import Game from "@/lib/classes/Game";
+import Timer from "@/lib/classes/Timer";
 import Canvas from "@/lib/classes/Canvas";
 import Vector2 from "@/lib/classes/Vector2";
 import { getInputKeySets } from "@/lib/inputKeys";
 import { canvas_size, tile_size, font_family } from "@/lib/globals";
 import convertMessageToMessageArray from "@/lib/helpers/convertMessageToMessageArray";
+import Inventory from "../Inventory";
 
-export default class MessageScreen {
+export default class InventoryScreen {
   message: string;
   position: Vector2;
   complete: boolean;
+  input_timer: Timer;
   active_message: number;
   current_message: string[];
 
@@ -18,13 +21,14 @@ export default class MessageScreen {
     this.active_message = 0;
     this.current_message = [];
     this.position = Vector2.init(100, 100);
+    this.input_timer = Timer.init("count_down", 150);
   }
 
-  static init = (): MessageScreen => new MessageScreen();
+  static init = (): InventoryScreen => new InventoryScreen();
 
-  public draw = (canvas: Canvas): void => {
+  public draw = (canvas: Canvas, inventory: Inventory): void => {
     if (!this.message.length) return;
-    if (!this.current_message.length) this.current_message = convertMessageToMessageArray(this.message, canvas);
+    if (!this.current_message.length) convertMessageToMessageArray(this.message, canvas);
     const rectangle = {
       x: 0,
       h: 5 * tile_size,

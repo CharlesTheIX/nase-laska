@@ -1,35 +1,47 @@
 import RespawnItem from "@/lib/classes/Items/RespawnItem";
-
-type InventoryItem = {
-  name: string;
-  value: number;
-  count: number;
-  message: string;
-  srcs: IVector2[];
-};
+import getInventoryItemData from "@/lib/helpers/getInventoryItemData";
 
 export default class Inventory {
   items: InventoryItem[];
 
   constructor() {
-    this.items = [];
+    this.items = [
+      {
+        value: 1,
+        count: 100,
+        name: "money",
+        message: "Money",
+        srcs: []
+      }
+    ];
   }
 
-  static init = (): Inventory => new Inventory();
-
-  public setInventory = (items: InventoryItem[]): void => {
-    this.items = items;
+  static init = (saved_inventory: { name: string; count: number }[] | null): Inventory => {
+    const i = new Inventory();
+    if (!saved_inventory) return i;
+    const inventory = saved_inventory.map((si) => {
+      const item = getInventoryItemData(si.name);
+      return {
+        name: si.name,
+        count: si.count,
+        srcs: item.srcs,
+        value: item.value,
+        message: item.message
+      };
+    });
+    i.items = inventory;
+    return i;
   };
 
-  public addItem = (item: RespawnItem): void => {
-    const exists = this.items.find((i) => i.name === item.name);
-    if (!exists) {
+  public addItem = (item: InventoryItemData): void => {
+    if (!this.itemExists(item.name)) {
+      if (item.count <= 0) return;
       this.items.push({
         name: item.name,
         srcs: item.srcs,
         value: item.value,
         count: item.count,
-        message: item.inventory_message
+        message: item.message
       });
     } else {
       this.items = this.items.map((i) => {
@@ -37,5 +49,20 @@ export default class Inventory {
         return i;
       });
     }
+  };
+
+  public itemExists = (name: string): InventoryItem | null => {
+    const exists = this.items.find((i) => i.name === name);
+    if (!exists) return null;
+    return exists;
+  };
+
+  public removeItem = (item: RespawnItem): void => {
+    if (this.itemExists(item.name)) return;
+    this.items = this.items.filter((i) => {
+      if (i.name === item.name) i.count -= item.count;
+      if (i.count <= 0) return null;
+      return i;
+    });
   };
 }
