@@ -25,32 +25,18 @@ export default class MessageScreen {
   public draw = (canvas: Canvas): void => {
     if (!this.message.length) return;
     if (!this.current_message.length) this.current_message = convertMessageToMessageArray(this.message, canvas);
-    const rectangle = {
-      x: 0,
-      h: 5 * tile_size,
-      w: canvas_size.x,
-      y: canvas_size.y - 5 * tile_size
-    };
-    canvas.drawRectangle({ rectangle, color: "#222222" });
+    const r_h = 5 * tile_size;
+    const r = { x: 0, h: r_h, w: canvas_size.x, y: canvas_size.y - r_h };
+    canvas.drawRectangle({ rectangle: r, color: "#222222" });
 
     const max_lines = 3;
-    const getStartY = (index: number): number => {
-      return Math.floor(rectangle.y + tile_size + (font_family.font_size / 2) * index);
-    };
-
+    const getStartY = (i: number): number => Math.floor(r.y + tile_size + (font_family.font_size / 2) * i);
     for (var i = this.active_message; i < this.active_message + max_lines; i++) {
-      if (!this.current_message[i]) {
-        this.complete = true;
-        return;
-      }
-
-      const position = { x: rectangle.x + tile_size, y: getStartY((i % max_lines) * max_lines) };
+      if (!this.current_message[i]) this.complete = true;
+      if (this.complete) return;
+      const position = { x: r.x + tile_size, y: getStartY((i % max_lines) * max_lines) };
       canvas.drawText({ position, text: this.current_message[i] });
-
-      if (i === this.current_message.length) {
-        this.complete = true;
-        return;
-      }
+      if (i === this.current_message.length) this.complete = true;
     }
 
     if (this.active_message + 3 < this.current_message.length) {

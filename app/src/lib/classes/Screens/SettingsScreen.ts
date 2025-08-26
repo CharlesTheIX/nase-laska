@@ -33,8 +33,7 @@ export default class SettingsScreen {
     const last_key: string = g.input_handler.last_key;
     if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "Back")) {
       g.state = this.exit_to;
-      g.input_timer.start();
-      return;
+      return g.input_timer.start();
     }
 
     var next_value: number = this.active_option;

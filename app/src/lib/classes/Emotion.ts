@@ -50,7 +50,6 @@ export default class Emotion {
     if (this.timer <= 0) {
       this.timer = 0;
       this.visible = false;
-      return;
     }
   };
 }

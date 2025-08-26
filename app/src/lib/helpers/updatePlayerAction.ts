@@ -6,10 +6,8 @@ import InputHandler from "@/lib/classes/InputHandler";
 import StaticItem from "@/lib/classes/Items/StaticItem";
 import RespawnItem from "@/lib/classes/Items/RespawnItem";
 
-type Return = {
-  type: string;
-  item: StaticItem | RespawnItem | null;
-};
+type Return = { type: string; item: StaticItem | RespawnItem | null };
+
 export default (character: Character, map: Map, input_handler: InputHandler): Return => {
   const key_sets: KeySetMap = getInputKeySets();
   const last_key: string = input_handler.last_key;

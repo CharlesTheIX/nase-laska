@@ -171,8 +171,7 @@ export default class Game {
     switch (this.state) {
       case "start":
         if (!this.start_screen) return;
-        this.start_screen.draw(this.canvas);
-        break;
+        return this.start_screen.draw(this.canvas);
       case "inventory":
       case "message":
       case "playing":
@@ -214,20 +213,17 @@ export default class Game {
         this.map.drawLayer("canopy", this.canvas, spritesheet, this.camera);
         if (this.map.showWeather) this.map.drawLayer("weather_top", this.canvas, spritesheet, this.camera);
         this.canvas.context.restore();
-        this.map.drawDayCycle(this.canvas, this.camera, this.play_timer.value);
 
-        if (this.state === "message") {
-          this.message_screen?.draw(this.canvas);
-        } else if (this.state === "inventory") {
-          this.inventory_screen?.draw(this.canvas, this.player.inventory);
-        }
-        break;
+        this.map.drawDayCycle(this.canvas, this.camera, this.play_timer.value);
+        if (this.state === "message") this.message_screen?.draw(this.canvas);
+        else if (this.state === "inventory") this.inventory_screen?.draw(this.canvas, this.player.inventory);
     }
   };
 
   private update = (time_step: number): void => {
     this.input_timer.update(time_step);
     if (!this.input_timer.complete) return;
+
     const key_sets: KeySetMap = getInputKeySets();
     const last_key: string = this.input_handler.last_key;
     if (key_sets.dev.has(last_key)) {
@@ -243,34 +239,27 @@ export default class Game {
           const has_save_data = !!this.resources.storage.player_save_state.time_played;
           this.start_screen = StartScreen.init(has_save_data);
         }
-        this.start_screen.update(this);
-        return;
+        return this.start_screen.update(this);
       case "settings":
         if (!this.settings_screen) this.settings_screen = SettingsScreen.init();
-        this.settings_screen.update(this);
-        return;
+        return this.settings_screen.update(this);
       case "inventory":
         if (!this.player?.inventory || key_sets.inventory.has(last_key)) {
           this.state = "playing";
-          this.input_timer.start();
-          return;
+          return this.input_timer.start();
         }
         return;
       case "message":
       case "playing":
-        if (!this.map || !this.player) break;
-        if (this.state === "message") {
-          this.message_screen?.update(this);
-          return;
-        } else {
-          if (key_sets.inventory.has(last_key)) {
-            this.state = "inventory";
-            this.input_timer.start();
-          }
-          this.player.update(time_step, this);
-          this.camera.update(this.player.character.position);
-          return;
+        if (!this.map || !this.player) return;
+        if (this.state === "message") return this.message_screen?.update(this);
+        if (key_sets.inventory.has(last_key)) {
+          this.state = "inventory";
+          return this.input_timer.start();
         }
+        this.player.update(time_step, this);
+        this.camera.update(this.player.character.position);
+        return;
     }
   };
 }

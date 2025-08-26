@@ -2,10 +2,10 @@ import Game from "@/lib/classes/Game";
 import Timer from "@/lib/classes/Timer";
 import Canvas from "@/lib/classes/Canvas";
 import Vector2 from "@/lib/classes/Vector2";
+import Inventory from "@/lib/classes/Inventory";
 import { getInputKeySets } from "@/lib/inputKeys";
 import { canvas_size, tile_size, font_family } from "@/lib/globals";
 import convertMessageToMessageArray from "@/lib/helpers/convertMessageToMessageArray";
-import Inventory from "../Inventory";
 
 export default class InventoryScreen {
   message: string;
@@ -29,12 +29,8 @@ export default class InventoryScreen {
   public draw = (canvas: Canvas, inventory: Inventory): void => {
     if (!this.message.length) return;
     if (!this.current_message.length) convertMessageToMessageArray(this.message, canvas);
-    const rectangle = {
-      x: 0,
-      h: 5 * tile_size,
-      w: canvas_size.x,
-      y: canvas_size.y - 5 * tile_size
-    };
+    const r_h = 5 * tile_size;
+    const rectangle = { x: 0, h: r_h, w: canvas_size.x, y: canvas_size.y - r_h };
     canvas.drawRectangle({ rectangle, color: "#222222" });
 
     const max_lines = 3;
@@ -43,18 +39,11 @@ export default class InventoryScreen {
     };
 
     for (var i = this.active_message; i < this.active_message + max_lines; i++) {
-      if (!this.current_message[i]) {
-        this.complete = true;
-        return;
-      }
-
+      if (!this.current_message[i]) this.complete = true;
+      if (this.complete) return;
       const position = { x: rectangle.x + tile_size, y: getStartY((i % max_lines) * max_lines) };
       canvas.drawText({ position, text: this.current_message[i] });
-
-      if (i === this.current_message.length) {
-        this.complete = true;
-        return;
-      }
+      if (i === this.current_message.length) this.complete = true;
     }
 
     if (this.active_message + 3 < this.current_message.length) {

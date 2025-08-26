@@ -34,8 +34,8 @@ export default class Inventory {
   };
 
   public addItem = (item: InventoryItemData): void => {
+    if (item.count <= 0) return;
     if (!this.itemExists(item.name)) {
-      if (item.count <= 0) return;
       this.items.push({
         name: item.name,
         srcs: item.srcs,

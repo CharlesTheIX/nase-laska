@@ -38,7 +38,6 @@ export default (props: Props): void => {
         if (v_t.y < 0) v.y += v_t.y;
         else if (v_t.y > Math.abs(diff_s.y)) v.y += v_t.y - diff_s.y;
       }
-
       return;
     case "background":
       var camera_offset = Vector2.init(canvas_size.x / 2 / camera.scale, canvas_size.y / 2 / camera.scale);

@@ -36,8 +36,7 @@ export default class StartScreen {
       return g.startNewGame();
     if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "Settings")) {
       g.state = "settings";
-      g.input_timer.start();
-      return;
+      return g.input_timer.start();
     }
 
     var next_value: number = this.active_option;

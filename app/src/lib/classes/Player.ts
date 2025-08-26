@@ -34,8 +34,7 @@ export default class Player {
     this.character.max_speed = Math.ceil((tile_size * this.game_speed) / time_step);
     if (this.character.animating && player_movement_type === "tiled") {
       this.character.moveToDestination();
-      this.character.updateFrame(time_step);
-      return;
+      return this.character.updateFrame(time_step);
     }
 
     this.character.velocity = Vector2.zero();
@@ -61,7 +60,6 @@ export default class Player {
       game.input_timer.start();
       this.character.emotion.show();
       game.message_screen.message = item.item.message;
-      return;
     }
 
     updatePlayerDestinationPosition(time_step, game.input_handler, this.character);

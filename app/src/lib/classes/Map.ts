@@ -67,6 +67,31 @@ export default class Map {
     });
   };
 
+  private drawMapImage = (canvas: Canvas, camera: Camera, image: HTMLImageElement): void => {
+    var r_dest: IRectangle = { x: 0, y: 0, w: canvas_size.x, h: canvas_size.y };
+    const v_src = camera.position.duplicate();
+    applyCameraVectorTranslation({ type: "background", camera, v: v_src, m_size: this.size.value });
+    const r_src = Rectangle.init(v_src.x, v_src.y, canvas_size.x / camera.scale, canvas_size.y / camera.scale).value;
+    canvas.drawImage(image, r_src, r_dest);
+  };
+
+  public drawRespawnItems = (canvas: Canvas, spritesheet: HTMLImageElement, camera: Camera) => {
+    const layers = this.respawn_items;
+    if (!layers || !layers.length) return;
+    layers.map((d: RespawnItem) => {
+      if (!d.srcs || d.srcs.length === 0 || !d.dests || d.dests.length === 0) return;
+      if (d.srcs.length !== d.dests.length || d.hidden) return;
+      d.srcs.forEach((_, i) => {
+        const v_src: Vector2 = Vector2.init(d.srcs[i].x, d.srcs[i].y);
+        const r_src: IRectangle = Rectangle.tile(v_src).value;
+        const v_dest: Vector2 = Vector2.init(d.dests[i].x, d.dests[i].y);
+        applyCameraVectorTranslation({ type: "layer", camera, v: v_dest, m_size: this.size.value });
+        const r_dest: IRectangle = Rectangle.tile(v_dest).value;
+        canvas.drawImage(spritesheet, r_src, r_dest);
+      });
+    });
+  };
+
   public drawStaticItems = (canvas: Canvas, spritesheet: HTMLImageElement, camera: Camera) => {
     const layers = this.static_items;
     if (!layers || !layers.length) return;
@@ -84,36 +109,10 @@ export default class Map {
     });
   };
 
-  public drawRespawnItems = (canvas: Canvas, spritesheet: HTMLImageElement, camera: Camera) => {
-    const layers = this.respawn_items;
-    if (!layers || !layers.length) return;
-    layers.map((d: RespawnItem) => {
-      if (!d.srcs || d.srcs.length === 0 || !d.dests || d.dests.length === 0) return;
-      if (d.srcs.length !== d.dests.length) return;
-      if (d.hidden) return;
-      d.srcs.forEach((_, i) => {
-        const v_src: Vector2 = Vector2.init(d.srcs[i].x, d.srcs[i].y);
-        const r_src: IRectangle = Rectangle.tile(v_src).value;
-        const v_dest: Vector2 = Vector2.init(d.dests[i].x, d.dests[i].y);
-        applyCameraVectorTranslation({ type: "layer", camera, v: v_dest, m_size: this.size.value });
-        const r_dest: IRectangle = Rectangle.tile(v_dest).value;
-        canvas.drawImage(spritesheet, r_src, r_dest);
-      });
-    });
-  };
-
   public getSpawnPoint = (name: string): Vector2 => {
     const spawn_points = this.map_data.spawn_points;
     const sp = spawn_points.find((i) => i.name === name);
     if (!sp) return Vector2.zero();
     return Vector2.init(sp.dest.x, sp.dest.y);
-  };
-
-  private drawMapImage = (canvas: Canvas, camera: Camera, image: HTMLImageElement): void => {
-    var r_dest: IRectangle = { x: 0, y: 0, w: canvas_size.x, h: canvas_size.y };
-    const v_src = camera.position.duplicate();
-    applyCameraVectorTranslation({ type: "background", camera, v: v_src, m_size: this.size.value });
-    const r_src = Rectangle.init(v_src.x, v_src.y, canvas_size.x / camera.scale, canvas_size.y / camera.scale).value;
-    canvas.drawImage(image, r_src, r_dest);
   };
 }
