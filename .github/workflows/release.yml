@@ -6,11 +6,7 @@ on:
       - release
 
 permissions:
-  actions: read
-  checks: write
   contents: write
-  packages: write
-  releases: write
 
 jobs:
   build:
