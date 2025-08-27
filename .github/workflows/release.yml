@@ -34,6 +34,9 @@ jobs:
 
       - name: Build Application
         run: yarn build
+        env:
+          NODE_ENV: production
+          STORAGE_KEY: ${{ secrets.STORAGE_KEY }}
 
       - name: Zip Dist
         run: zip -r dist.zip dist/
