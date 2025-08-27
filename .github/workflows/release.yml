@@ -34,10 +34,6 @@ jobs:
 
       - name: Build Application
         run: yarn build
-        env:
-          NODE_ENV: production
-          STORAGE_KEY: ${{ secrets.STORAGE_KEY }}
-          PATH: $PATH:${{ github.workspace }}/node_modules/.bin
 
       - name: Zip Dist
         run: zip -r dist.zip dist/
