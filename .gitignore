@@ -1,5 +1,5 @@
 .vscode
-app/dist
-app/node_modules
-app/.env
-app/yarn.lock
+dist
+node_modules
+.env
+yarn.lock

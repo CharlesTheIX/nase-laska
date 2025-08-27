@@ -4,9 +4,10 @@
   <export target="data/emotions.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="tileset.tsx"/>
+ <tileset firstgid="10001" source="emotions.tsx"/>
  <layer id="1" name="emotions" width="16" height="1">
   <data encoding="csv">
-302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317
+10001,10002,10003,10004,10005,10006,10007,10008,10009,10010,10011,10012,10013,10014,10015,10016
 </data>
  </layer>
 </map>

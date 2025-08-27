@@ -9,27 +9,30 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "_tempalte.tmx": {
+            "expandedGroupLayers": [
+                2
+            ],
             "scale": 1.4537878787878786,
-            "selectedLayer": -1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 509.01511203751966,
-                "y": 306.440854611777
+                "x": 193.28817092235542,
+                "y": 236.96717040125068
             }
         },
         "characters.tmx": {
             "scale": 0.88,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 61.363636363636374,
-                "y": 248.86363636363637
+                "x": 213.63636363636368,
+                "y": 309.659090909091
             }
         },
         "emotions.tmx": {
             "scale": 1.45,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 360.00000000000006,
-                "y": 264.1379310344828
+                "x": 357.93103448275866,
+                "y": 267.93103448275866
             }
         },
         "inventory_items.tmx": {
@@ -42,15 +45,15 @@
         },
         "map-data/test_1.tmx": {
             "expandedGroupLayers": [
-                36,
                 13,
-                27
+                27,
+                36
             ],
             "scale": 3.106,
             "selectedLayer": 16,
             "viewCenter": {
-                "x": 279.4591113972956,
-                "y": 228.58982614294916
+                "x": 719.8969735994849,
+                "y": 718.126207340631
             }
         },
         "map-data/test_2.tmx": {
@@ -99,7 +102,7 @@
     },
     "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/map-data",
     "last.externalTilesetPath": "/Users/davidcharles/Projects/nase-laska/project-files",
-    "last.imagePath": "/Users/davidcharles/Projects/nase-laska/app/assets/images",
+    "last.imagePath": "/Users/davidcharles/Projects/nase-laska/project-files/data",
     "map.height": 17,
     "map.lastUsedExportFilter": "All Files (*)",
     "map.lastUsedFormat": "tmx",

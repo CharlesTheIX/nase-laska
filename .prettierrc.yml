@@ -3,3 +3,7 @@ tabWidth: 2
 printWidth: 120
 singleQuote: false
 trailingComma: none
+overrides:
+  - files: "*.py"
+    options:
+      printWidth: 500
