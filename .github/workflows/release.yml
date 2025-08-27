@@ -74,7 +74,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: Update package.json
+      - name: Update package.json
         run: |
           jq --arg ver "${{ steps.version.outputs.tag#v }}" '.version = $ver' package.json > package.tmp.json
           mv package.tmp.json package.json
