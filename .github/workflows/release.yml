@@ -55,8 +55,6 @@ jobs:
           minor=$(echo $ver | cut -d. -f2)
           patch=$(echo $ver | cut -d. -f3)
 
-          commits=$(git log ${latest}..HEAD --pretty=%B)
-
           bump="patch"
           if echo "$commits" | grep -q "version(\(|!|:)"; then
             bump="major"
