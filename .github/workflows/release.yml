@@ -33,7 +33,7 @@ jobs:
       - name: Zip Dist
         run: zip -r dist.zip dist/
 
-        - name: Get Version
+      - name: Get Version
         id: version
         run: |
           latest=$(gh release list --limit 1 | awk '{print $1}')
