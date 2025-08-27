@@ -37,6 +37,7 @@ jobs:
         env:
           NODE_ENV: production
           STORAGE_KEY: ${{ secrets.STORAGE_KEY }}
+          PATH: ${{ runner.tool_cache }}/node/18.x/bin:${{ github.workspace }}/node_modules/.bin:$PATH
 
       - name: Zip Dist
         run: zip -r dist.zip dist/
