@@ -24,6 +24,11 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Install Dependencies
         run: yarn install
 
@@ -49,9 +54,9 @@ jobs:
           commits=$(git log ${latest}..HEAD --pretty=%B)
 
           bump="patch"
-          if echo "$commits" | grep -q "BREAKING CHANGE"; then
+          if echo "$commits" | grep -q "version(\(|!|:)"; then
             bump="major"
-          elif echo "$commits" | grep -E -q "feat(\(|!|:)" ; then
+          elif echo "$commits" | grep -E -q "feature(\(|!|:)" ; then
             bump="minor"
           elif echo "$commits" | grep -E -q "fix(\(|:)" ; then
             bump="patch"
