@@ -43,7 +43,8 @@ jobs:
         run: |
           latest=$(gh release list --limit 1 | awk '{print $1}')
           if [[ -z "$latest" ]]; then
-            echo "No previous release, using all commits"
+            echo "No previous release, using all commits, defaulting to v0.0.0"
+            latest="v0.0.0"
             commits=$(git log --pretty=%B)
           else
             commits=$(git log ${latest}..HEAD --pretty=%B)
@@ -87,7 +88,7 @@ jobs:
           ver="${{ steps.version.outputs.tag }}"
           ver="${ver#v}"
 
-          jq --arg ver '.version = $ver' package.json > package.tmp.json
+          jq --arg ver "$ver" '.version = $ver' package.json > package.tmp.json
           mv package.tmp.json package.json
 
           git config user.name "github-actions[bot]"
