@@ -1,8 +1,8 @@
 import os
 import sys
 import shutil
-import requests
 import zipfile
+import requests
 from pathlib import Path
 
 if sys.platform.startswith("win"):
@@ -94,3 +94,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# pyinstaller --onefile installer.py
+# add an image to the exe file
