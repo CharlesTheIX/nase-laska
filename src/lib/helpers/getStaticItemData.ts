@@ -1,4 +1,4 @@
-import test_1 from "@/data/items/test_1.json";
+import test_1 from "@/data_maps/map_items/test_1_item_map.json";
 
 type Return = { name: string; message: string };
 

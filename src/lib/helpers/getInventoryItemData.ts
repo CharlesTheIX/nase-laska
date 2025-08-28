@@ -1,5 +1,5 @@
 import inventory_items from "@/data/inventory_items.json";
-import inventory_map from "@/maps/inventory_items_map.json";
+import inventory_map from "@/data_maps/inventory_items_map.json";
 
 export default (name: string): InventoryItemData | null => {
   const data_map = inventory_map.find((i: any) => i.name === name);
