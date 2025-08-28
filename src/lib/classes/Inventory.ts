@@ -9,9 +9,9 @@ export default class Inventory {
       {
         value: 1,
         count: 100,
-        name: "money",
+        name: "pouch",
         message: "Money",
-        srcs: []
+        srcs: [{ x: 16, y: 0 }]
       }
     ];
   }
@@ -19,15 +19,17 @@ export default class Inventory {
   static init = (saved_inventory: { name: string; count: number }[] | null): Inventory => {
     const i = new Inventory();
     if (!saved_inventory) return i;
-    const inventory = saved_inventory.map((si) => {
+    const inventory: InventoryItemData[] = [];
+    saved_inventory.forEach((si) => {
       const item = getInventoryItemData(si.name);
-      return {
+      if (!item) return;
+      inventory.push({
         name: si.name,
         count: si.count,
         srcs: item.srcs,
         value: item.value,
         message: item.message
-      };
+      });
     });
     i.items = inventory;
     return i;

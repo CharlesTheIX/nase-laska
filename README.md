@@ -4,12 +4,12 @@
 
 - [Resources](#resources)
 - [Introduction](#introduction)
-- [Quick Setup](#quick-setup)
+- [Dependencies](#dependencies)
+- [Setup](#setup)
 - [Tiled](#tiled)
 - [Python](#python)
 - [Development](#development)
-  - [Constants](#constants)
-  - [Classes](#classes)
+- [Release](#release)
 
 ## Resources
 
@@ -31,7 +31,12 @@ This project was developed on macOS and assumes that you have `Homebrew` install
 This project also assumes that your environment is able to use / run shell scripts and typescript with node.
 
 ```bash
-# APP
+# - Git
+brew install git
+
+# - NodeJS
+brew install node
+
 # - Yarn
 brew install yarn
 
@@ -41,7 +46,7 @@ brew install python3
 brew install python
 ```
 
-## Quick Setup
+## Setup
 
 The App service uses `Typescript` for the JavaScript parts of the project, `SASS` for the CSS parts and `Webpack` to manage to building of the application.
 
@@ -55,27 +60,27 @@ The following commands assume the current working directory is the app directory
 # Make sure the script file is executable
 chmod +x /.app.sh
 
-# clean - this command will clean the development files from the app directory
-yarn clean
-
-# build - this command will compile and build the application and store it in the ./app/dist directory
+# Build
 yarn build
 
-# start - this command will use python to spin up a server to serve the application in a browser on port: 8000
-yarn start
+# Clean
+yarn clean
 
-# kill_server - this command will kill the python server on port: 8000
+# Kill Server
 yarn kill_server
+
+# Start
+yarn start
 ```
 
 ## Tiled
 
+For more on the tiled project setup see [here](./project-files/README.md).
+
 ## Python
+
+For more on the python functions see [here](./python/README.md).
 
 ## Development
 
-### Constants
-
-## Classes
-
-### Camera
+## Release

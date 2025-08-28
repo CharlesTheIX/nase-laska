@@ -18,6 +18,7 @@ build() {
   copy_convert_images
   convert_emotions_data
   convert_characters_data
+  convert_inventory_items_data
 
   mkdir dist
   yarn webpack --config webpack.config.mjs --mode production
@@ -37,7 +38,7 @@ clean() {
 }
 
 convert_characters_data() {
-  echo "Converting Tiled Characters data to game characters data..."
+  echo "Converting Tiled characters data to game characters data..."
 
   if command -v python3 &>/dev/null; then
     python3 ./python/convert_characters_data.py
@@ -53,7 +54,7 @@ convert_characters_data() {
 }
 
 convert_emotions_data() {
-  echo "Converting Tiled Emotion data to game emotion data..."
+  echo "Converting Tiled emotion data to game emotion data..."
 
   if command -v python3 &>/dev/null; then
     python3 ./python/convert_emotions_data.py
@@ -67,6 +68,23 @@ convert_emotions_data() {
   echo "Conversion complete."
   echo ""
 }
+
+convert_inventory_items_data() {
+  echo "Converting Tiled inventory item data to game inventory_item data..."
+
+  if command -v python3 &>/dev/null; then
+    python3 ./python/convert_inventory_items_data.py
+  elif command -v python &>/dev/null; then
+    python ./python/convert_inventory_items_data.py 
+  else
+    echo "Python is not installed - please install Python to use this script"
+    exit 1
+  fi
+
+  echo "Conversion complete."
+  echo ""
+}
+
 
 convert_map_data() {
   echo "Converting Tiled map data to game map data..."

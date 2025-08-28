@@ -1,6 +1,6 @@
 import Camera from "@/lib/classes/Camera";
 import Rectangle from "@/lib/classes/Rectangle";
-import { canvas_size, tile_size, font_family } from "@/lib/globals";
+import { canvas_size, tile_size, font } from "@/lib/globals";
 
 export default class Canvas {
   rectangle: Rectangle;
@@ -51,8 +51,8 @@ export default class Canvas {
     this.context.fillStyle = color;
     this.context.textBaseline = "top";
     const startX: number = position.x;
-    this.context.font = `bold ${font_family.font_size}px ${font_family.name}, monospace`;
-    const getStartY = (index: number): number => Math.floor(position.y + font_family.font_size * 2.5 * index);
+    this.context.font = `bold ${font.size}px ${font.name}, monospace`;
+    const getStartY = (index: number): number => Math.floor(position.y + font.size * 2.5 * index);
     lines.forEach((line: string, index: number) => {
       this.context.fillText(`${line}`, startX, getStartY(index));
       count++;
@@ -64,7 +64,7 @@ export default class Canvas {
     this.context.textAlign = align;
     this.context.fillStyle = color;
     this.context.textBaseline = "top";
-    this.context.font = `bold ${font_family.font_size}px ${font_family.name}, monospace`;
+    this.context.font = `bold ${font.size}px ${font.name}, monospace`;
     this.context.fillText(text, position.x, position.y);
   };
 }

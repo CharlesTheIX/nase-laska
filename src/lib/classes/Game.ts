@@ -29,10 +29,10 @@ export default class Game {
   last_frame_time: number;
   accumulated_time: number;
   input_handler: InputHandler;
+  message_screen: MessageScreen;
+  settings_screen: SettingsScreen;
   start_screen: StartScreen | null;
-  message_screen: MessageScreen | null;
-  settings_screen: SettingsScreen | null;
-  inventory_screen: InventoryScreen | null;
+  inventory_screen: InventoryScreen;
 
   private constructor(g: IGame) {
     this.map = null;
@@ -45,13 +45,13 @@ export default class Game {
     this.start_screen = null;
     this.last_frame_time = 0;
     this.accumulated_time = 0;
-    this.settings_screen = null;
     this.camera = Camera.init();
-    this.inventory_screen = null;
     this.resources = g.resources;
     this.input_handler = g.input_handler;
     this.message_screen = MessageScreen.init();
     this.play_timer = Timer.init("game", 1000);
+    this.settings_screen = SettingsScreen.init();
+    this.inventory_screen = InventoryScreen.init();
     this.input_timer = Timer.init("count_down", 250);
   }
 
@@ -173,6 +173,11 @@ export default class Game {
         if (!this.start_screen) break;
         this.start_screen.draw(this.canvas);
         break;
+
+      case "settings":
+        this.settings_screen.draw(this.canvas);
+        break;
+
       case "inventory":
       case "message":
       case "playing":
@@ -219,8 +224,8 @@ export default class Game {
         this.canvas.context.restore();
 
         this.map.drawDayCycle(this.canvas, this.camera, this.play_timer.value);
-        if (this.state === "message") this.message_screen?.draw(this.canvas);
-        else if (this.state === "inventory") this.inventory_screen?.draw(this.canvas, this.player.inventory);
+        if (this.state === "message") this.message_screen.draw(this.canvas);
+        else if (this.state === "inventory") this.inventory_screen.draw(this);
         break;
     }
   };
@@ -246,29 +251,46 @@ export default class Game {
         }
         this.start_screen.update(this);
         break;
+
       case "settings":
-        if (!this.settings_screen) this.settings_screen = SettingsScreen.init();
-        this.settings_screen.update(this);
+        if (key_sets.settings.has(last_key)) {
+          if (!this.player) this.state = "start";
+          else this.state = "playing";
+          this.input_timer.start();
+          break;
+        }
+        this.settings_screen?.update();
         break;
+
       case "inventory":
         if (!this.player?.inventory || key_sets.inventory.has(last_key)) {
           this.state = "playing";
           this.input_timer.start();
           break;
         }
+        this.inventory_screen.update(this);
         break;
+
       case "message":
       case "playing":
         if (!this.map || !this.player) break;
         if (this.state === "message") {
-          this.message_screen?.update(this);
+          this.message_screen.update(this);
           break;
         }
+
         if (key_sets.inventory.has(last_key)) {
           this.state = "inventory";
           this.input_timer.start();
           break;
         }
+
+        if (key_sets.settings.has(last_key)) {
+          this.state = "settings";
+          this.input_timer.start();
+          break;
+        }
+
         this.player.update(time_step, this);
         this.camera.update(this.player.character.position);
         break;

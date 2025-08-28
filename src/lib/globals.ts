@@ -9,6 +9,20 @@ export const characters_sheet_src = {
   webp: "./assets/images/characters.webp"
 };
 
+/* D */
+const day_cycle_segment_size = 12;
+const day_cycle_time = 20 * 60;
+export const day_cycle = {
+  cycle_time: day_cycle_time,
+  segment_size: day_cycle_segment_size,
+  limits: {
+    dawn: day_cycle_time - 1,
+    day: day_cycle_time * (6 / day_cycle_segment_size) - 1,
+    dusk: day_cycle_time * (8 / day_cycle_segment_size) - 1,
+    night: day_cycle_time * (10 / day_cycle_segment_size) - 1
+  }
+};
+
 /* E */
 export const emotion_sheet_src = {
   png: "./assets/images/emotions.png",
@@ -16,8 +30,14 @@ export const emotion_sheet_src = {
 };
 
 /* F */
-export const font_family = { name: "GameFont", font_size: tile_size };
+export const font = { name: "GameFont", size: tile_size };
 export const fps = 1000 / 60;
+
+/* I */
+export const inventory_items_sheet_src = {
+  png: "./assets/images/inventory_items.png",
+  webp: "./assets/images/inventory_items.webp"
+};
 
 /* L */
 export const loading_element_data = {

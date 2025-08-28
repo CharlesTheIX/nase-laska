@@ -1,0 +1,26 @@
+[
+  {
+    "name": "pouch",
+    "count": 1,
+    "value": 1,
+    "message": "Pouch"
+  },
+  {
+    "name": "money",
+    "count": 1,
+    "value": 1,
+    "message": "Money"
+  },
+  {
+    "name": "carrot",
+    "count": 1,
+    "value": 5,
+    "message": "A fresh carrot for the carrot salad!"
+  },
+  {
+    "name": "parsnip",
+    "count": 1,
+    "value": 6,
+    "message": "An albino carrot?! oh no, it's just a parsnip..."
+  }
+]

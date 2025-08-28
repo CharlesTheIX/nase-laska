@@ -10,10 +10,6 @@
   "scripts": {
     "build": "./.app.sh build",
     "clean": "./.app.sh clean",
-    "convert_characters_data": "./.app.sh convert_characters_data",
-    "convert_emotions_data": "./.app.sh convert_emotions_data",
-    "convert_map_data": "./.app.sh convert_map_data",
-    "copy_convert_images": "./.app.sh copy_convert_images",
     "kill_service": "./.app.sh kill_service",
     "start": "./.app.sh start"
   },

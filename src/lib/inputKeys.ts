@@ -15,9 +15,9 @@ export const getInputKeySets = (): KeySetMap => {
     up: new Set<string>().add("w").add("W").add("ArrowUp"),
     down: new Set<string>().add("s").add("S").add("ArrowDown"),
     left: new Set<string>().add("a").add("A").add("ArrowLeft"),
+    settings: new Set<string>().add("p").add("P").add("Escape"),
     right: new Set<string>().add("d").add("D").add("ArrowRight")
     // run: new Set<string>().add("l").add("L"),
-    // settings: new Set<string>().add("p").add("P").add("Escape"),
   };
 };
 

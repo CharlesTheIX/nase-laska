@@ -48,9 +48,9 @@ export default class Player {
           const respawn_item = item.item as RespawnItem;
           respawn_item.hidden = true;
           respawn_item.collected_at = Date.now();
-          const inventory_item_data: InventoryItemData = getInventoryItemData(respawn_item.item_name);
-          this.inventory.addItem(inventory_item_data);
           this.character.emotion.setEmotionData("pleased");
+          const inventory_item_data = getInventoryItemData(respawn_item.item_name);
+          if (inventory_item_data) this.inventory.addItem(inventory_item_data);
           break;
         default:
           return;

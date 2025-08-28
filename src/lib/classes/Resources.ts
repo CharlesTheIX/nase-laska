@@ -1,5 +1,11 @@
 import Storage from "@/lib/classes/Storage";
-import { loading_element_data, spritesheet_srcs, emotion_sheet_src, characters_sheet_src } from "@/lib/globals";
+import {
+  spritesheet_srcs,
+  emotion_sheet_src,
+  characters_sheet_src,
+  loading_element_data,
+  inventory_items_sheet_src
+} from "@/lib/globals";
 
 export default class Resources {
   count: number;
@@ -18,7 +24,8 @@ export default class Resources {
       map_day_cycle: "",
       spritesheet: spritesheet_srcs.png,
       emotion_sheet: emotion_sheet_src.png,
-      character_sheet: characters_sheet_src.png
+      character_sheet: characters_sheet_src.png,
+      inventory_items_sheet: inventory_items_sheet_src.png
     };
     this.loading_element = document.getElementById(loading_element_data.id) as HTMLDivElement;
     this.progress_element = document.getElementById(loading_element_data.progress_bar_id) as HTMLDivElement;

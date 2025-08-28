@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="12" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <editorsettings>
+  <export target="data/inventory_items.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="tileset.tsx"/>
+ <tileset firstgid="10001" source="inventory_items.tsx"/>
+ <layer id="1" name="inventory_items" width="12" height="1">
+  <data encoding="csv">
+10001,10002,10003,10004,10005,10006,10007,10008,10009,10010,10011,10012
+</data>
+ </layer>
+</map>

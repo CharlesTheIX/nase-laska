@@ -1,23 +1,110 @@
 [
   {
-    "name": "money",
-    "count": 1,
-    "value": 1,
-    "message": "Money",
-    "srcs": []
+    "name": "coins",
+    "srcs": [
+      {
+        "x": 0,
+        "y": 0
+      }
+    ]
   },
   {
-    "name": "carrot",
-    "count": 1,
-    "value": 5,
-    "message": "A fresh carrot for the carrot salad!",
-    "srcs": []
+    "name": "pouch",
+    "srcs": [
+      {
+        "x": 16,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "strawberry",
+    "srcs": [
+      {
+        "x": 32,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "cherry",
+    "srcs": [
+      {
+        "x": 48,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "snacks",
+    "srcs": [
+      {
+        "x": 64,
+        "y": 0
+      }
+    ]
   },
   {
     "name": "parsnip",
-    "count": 1,
-    "value": 6,
-    "message": "An albino carrot?! oh no, it's just a parsnip...",
-    "srcs": []
+    "srcs": [
+      {
+        "x": 80,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "carrot",
+    "srcs": [
+      {
+        "x": 96,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "white_mushroom",
+    "srcs": [
+      {
+        "x": 112,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "brown_mushroom",
+    "srcs": [
+      {
+        "x": 128,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "red_mushroom_1",
+    "srcs": [
+      {
+        "x": 144,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "red_mushroom_2",
+    "srcs": [
+      {
+        "x": 160,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "name": "red_mushroom_3",
+    "srcs": [
+      {
+        "x": 176,
+        "y": 0
+      }
+    ]
   }
 ]

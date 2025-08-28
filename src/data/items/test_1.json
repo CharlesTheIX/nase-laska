@@ -2,7 +2,7 @@
   "static_items": [
     {
       "name": "message_1",
-      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
     },
     {
       "name": "message_2",
@@ -16,7 +16,7 @@
       "count": 1,
       "value": 5,
       "respawn_time": 1000,
-      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
     },
     {
       "name": "parsnip_1",
