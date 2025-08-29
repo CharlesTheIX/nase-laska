@@ -11,8 +11,8 @@ export default class StartScreen {
   private constructor(has_save_data: boolean) {
     this.active_option = 0;
     this.position = Vector2.init(100, 100);
-    this.options = ["New Game", "Settings"];
-    if (has_save_data) this.options = ["Continue", ...this.options];
+    this.options = ["NEW GAME", "SETTINGS"];
+    if (has_save_data) this.options = ["CONTINUE", ...this.options];
   }
 
   static init = (has_save_data: boolean): StartScreen => new StartScreen(has_save_data);
@@ -30,11 +30,11 @@ export default class StartScreen {
   public update = (g: Game): void => {
     const key_sets: KeySetMap = getInputKeySets();
     const last_key: string = g.input_handler.last_key;
-    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "Continue"))
+    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "CONTINUE"))
       return g.continueGame();
-    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "New Game"))
+    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "NEW GAME"))
       return g.startNewGame();
-    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "Settings")) {
+    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "SETTINGS")) {
       g.state = "settings";
       return g.input_timer.start();
     }

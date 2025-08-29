@@ -27,21 +27,20 @@ export default class MessageScreen {
     if (!this.current_message.length) {
       this.current_message = convertMessageToMessageArray(this.message, canvas, canvas_size.x - 5 * tile_size);
     }
-    console.log(this.current_message);
 
     const r_h = 6 * tile_size;
     const r = { x: tile_size, h: r_h, w: canvas_size.x - 2 * tile_size, y: canvas_size.y - r_h - tile_size };
     canvas.drawRectangle({ rectangle: r, color: "rgba(34, 34, 34, 0.8)" });
 
     var max_lines = this.current_message.length > 3 ? 3 : this.current_message.length;
-    const getStartY = (i: number): number => Math.floor(r.y + tile_size + (font.size / 2) * i);
+    const getStartY = (i: number): number => Math.floor(r.y + tile_size + (tile_size / 2) * i);
     for (var i = this.active_message; i < this.active_message + max_lines; i++) {
       if (!this.current_message[i]) {
         this.complete = true;
         return;
       }
       const position = { x: r.x + tile_size, y: getStartY((i % max_lines) * max_lines) };
-      canvas.drawText({ position, text: this.current_message[i] });
+      canvas.drawText({ position, text: this.current_message[i].toUpperCase() });
       if (i === this.current_message.length - 1) this.complete = true;
     }
 

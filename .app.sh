@@ -16,6 +16,7 @@ build() {
 
   convert_map_data
   copy_convert_images
+  convert_animals_data
   convert_emotions_data
   convert_characters_data
   convert_inventory_items_data
@@ -34,6 +35,22 @@ clean() {
   kill_service
   rm -rf dist node_modules yarn.lock
   echo "Clean complete"
+  echo ""
+}
+
+convert_animals_data() {
+  echo "Converting Tiled animals data to game animals data..."
+
+  if command -v python3 &>/dev/null; then
+    python3 ./python/convert_animals_data.py
+  elif command -v python &>/dev/null; then
+    python ./python/convert_animals_data.py 
+  else
+    echo "Python is not installed - please install Python to use this script"
+    exit 1
+  fi
+
+  echo "Conversion complete."
   echo ""
 }
 

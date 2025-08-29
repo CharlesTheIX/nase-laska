@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "inventory_items.tmx",
+    "activeFile": "animals.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -13,11 +13,26 @@
                 2
             ],
             "scale": 1.4537878787878786,
-            "selectedLayer": 0,
+            "selectedLayer": 10,
             "viewCenter": {
                 "x": 193.28817092235542,
                 "y": 236.96717040125068
             }
+        },
+        "animals.tmx": {
+            "expandedGroupLayers": [
+                2
+            ],
+            "scale": 2.71,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 184.13284132841326,
+                "y": 135.97785977859778
+            }
+        },
+        "animals.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "characters.tmx": {
             "scale": 0.88,
@@ -53,7 +68,7 @@
         },
         "inventory_items.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 0.43
         },
         "map-data/test_1.tmx": {
             "expandedGroupLayers": [
@@ -108,8 +123,8 @@
             }
         },
         "tileset.tsx": {
-            "scaleInDock": 0.7084,
-            "scaleInEditor": 7.9
+            "scaleInDock": 1.0386,
+            "scaleInEditor": 0.43
         }
     },
     "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/data",
@@ -122,24 +137,26 @@
     "map.tileWidth": 16,
     "map.width": 23,
     "openFiles": [
-        "inventory_items.tmx",
-        "inventory_items.tsx"
+        "_tempalte.tmx",
+        "animals.tmx",
+        "characters.tmx"
     ],
     "project": "nase-laska.tiled-project",
     "recentFiles": [
-        "inventory_items.tsx",
-        "inventory_items.tmx",
-        "map-data/test_1.tmx",
-        "characters.tmx",
-        "characters.tsx",
-        "tileset.tsx",
         "_tempalte.tmx",
+        "characters.tmx",
+        "animals.tmx",
+        "animals.tsx",
+        "inventory_items.tmx",
+        "inventory_items.tsx",
+        "tileset.tsx",
+        "map-data/test_1.tmx",
+        "characters.tsx",
         "emotions.tsx",
         "emotions.tmx",
-        "map-data/test_2.tmx",
-        "map-data/test_3.tmx",
-        "map_tempalte.tmx"
+        "map-data/test_2.tmx"
     ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 16,

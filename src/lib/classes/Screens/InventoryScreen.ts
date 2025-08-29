@@ -35,9 +35,9 @@ export default class InventoryScreen {
       h: canvas_size.y - 4 * tile_size
     };
     g.canvas.drawRectangle({ rectangle: bg_rect, color: "rgba(34, 34, 34, 0.8)" });
-    g.canvas.drawText({ position: title_pos, text: "Inventory", align: "center" });
-    if (!g.player?.inventory) return;
+    g.canvas.drawText({ position: title_pos, text: "INVENTORY", align: "center" });
 
+    if (!g.player?.inventory) return;
     const inventory_items_sheet = (g.resources.images["inventory_items_sheet"] as ImageResource).image;
     const getCol = (i: number) => (i % this.max_cols) * tile_size * this.scale + 6 * tile_size;
     const getRow = (i: number) => Math.floor(i / this.max_cols) * tile_size * this.scale + 6 * tile_size;
@@ -68,7 +68,7 @@ export default class InventoryScreen {
       position: value_pos,
       text: `Value: ${g.player.inventory.items[this.active_item].value} | Count: ${
         g.player.inventory.items[this.active_item].count
-      }`
+      }`.toUpperCase()
     });
 
     const getStartY = (index: number): number => {

@@ -12,11 +12,12 @@ def convert_character_data(src_path: str, dest_path: str) -> None:
     ss_w: int = data["width"]
     t_w: int = data["tilewidth"]
     tilesheet_index_offset = 10000;
-    names: List[str] = ["pavla", "character_1", "character_3",  "character_4",  "character_5", "character_6", "character_7", "character_8", "character_9", "character_10", "character_11", "character_12", "character_13", "character_14", "character_15", "character_16", "character_17", "character_18", "character_19", "character_20", "character_21", "character_22", "character_23", "character_24", "david", "character_26", "character_27", "character_28", "character_29", "character_30", "character_31", "character_32", "blank_1"];
+    names: List[str] = ["cat"];
 
-    t_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "characters"), None)
+    t_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "animals"), None)
     if not t_group:
         return
+    print(t_group)
 
     json_content: List[Dict[str, Any]] = []
     character: [Dict[str, Any]] = {
@@ -47,6 +48,6 @@ def convert_character_data(src_path: str, dest_path: str) -> None:
 
 if __name__ == "__main__":
     cwd = os.getcwd()
-    src_path = os.path.join(cwd, "project-files", "data", "characters.json")
-    dest_path = os.path.join(cwd, "src", "data", "characters.json")
+    src_path = os.path.join(cwd, "project-files", "data", "animals.json")
+    dest_path = os.path.join(cwd, "src", "data", "animals.json")
     convert_character_data(src_path, dest_path)
