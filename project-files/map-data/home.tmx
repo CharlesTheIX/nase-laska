@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="12" height="7" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="1">
+ <tileset firstgid="1" source="../tileset.tsx"/>
+ <group id="2" name="background">
+  <layer id="16" name="reference" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+3819,3820,3820,3820,3820,3820,3820,3820,3820,3820,3820,3821,
+3919,3920,3920,3920,3920,3920,3920,3920,3920,3920,3920,3921,
+3919,3920,3920,3920,3920,3920,3920,3920,3920,3920,3920,3921,
+3919,3920,3920,3920,3920,3920,3920,3920,3920,3920,3920,3920,
+3919,3920,3920,3920,3920,3920,3920,3920,3920,3920,3920,3920,
+3221229293,3221229292,3221229292,3221229292,3221229292,3221229292,3221229292,3221229292,3221229292,3221229292,3221229292,3221229291
+</data>
+  </layer>
+  <layer id="1" name="background_1" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <group id="7" name="tiles">
+  <group id="10" name="weather_bottom"/>
+  <group id="3" name="collision">
+   <layer id="5" name="collision_1" width="12" height="7">
+    <data encoding="csv">
+3822,3823,3824,3823,3823,3823,3823,3823,3823,3823,3824,3825,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+   </layer>
+  </group>
+  <group id="9" name="canopy"/>
+  <group id="8" name="weater_top"/>
+ </group>
+ <group id="14" name="respawn_items"/>
+ <group id="13" name="static_items"/>
+ <group id="15" name="transport_points">
+  <layer id="18" name="w_square" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,116,
+0,0,0,0,0,0,0,0,0,0,0,116,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <group id="11" name="spawn_points">
+  <layer id="17" name="initial" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,117,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <group id="12" name="overlays"/>
+</map>

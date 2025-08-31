@@ -12,7 +12,7 @@ def convert_map_data(src_path: str, dest_path: str) -> None:
     m_w: int = data["width"]
     m_h: int = data["height"]
     t_w: int = data["tilewidth"]
-    names: List[str] = ["collision", "canopy", "weather_top", "weather_bottom"]
+    names: List[str] = ["collision", "canopy", "weather_top", "weather_bottom", "static_items", "respawn_items"]
     json_content: Dict[str, Any] = {
         "layers": {},
         "spawn_points": [],
@@ -44,70 +44,70 @@ def convert_map_data(src_path: str, dest_path: str) -> None:
     json_content["spawn_points"] = spawn_points
 
     # Static items
-    si_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "static_items"), None)
-    if not si_group:
-        return
+    # si_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "static_items"), None)
+    # if not si_group:
+    #     return
     
-    static_items: List[Dict[str, Any]] = [] 
-    for layer in si_group.get("layers", []):
-        srcs: List[Dict[str, int]] = []
-        dests: List[Dict[str, int]] = []
-        si: Dict[str, Any] = {
-            "srcs": [],
-            "dests": [],
-            "name": layer.get("name"),
-        }
+    # static_items: List[Dict[str, Any]] = [] 
+    # for layer in si_group.get("layers", []):
+    #     srcs: List[Dict[str, int]] = []
+    #     dests: List[Dict[str, int]] = []
+    #     si: Dict[str, Any] = {
+    #         "srcs": [],
+    #         "dests": [],
+    #         "name": layer.get("name"),
+    #     }
 
-        for index, tile in enumerate(layer.get("data", [])):
-            if tile == 0:
-                continue
-            m_col: int = index % m_w
-            m_row: int = index // m_w
-            ss_col: int = (tile - 1) % ss_w
-            ss_row: int = (tile - 1) // ss_w
-            dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
-            src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
-            srcs.append(src)
-            dests.append(dest)
+    #     for index, tile in enumerate(layer.get("data", [])):
+    #         if tile == 0:
+    #             continue
+    #         m_col: int = index % m_w
+    #         m_row: int = index // m_w
+    #         ss_col: int = (tile - 1) % ss_w
+    #         ss_row: int = (tile - 1) // ss_w
+    #         dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
+    #         src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
+    #         srcs.append(src)
+    #         dests.append(dest)
 
-        si["srcs"] = srcs
-        si["dests"] = dests
-        static_items.append(si)
+    #     si["srcs"] = srcs
+    #     si["dests"] = dests
+    #     static_items.append(si)
         
-    json_content["static_items"] = static_items
+    # json_content["static_items"] = static_items
 
     # Respawn items
-    ri_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "respawn_items"), None)
-    if not ri_group:
-        return
+    # ri_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "respawn_items"), None)
+    # if not ri_group:
+    #     return
     
-    respawn_items: List[Dict[str, Any]] = [] 
-    for layer in ri_group.get("layers", []):
-        srcs: List[Dict[str, int]] = []
-        dests: List[Dict[str, int]] = []
-        ri: Dict[str, Any] = {
-            "srcs": [],
-            "dests": [],
-            "name": layer.get("name"),
-        }
+    # respawn_items: List[Dict[str, Any]] = [] 
+    # for layer in ri_group.get("layers", []):
+    #     srcs: List[Dict[str, int]] = []
+    #     dests: List[Dict[str, int]] = []
+    #     ri: Dict[str, Any] = {
+    #         "srcs": [],
+    #         "dests": [],
+    #         "name": layer.get("name"),
+    #     }
 
-        for index, tile in enumerate(layer.get("data", [])):
-            if tile == 0:
-                continue
-            m_col: int = index % m_w
-            m_row: int = index // m_w
-            ss_col: int = (tile - 1) % ss_w
-            ss_row: int = (tile - 1) // ss_w
-            dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
-            src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
-            srcs.append(src)
-            dests.append(dest)
+    #     for index, tile in enumerate(layer.get("data", [])):
+    #         if tile == 0:
+    #             continue
+    #         m_col: int = index % m_w
+    #         m_row: int = index // m_w
+    #         ss_col: int = (tile - 1) % ss_w
+    #         ss_row: int = (tile - 1) // ss_w
+    #         dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
+    #         src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
+    #         srcs.append(src)
+    #         dests.append(dest)
 
-        ri["srcs"] = srcs
-        ri["dests"] = dests
-        respawn_items.append(ri)
+    #     ri["srcs"] = srcs
+    #     ri["dests"] = dests
+    #     respawn_items.append(ri)
         
-    json_content["respawn_items"] = respawn_items
+    # json_content["respawn_items"] = respawn_items
 
     # Tiles Group
     t_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "tiles"), None)
@@ -118,28 +118,85 @@ def convert_map_data(src_path: str, dest_path: str) -> None:
         lg for lg in t_group.get("layers", []) if lg.get("name") in names
     ]
 
+    static_items: List[Dict[str, Any]] = [] 
+    respawn_items: List[Dict[str, Any]] = [] 
     for l_group in l_groups:
         layers: List[List[Dict[str, Dict[str, int]]]] = []
 
-        for layer in l_group.get("layers", []):
-            tiles: List[Dict[str, Dict[str, int]]] = []
-
-            for index, tile in enumerate(layer.get("data", [])):
-                if tile == 0:
-                    continue
-                m_col: int = index % m_w
-                ss_col: int = (tile - 1) % ss_w
-                ss_row: int = (tile - 1) // ss_w
-                m_row: int = index // m_w
-                t: Dict[str, Dict[str, int]] = {
-                    "dest": {"x": m_col * t_w, "y": m_row * t_w},
-                    "src": {"x": ss_col * t_w, "y": ss_row * t_w},
+        if l_group.get("name") == "static_items":
+            for layer in l_group.get("layers", []):
+                srcs: List[Dict[str, int]] = []
+                dests: List[Dict[str, int]] = []
+                si: Dict[str, Any] = {
+                    "srcs": [],
+                    "dests": [],
+                    "name": layer.get("name"),
                 }
-                tiles.append(t)
 
-            layers.append(tiles)
+                for index, tile in enumerate(layer.get("data", [])):
+                    if tile == 0:
+                        continue
+                    m_col: int = index % m_w
+                    m_row: int = index // m_w
+                    ss_col: int = (tile - 1) % ss_w
+                    ss_row: int = (tile - 1) // ss_w
+                    dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
+                    src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
+                    srcs.append(src)
+                    dests.append(dest)
 
-        json_content["layers"][l_group["name"]] = layers
+                si["srcs"] = srcs
+                si["dests"] = dests
+                static_items.append(si)
+        
+            json_content["static_items"] = static_items
+        elif l_group.get("name") == "respawn_items":
+            for layer in l_group.get("layers", []):
+                srcs: List[Dict[str, int]] = []
+                dests: List[Dict[str, int]] = []
+                ri: Dict[str, Any] = {
+                    "srcs": [],
+                    "dests": [],
+                    "name": layer.get("name"),
+                }
+
+                for index, tile in enumerate(layer.get("data", [])):
+                    if tile == 0:
+                        continue
+                    m_col: int = index % m_w
+                    m_row: int = index // m_w
+                    ss_col: int = (tile - 1) % ss_w
+                    ss_row: int = (tile - 1) // ss_w
+                    dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
+                    src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
+                    srcs.append(src)
+                    dests.append(dest)
+
+                ri["srcs"] = srcs
+                ri["dests"] = dests
+                respawn_items.append(ri)
+        
+            json_content["respawn_items"] = respawn_items
+        else: 
+            for layer in l_group.get("layers", []):
+                tiles: List[Dict[str, Dict[str, int]]] = []
+
+                for index, tile in enumerate(layer.get("data", [])):
+                    if tile == 0:
+                        continue
+                    m_col: int = index % m_w
+                    ss_col: int = (tile - 1) % ss_w
+                    ss_row: int = (tile - 1) // ss_w
+                    m_row: int = index // m_w
+                    t: Dict[str, Dict[str, int]] = {
+                        "dest": {"x": m_col * t_w, "y": m_row * t_w},
+                        "src": {"x": ss_col * t_w, "y": ss_row * t_w},
+                    }
+                    tiles.append(t)
+
+                layers.append(tiles)
+
+            json_content["layers"][l_group["name"]] = layers
 
     with open(dest_path, "w", encoding="utf8") as f:
         json.dump(json_content, f, indent=2)

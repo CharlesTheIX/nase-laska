@@ -1,3 +1,4 @@
+import getAnimalSpriteData from "@/lib/helpers/getAnimalSpriteData";
 import getEmotionSpriteData from "@/lib/helpers/getEmotionSpriteData";
 import getCharacterSpriteData from "@/lib/helpers/getCharacterSpriteData";
 
@@ -17,6 +18,8 @@ export default class Sprite {
         return getCharacterSpriteData(name);
       case "emotion":
         return getEmotionSpriteData(name);
+      case "animal":
+        return getAnimalSpriteData(name);
     }
   };
 

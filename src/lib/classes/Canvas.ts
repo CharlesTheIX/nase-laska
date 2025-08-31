@@ -67,4 +67,15 @@ export default class Canvas {
     this.context.font = `bold ${font.size}px ${font.name}, monospace`;
     this.context.fillText(text, position.x, position.y);
   };
+
+  public restore_scale = (): void => {
+    this.context.restore();
+  };
+
+  public scale = (map_size: IRectangle, camera: Camera): void => {
+    this.context.save();
+    this.context.translate(map_size.w / 2, map_size.h / 2);
+    this.context.scale(camera.scale, camera.scale);
+    this.context.translate(-camera.position.x, -camera.position.y);
+  };
 }

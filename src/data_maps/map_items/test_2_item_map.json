@@ -1,0 +1,50 @@
+{
+  "static_items": [
+    {
+      "name": "message_1",
+      "message": "This area is for testing static map items."
+    },
+    {
+      "name": "message_2",
+      "message": "test"
+    },
+    {
+      "name": "message_3",
+      "message": "This is a static items message. It should change the state to message state, show the message box and allow the player to step through the message content. Once the message is finished the last input should reset the game state to playing."
+    },
+    {
+      "name": "bin_1",
+      "message": "Nothing here but trash."
+    },
+    {
+      "name": "statue_1",
+      "message": "A massive statue of an ancient dragon."
+    }
+  ],
+  "respawn_items": [
+    {
+      "name": "money_1",
+      "item_name": "pouch",
+      "count": 50,
+      "value": 1,
+      "respawn_time": 0,
+      "message": "This should not respawn."
+    },
+    {
+      "name": "cherry_1",
+      "item_name": "cherry",
+      "count": 1,
+      "value": 5,
+      "respawn_time": 30000,
+      "message": "This should respawn after 30 mins."
+    },
+    {
+      "name": "cherry_2",
+      "item_name": "cherry",
+      "count": 1,
+      "value": 5,
+      "respawn_time": 1000,
+      "message": "This should respawn after 1 min."
+    }
+  ]
+}

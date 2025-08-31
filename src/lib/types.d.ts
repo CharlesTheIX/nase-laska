@@ -1,3 +1,9 @@
+/*
+  types.d.ts
+
+  This file contains all the types that are shared between classes and functions in the project.
+*/
+
 /* C */
 type CharacterState = "idle" | "walking";
 
@@ -33,6 +39,23 @@ type DrawTextLinesProps = {
 type GameState = "playing" | "start" | "loading" | "settings" | "message" | "inventory";
 
 /* I */
+type IAnimal = {
+  sprite: Sprite;
+  emotion: Emotion;
+  max_speed: number;
+  velocity: Vector2;
+  position: Vector2;
+  animating: boolean;
+  sprite_name: string;
+  frame_index: number;
+  is_follower: boolean;
+  direction: Direction;
+  state: CharacterState;
+  dest_position: Vector2;
+  frame_index_count: number;
+  animation_timers: { [key: string]: { count: number; timeout: number } };
+};
+
 type ICharacter = {
   sprite: Sprite;
   emotion: Emotion;
@@ -146,7 +169,7 @@ type SpriteFrameName = "upper" | "lower";
 
 type SpriteFrameSetName = "idle" | "walking";
 
-type SpriteType = "character" | "emotion";
+type SpriteType = "character" | "emotion" | "animal";
 
 type StaticItemData = {
   name: string;

@@ -2,7 +2,7 @@ import Game from "@/lib/classes/Game";
 import Canvas from "@/lib/classes/Canvas";
 import Vector2 from "@/lib/classes/Vector2";
 import { getInputKeySets } from "@/lib/inputKeys";
-import { canvas_size, tile_size, font } from "@/lib/globals";
+import { canvas_size, tile_size } from "@/lib/globals";
 import convertMessageToMessageArray from "@/lib/helpers/convertMessageToMessageArray";
 
 export default class MessageScreen {
@@ -24,6 +24,8 @@ export default class MessageScreen {
 
   public draw = (canvas: Canvas): void => {
     if (!this.message.length) return;
+
+    this.message = this.message.toUpperCase();
     if (!this.current_message.length) {
       this.current_message = convertMessageToMessageArray(this.message, canvas, canvas_size.x - 5 * tile_size);
     }
@@ -39,8 +41,9 @@ export default class MessageScreen {
         this.complete = true;
         return;
       }
+
       const position = { x: r.x + tile_size, y: getStartY((i % max_lines) * max_lines) };
-      canvas.drawText({ position, text: this.current_message[i].toUpperCase() });
+      canvas.drawText({ position, text: this.current_message[i] });
       if (i === this.current_message.length - 1) this.complete = true;
     }
 

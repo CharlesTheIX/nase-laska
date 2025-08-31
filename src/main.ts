@@ -20,7 +20,7 @@ const init = (): void => {
     resources.clearLoadingScreen();
     const canvas: Canvas = Canvas.init(canvas_element);
     const input_handler: InputHandler = InputHandler.init();
-    const game: Game = Game.init({ canvas, resources, input_handler });
+    const game: Game = Game.init(canvas, resources, input_handler);
     game.start();
   }, 100);
 };

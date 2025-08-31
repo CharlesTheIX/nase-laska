@@ -1,16 +1,16 @@
-export const getInputKeys = (): Set<string> => {
-  const input_key_set: Set<string> = new Set();
-  const input_key_sets: KeySetMap = getInputKeySets();
-  Object.values(input_key_sets).map((keys: Set<string>) => {
-    for (const key of keys.keys()) input_key_set.add(key);
-  });
-  return input_key_set;
-};
+/*
+  inputKeys.ts
+
+  This file is used to create and export key sets so that the types of player input can 
+  be controlled from a single place, And new key groups by adding them to the returned
+  object within the getInputKeySets function below.
+*/
 
 export const getInputKeySets = (): KeySetMap => {
   return {
     dev: new Set<string>().add("z"),
     run: new Set<string>().add("Shift"),
+    camera: new Set<string>().add("-").add("="),
     settings: new Set<string>().add("p").add("P"),
     inventory: new Set<string>().add("i").add("I"),
     action: new Set<string>().add(" ").add("Enter"),
@@ -21,14 +21,29 @@ export const getInputKeySets = (): KeySetMap => {
   };
 };
 
-export const getMovementKeys = (): Set<string> => {
-  const movement_keys: Set<string> = new Set();
+export const getInputKeys = (set_names?: string[]): Set<string> => {
+  const keys: Set<string> = new Set();
   const input_key_sets: KeySetMap = getInputKeySets();
-  const movement_set_names: string[] = ["up", "down", "left", "right"];
-  Object.keys(input_key_sets).map((name: string) => {
-    if (movement_set_names.includes(name)) {
-      for (const key of input_key_sets[name].keys()) movement_keys.add(key);
-    }
-  });
-  return movement_keys;
+  if (set_names && set_names.length > 0) {
+    Object.keys(input_key_sets).map((name: string) => {
+      if (set_names.includes(name) && input_key_sets[name]) {
+        for (const key of input_key_sets[name].keys()) keys.add(key);
+      }
+    });
+  } else {
+    Object.values(input_key_sets).map((set: Set<string>) => {
+      for (const key of set.keys()) {
+        keys.add(key);
+      }
+    });
+  }
+  return keys;
 };
+
+export const getActionKeys = (): Set<string> => getInputKeys(["action"]);
+export const getCameraKeys = (): Set<string> => getInputKeys(["camera"]);
+export const getDevKeys = (): Set<string> => getInputKeys(["dev"]);
+export const getInventoryKeys = (): Set<string> => getInputKeys(["inventory"]);
+export const getMovementKeys = (): Set<string> => getInputKeys(["up", "down", "left", "right"]);
+export const getRunKeys = (): Set<string> => getInputKeys(["run"]);
+export const getSettingsKeys = (): Set<string> => getInputKeys(["settings"]);

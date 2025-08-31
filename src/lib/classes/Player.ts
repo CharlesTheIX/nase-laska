@@ -30,7 +30,10 @@ export default class Player {
 
   public update = (time_step: number, game: Game): void => {
     if (!game.map) return;
+    this.character.input_timer.update(time_step);
     this.character.emotion.update(time_step);
+    if (!this.character.input_timer.complete) return this.character.updateFrame(time_step);
+
     this.character.max_speed = Math.ceil((tile_size * this.game_speed) / time_step);
     if (this.character.animating && player_movement_type === "tiled") {
       this.character.moveToDestination();
@@ -62,8 +65,8 @@ export default class Player {
       game.message_screen.message = item.item.message;
     }
 
-    updatePlayerDestinationPosition(time_step, game.input_handler, this.character);
     this.character.updateFrame(time_step);
+    updatePlayerDestinationPosition(time_step, game.input_handler, this.character);
     const has_map_collision = getCharacterMapCollisions(this.character, game.map);
     const has_map_edge_collision = getCharacterMapEdgeCollision(this.character, game.map);
     if (has_map_collision || has_map_edge_collision) this.character.dest_position = this.character.position.duplicate();

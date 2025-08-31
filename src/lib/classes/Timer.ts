@@ -1,3 +1,5 @@
+type TimerType = "game" | "count_down";
+
 export default class Timer {
   type: string;
   count: number;
@@ -6,7 +8,7 @@ export default class Timer {
   running: boolean;
   complete: boolean;
 
-  constructor(type: string, timeout: number, value?: number) {
+  constructor(type: TimerType, timeout: number, value?: number) {
     this.count = 0;
     this.type = type;
     this.running = false;
@@ -23,7 +25,7 @@ export default class Timer {
     }
   }
 
-  static init = (type: string, timeout: number, value?: number): Timer => new Timer(type, timeout);
+  static init = (type: TimerType, timeout: number, value?: number): Timer => new Timer(type, timeout, value);
 
   public pause = (): void => {
     this.running = false;

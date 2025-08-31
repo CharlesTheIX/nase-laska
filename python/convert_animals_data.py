@@ -17,7 +17,6 @@ def convert_character_data(src_path: str, dest_path: str) -> None:
     t_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "animals"), None)
     if not t_group:
         return
-    print(t_group)
 
     json_content: List[Dict[str, Any]] = []
     character: [Dict[str, Any]] = {

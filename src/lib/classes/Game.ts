@@ -1,6 +1,7 @@
 import { fps } from "@/lib/globals";
 import Map from "@/lib/classes/Map";
 import Timer from "@/lib/classes/Timer";
+import Animal from "@/lib/classes/Animal";
 import Camera from "@/lib/classes/Camera";
 import Canvas from "@/lib/classes/Canvas";
 import Player from "@/lib/classes/Player";
@@ -34,28 +35,30 @@ export default class Game {
   start_screen: StartScreen | null;
   inventory_screen: InventoryScreen;
 
-  private constructor(g: IGame) {
+  private constructor(canvas: Canvas, resources: Resources, input_handler: InputHandler) {
     this.map = null;
     this.player = null;
     this.raf_id = null;
     this.state = "start";
     this.running = false;
     this.time_step = fps;
-    this.canvas = g.canvas;
+    this.canvas = canvas;
     this.start_screen = null;
     this.last_frame_time = 0;
     this.accumulated_time = 0;
+    this.resources = resources;
     this.camera = Camera.init();
-    this.resources = g.resources;
-    this.input_handler = g.input_handler;
+    this.input_handler = input_handler;
     this.message_screen = MessageScreen.init();
     this.play_timer = Timer.init("game", 1000);
     this.settings_screen = SettingsScreen.init();
     this.inventory_screen = InventoryScreen.init();
-    this.input_timer = Timer.init("count_down", 250);
+    this.input_timer = Timer.init("count_down", 300);
   }
 
-  static init = (g: IGame): Game => new Game(g);
+  static init = (canvas: Canvas, resources: Resources, input_handler: InputHandler): Game => {
+    return new Game(canvas, resources, input_handler);
+  };
 
   public continueGame = (): void => {
     const save_data = this.resources.storage.player_save_state;
@@ -75,6 +78,88 @@ export default class Game {
     this.map.day_cycle_opacity = getDayCycleData(this.play_timer.value).opacity;
     this.start_screen = null;
     this.play_timer.start();
+  };
+
+  private draw = () => {
+    switch (this.state) {
+      case "start":
+        if (!this.start_screen) break;
+        this.start_screen.draw(this.canvas);
+        break;
+
+      case "settings":
+        this.settings_screen.draw(this.canvas);
+        break;
+
+      case "inventory":
+      case "message":
+      case "playing":
+        if (!this.map || !this.player) break;
+        const spritesheet = (this.resources.images["spritesheet"] as ImageResource).image;
+        const animal_sheet = (this.resources.images["animal_sheet"] as ImageResource).image;
+        const emotions_sheet = (this.resources.images["emotion_sheet"] as ImageResource).image;
+        const character_sheet = (this.resources.images["character_sheet"] as ImageResource).image;
+        this.map.drawBackground(this.canvas, this.camera);
+
+        this.canvas.scale(this.map.size, this.camera);
+        if (this.map.showWeather) this.map.drawLayer("weather_bottom", this.canvas, spritesheet, this.camera);
+        this.map.drawLayer("collision", this.canvas, spritesheet, this.camera);
+        this.map.drawStaticItems(this.canvas, spritesheet, this.camera);
+        this.map.drawRespawnItems(this.canvas, spritesheet, this.camera);
+
+        this.map.animals.forEach((a: Animal) => {
+          a.drawLayer({
+            layer: "lower",
+            canvas: this.canvas,
+            camera: this.camera,
+            spritesheet: animal_sheet,
+            m_size: this.map?.size.value as IRectangle
+          });
+        });
+
+        this.player.character.drawLayer({
+          layer: "lower",
+          canvas: this.canvas,
+          camera: this.camera,
+          m_size: this.map.size.value,
+          spritesheet: character_sheet
+        });
+
+        this.map.animals.forEach((a: Animal) => {
+          a.drawLayer({
+            layer: "upper",
+            canvas: this.canvas,
+            camera: this.camera,
+            spritesheet: animal_sheet,
+            m_size: this.map?.size.value as IRectangle
+          });
+        });
+
+        this.player.character.drawLayer({
+          layer: "upper",
+          canvas: this.canvas,
+          camera: this.camera,
+          m_size: this.map.size.value,
+          spritesheet: character_sheet
+        });
+
+        this.player.character.emotion.draw({
+          canvas: this.canvas,
+          camera: this.camera,
+          m_size: this.map.size.value,
+          spritesheet: emotions_sheet,
+          position: this.player.character.position
+        });
+
+        this.map.drawLayer("canopy", this.canvas, spritesheet, this.camera);
+        if (this.map.showWeather) this.map.drawLayer("weather_top", this.canvas, spritesheet, this.camera);
+        this.canvas.restore_scale();
+
+        this.map.drawDayCycle(this.canvas, this.camera, this.play_timer.value);
+        if (this.state === "message") this.message_screen.draw(this.canvas);
+        else if (this.state === "inventory") this.inventory_screen.draw(this);
+        break;
+    }
   };
 
   public loadMap = (name: string, state: GameState): void => {
@@ -150,84 +235,22 @@ export default class Game {
     this.loadMap(save_data.map_name, "playing");
     if (!this.map) return;
     const position = this.map.getSpawnPoint("initial");
+    this.camera.position = position;
+    this.resources.storage.updatePlayerTempData({ position });
     this.player = Player.init({
       position,
       inventory: null,
       camera: this.camera,
       sprite_name: save_data.sprite_name
     });
-    this.resources.storage.updatePlayerTempData({ position });
     this.save();
-    this.start_screen = null;
     this.play_timer.start();
+    this.start_screen = null;
   };
 
   public stop = (): void => {
     if (this.raf_id) cancelAnimationFrame(this.raf_id);
     this.running = false;
-  };
-
-  private draw = () => {
-    switch (this.state) {
-      case "start":
-        if (!this.start_screen) break;
-        this.start_screen.draw(this.canvas);
-        break;
-
-      case "settings":
-        this.settings_screen.draw(this.canvas);
-        break;
-
-      case "inventory":
-      case "message":
-      case "playing":
-        if (!this.map || !this.player) break;
-        const spritesheet = (this.resources.images["spritesheet"] as ImageResource).image;
-        this.map.drawBackground(this.canvas, this.camera);
-
-        this.canvas.context.save();
-        this.canvas.context.translate(this.map.size.w / 2, this.map.size.h / 2);
-        this.canvas.context.scale(this.camera.scale, this.camera.scale);
-        this.canvas.context.translate(-this.camera.position.x, -this.camera.position.y);
-        if (this.map.showWeather) this.map.drawLayer("weather_bottom", this.canvas, spritesheet, this.camera);
-        this.map.drawLayer("collision", this.canvas, spritesheet, this.camera);
-        this.map.drawStaticItems(this.canvas, spritesheet, this.camera);
-        this.map.drawRespawnItems(this.canvas, spritesheet, this.camera);
-
-        const character_sheet = (this.resources.images["character_sheet"] as ImageResource).image;
-        this.player.character.drawLayer({
-          layer: "lower",
-          canvas: this.canvas,
-          camera: this.camera,
-          m_size: this.map.size.value,
-          spritesheet: character_sheet
-        });
-        this.player.character.drawLayer({
-          layer: "upper",
-          canvas: this.canvas,
-          camera: this.camera,
-          m_size: this.map.size.value,
-          spritesheet: character_sheet
-        });
-
-        const emotions_sheet = (this.resources.images["emotion_sheet"] as ImageResource).image;
-        this.player.character.emotion.draw({
-          canvas: this.canvas,
-          camera: this.camera,
-          m_size: this.map.size.value,
-          spritesheet: emotions_sheet,
-          position: this.player.character.position
-        });
-
-        this.map.drawLayer("canopy", this.canvas, spritesheet, this.camera);
-        if (this.map.showWeather) this.map.drawLayer("weather_top", this.canvas, spritesheet, this.camera);
-        this.canvas.context.restore();
-
-        this.map.drawDayCycle(this.canvas, this.camera, this.play_timer.value);
-        if (this.state === "message") this.message_screen.draw(this.canvas);
-        else if (this.state === "inventory") this.inventory_screen.draw(this);
-        break;
-    }
   };
 
   private update = (time_step: number): void => {
@@ -292,7 +315,10 @@ export default class Game {
         }
 
         this.player.update(time_step, this);
-        this.camera.update(this.player.character.position);
+        this.camera.update(this.player.character.position, this.input_handler, time_step);
+        this.map.animals.forEach((a: Animal) => {
+          a.update(this.player as Player, time_step);
+        });
         break;
     }
   };

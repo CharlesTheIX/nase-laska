@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "animals.tmx",
+    "activeFile": "map-data/home.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -15,19 +15,19 @@
             "scale": 1.4537878787878786,
             "selectedLayer": 10,
             "viewCenter": {
-                "x": 193.28817092235542,
-                "y": 236.96717040125068
+                "x": 359.7498697238145,
+                "y": 260.01042209484115
             }
         },
         "animals.tmx": {
             "expandedGroupLayers": [
                 2
             ],
-            "scale": 2.71,
+            "scale": 10.0473,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 184.13284132841326,
-                "y": 135.97785977859778
+                "x": 216.0779512903964,
+                "y": 26.325480477342175
             }
         },
         "animals.tsx": {
@@ -38,8 +38,8 @@
             "scale": 0.88,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 61.363636363636374,
-                "y": 323.29545454545456
+                "x": 60.795454545454504,
+                "y": 323.2954545454545
             }
         },
         "characters.tsx": {
@@ -70,29 +70,42 @@
             "scaleInDock": 1,
             "scaleInEditor": 0.43
         },
+        "map-data/home.tmx": {
+            "expandedGroupLayers": [
+                2,
+                7
+            ],
+            "scale": 5.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 88.90909090909092,
+                "y": 39.00000000000001
+            }
+        },
         "map-data/test_1.tmx": {
             "expandedGroupLayers": [
-                13,
                 36,
+                13,
                 27
             ],
             "scale": 3.106,
             "selectedLayer": 16,
             "viewCenter": {
-                "x": 342.2408242112042,
+                "x": 342.2408242112041,
                 "y": 173.0521571152608
             }
         },
         "map-data/test_2.tmx": {
             "expandedGroupLayers": [
                 9,
-                3
+                3,
+                12
             ],
-            "scale": 2,
-            "selectedLayer": 11,
+            "scale": 1.4537878787878786,
+            "selectedLayer": 15,
             "viewCenter": {
-                "x": 279.75,
-                "y": 197.5
+                "x": 325.35695674830646,
+                "y": 272.73579989577917
             }
         },
         "map-data/test_3.tmx": {
@@ -127,34 +140,32 @@
             "scaleInEditor": 0.43
         }
     },
-    "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/data",
+    "last.exportedFilePath": "/Users/davidcharles/Projects/nase-laska/project-files/map-data",
     "last.externalTilesetPath": "/Users/davidcharles/Projects/nase-laska/project-files",
     "last.imagePath": "/Users/davidcharles/Projects/nase-laska/project-files/data",
-    "map.height": 17,
+    "map.height": 33,
     "map.lastUsedExportFilter": "All Files (*)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 23,
+    "map.width": 45,
     "openFiles": [
-        "_tempalte.tmx",
-        "animals.tmx",
-        "characters.tmx"
+        "map-data/home.tmx"
     ],
     "project": "nase-laska.tiled-project",
     "recentFiles": [
-        "_tempalte.tmx",
-        "characters.tmx",
+        "map-data/home.tmx",
+        "map-data/test_2.tmx",
+        "map-data/test_1.tmx",
         "animals.tmx",
+        "tileset.tsx",
+        "characters.tmx",
+        "_tempalte.tmx",
         "animals.tsx",
         "inventory_items.tmx",
         "inventory_items.tsx",
-        "tileset.tsx",
-        "map-data/test_1.tmx",
         "characters.tsx",
-        "emotions.tsx",
-        "emotions.tmx",
-        "map-data/test_2.tmx"
+        "emotions.tsx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

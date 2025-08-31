@@ -1,13 +1,15 @@
-import Vector2 from "@/lib/classes/Vector2";
+/*
+  globals.ts
 
+  This file is intended to contain any variables that need to be changed on a game by game bases
+  so that you do not need to dive into the code to be able to change variables.
+*/
+
+import Vector2 from "@/lib/classes/Vector2";
 export const tile_size = 16;
 
 /* C */
 export const canvas_size = Vector2.init(45, 33).scale(tile_size);
-export const characters_sheet_src = {
-  png: "./assets/images/characters.png",
-  webp: "./assets/images/characters.webp"
-};
 
 /* D */
 const day_cycle_segment_size = 12;
@@ -23,20 +25,17 @@ export const day_cycle = {
   }
 };
 
-/* E */
-export const emotion_sheet_src = {
-  png: "./assets/images/emotions.png",
-  webp: "./assets/images/emotions.webp"
-};
-
 /* F */
 export const font = { name: "GameFont", size: tile_size };
 export const fps = 1000 / 60;
 
 /* I */
-export const inventory_items_sheet_src = {
-  png: "./assets/images/inventory_items.png",
-  webp: "./assets/images/inventory_items.webp"
+export const initial_resources = {
+  animal_sheet: "./assets/images/animals.png",
+  emotion_sheet: "./assets/images/emotions.png",
+  spritesheet: "./assets/images/spritesheet.png",
+  character_sheet: "./assets/images/characters.png",
+  inventory_items_sheet: "./assets/images/inventory_items.png"
 };
 
 /* L */
@@ -49,10 +48,3 @@ export const loading_element_data = {
 /* P */
 export const player_input_timeout = 0;
 export const player_movement_type: PlayerMovementType = "tiled";
-
-/* S */
-export const scale = 1;
-export const spritesheet_srcs = {
-  png: "./assets/images/spritesheet.png",
-  webp: "./assets/images/spritesheet.webp"
-};
