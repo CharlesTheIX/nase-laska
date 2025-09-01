@@ -4,7 +4,6 @@ import os
 import json
 from typing import Any, Dict, List
 
-
 def convert_emotions_data(src_path: str, dest_path: str) -> None:
     with open(src_path, "r", encoding="utf8") as f:
         data: Dict[str, Any] = json.load(f)
@@ -27,7 +26,7 @@ def convert_emotions_data(src_path: str, dest_path: str) -> None:
         ss_row: int = (tile - tilesheet_index_offset - 1) // ss_w
         t: Dict[str, Any] = {
             "name": name,
-            "srcs": [{"x": ss_col * t_w, "y": ss_row * t_w}],
+            "srcs": [{"x": ss_col * t_w, "y": ss_row * t_w}]
         }
         json_content.append(t)
 

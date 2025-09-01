@@ -4,7 +4,6 @@ import os
 import json
 from typing import Any, Dict, List
 
-
 def convert_inventory_items_data(src_path: str, dest_path: str) -> None:
     with open(src_path, "r", encoding="utf8") as f:
         data: Dict[str, Any] = json.load(f)
@@ -27,12 +26,13 @@ def convert_inventory_items_data(src_path: str, dest_path: str) -> None:
         ss_row: int = (tile - tilesheet_index_offset - 1) // ss_w
         t: Dict[str, Any] = {
             "name": name,
-            "srcs": [{"x": ss_col * t_w, "y": ss_row * t_w}],
+            "srcs": [{"x": ss_col * t_w, "y": ss_row * t_w}]
         }
         json_content.append(t)
 
     with open(dest_path, "w", encoding="utf8") as f:
         json.dump(json_content, f, indent=2)
+
 
 if __name__ == "__main__":
     cwd = os.getcwd()

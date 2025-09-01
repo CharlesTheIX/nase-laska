@@ -5,7 +5,6 @@ import shutil
 from PIL import Image
 from typing import NoReturn
 
-
 def copy_convert_images(src_dir: str, dest_dir: str) -> NoReturn:
     if not os.path.isdir(dest_dir):
         os.makedirs(dest_dir, exist_ok=True)

@@ -4,7 +4,6 @@ import os
 import json
 from typing import Any, Dict, List
 
-
 def convert_character_data(src_path: str, dest_path: str) -> None:
     with open(src_path, "r", encoding="utf8") as f:
         data: Dict[str, Any] = json.load(f)
@@ -19,11 +18,11 @@ def convert_character_data(src_path: str, dest_path: str) -> None:
         return
 
     json_content: List[Dict[str, Any]] = []
-    character: [Dict[str, Any]] = {
+    character: Dict[str, Any] = {
         "srcs": [],
-        "name": "",
+        "name": ""
     }
-    for index, tile in enumerate(t_group.get("data", [])):
+    for tile in enumerate(t_group.get("data", [])):
         if tile == 0:
             continue
         ss_col: int = (tile -tilesheet_index_offset - 1) % ss_w
@@ -32,7 +31,7 @@ def convert_character_data(src_path: str, dest_path: str) -> None:
         if (ss_row % 2 == 0 and ss_col == 0):
             character = {
                 "srcs": [],
-                "name": names[n_index] if 0 <= n_index < len(names) else "david",
+                "name": names[n_index] if 0 <= n_index < len(names) else "cat"
             }
 
         t: Dict[str, Any] = { "x": ss_col * t_w, "y": ss_row * t_w }

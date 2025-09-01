@@ -37,77 +37,11 @@ def convert_map_data(src_path: str, dest_path: str) -> None:
             m_row: int = index // m_w
             sp = {
                 "name": layer.get("name"),
-                "dest": {"x": m_col * t_w, "y": m_row * t_w},
+                "dest": {"x": m_col * t_w, "y": m_row * t_w}
             }
             spawn_points.append(sp)
         
     json_content["spawn_points"] = spawn_points
-
-    # Static items
-    # si_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "static_items"), None)
-    # if not si_group:
-    #     return
-    
-    # static_items: List[Dict[str, Any]] = [] 
-    # for layer in si_group.get("layers", []):
-    #     srcs: List[Dict[str, int]] = []
-    #     dests: List[Dict[str, int]] = []
-    #     si: Dict[str, Any] = {
-    #         "srcs": [],
-    #         "dests": [],
-    #         "name": layer.get("name"),
-    #     }
-
-    #     for index, tile in enumerate(layer.get("data", [])):
-    #         if tile == 0:
-    #             continue
-    #         m_col: int = index % m_w
-    #         m_row: int = index // m_w
-    #         ss_col: int = (tile - 1) % ss_w
-    #         ss_row: int = (tile - 1) // ss_w
-    #         dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
-    #         src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
-    #         srcs.append(src)
-    #         dests.append(dest)
-
-    #     si["srcs"] = srcs
-    #     si["dests"] = dests
-    #     static_items.append(si)
-        
-    # json_content["static_items"] = static_items
-
-    # Respawn items
-    # ri_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "respawn_items"), None)
-    # if not ri_group:
-    #     return
-    
-    # respawn_items: List[Dict[str, Any]] = [] 
-    # for layer in ri_group.get("layers", []):
-    #     srcs: List[Dict[str, int]] = []
-    #     dests: List[Dict[str, int]] = []
-    #     ri: Dict[str, Any] = {
-    #         "srcs": [],
-    #         "dests": [],
-    #         "name": layer.get("name"),
-    #     }
-
-    #     for index, tile in enumerate(layer.get("data", [])):
-    #         if tile == 0:
-    #             continue
-    #         m_col: int = index % m_w
-    #         m_row: int = index // m_w
-    #         ss_col: int = (tile - 1) % ss_w
-    #         ss_row: int = (tile - 1) // ss_w
-    #         dest: Dict[str, int] = {"x": m_col * t_w, "y": m_row * t_w}
-    #         src: Dict[str, int] = {"x": ss_col * t_w, "y": ss_row * t_w}
-    #         srcs.append(src)
-    #         dests.append(dest)
-
-    #     ri["srcs"] = srcs
-    #     ri["dests"] = dests
-    #     respawn_items.append(ri)
-        
-    # json_content["respawn_items"] = respawn_items
 
     # Tiles Group
     t_group = next((lg for lg in data.get("layers", []) if lg.get("name") == "tiles"), None)
@@ -130,7 +64,7 @@ def convert_map_data(src_path: str, dest_path: str) -> None:
                 si: Dict[str, Any] = {
                     "srcs": [],
                     "dests": [],
-                    "name": layer.get("name"),
+                    "name": layer.get("name")
                 }
 
                 for index, tile in enumerate(layer.get("data", [])):
@@ -157,7 +91,7 @@ def convert_map_data(src_path: str, dest_path: str) -> None:
                 ri: Dict[str, Any] = {
                     "srcs": [],
                     "dests": [],
-                    "name": layer.get("name"),
+                    "name": layer.get("name")
                 }
 
                 for index, tile in enumerate(layer.get("data", [])):
@@ -190,7 +124,7 @@ def convert_map_data(src_path: str, dest_path: str) -> None:
                     m_row: int = index // m_w
                     t: Dict[str, Dict[str, int]] = {
                         "dest": {"x": m_col * t_w, "y": m_row * t_w},
-                        "src": {"x": ss_col * t_w, "y": ss_row * t_w},
+                        "src": {"x": ss_col * t_w, "y": ss_row * t_w}
                     }
                     tiles.append(t)
 
