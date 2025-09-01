@@ -34,6 +34,18 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "animation_items.tmx": {
+            "scale": 1.4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 360,
+                "y": 263.92857142857144
+            }
+        },
+        "animation_items.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "characters.tmx": {
             "scale": 0.88,
             "selectedLayer": 0,
@@ -72,14 +84,26 @@
         },
         "map-data/home.tmx": {
             "expandedGroupLayers": [
+                2
+            ],
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 93.45454545454547,
+                "y": 63.727272727272734
+            }
+        },
+        "map-data/start.tmx": {
+            "expandedGroupLayers": [
+                39,
                 2,
                 7
             ],
-            "scale": 5.5,
-            "selectedLayer": 0,
+            "scale": 2.2081,
+            "selectedLayer": 17,
             "viewCenter": {
-                "x": 88.90909090909092,
-                "y": 39.00000000000001
+                "x": 219.19297133282006,
+                "y": 387.8900412119017
             }
         },
         "map-data/test_1.tmx": {
@@ -97,15 +121,14 @@
         },
         "map-data/test_2.tmx": {
             "expandedGroupLayers": [
-                9,
-                3,
+                7,
                 12
             ],
-            "scale": 1.4537878787878786,
-            "selectedLayer": 15,
+            "scale": 1.35,
+            "selectedLayer": 23,
             "viewCenter": {
-                "x": 325.35695674830646,
-                "y": 272.73579989577917
+                "x": 192.59259259259255,
+                "y": 263.33333333333337
             }
         },
         "map-data/test_3.tmx": {
@@ -136,7 +159,7 @@
             }
         },
         "tileset.tsx": {
-            "scaleInDock": 1.0386,
+            "scaleInDock": 0.6533,
             "scaleInEditor": 0.43
         }
     },
@@ -154,18 +177,18 @@
     ],
     "project": "nase-laska.tiled-project",
     "recentFiles": [
-        "map-data/home.tmx",
         "map-data/test_2.tmx",
+        "map-data/home.tmx",
+        "animation_items.tsx",
+        "animation_items.tmx",
+        "map-data/start.tmx",
         "map-data/test_1.tmx",
         "animals.tmx",
         "tileset.tsx",
         "characters.tmx",
         "_tempalte.tmx",
         "animals.tsx",
-        "inventory_items.tmx",
-        "inventory_items.tsx",
-        "characters.tsx",
-        "emotions.tsx"
+        "inventory_items.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

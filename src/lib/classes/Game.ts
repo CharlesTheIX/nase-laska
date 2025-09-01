@@ -1,4 +1,4 @@
-import { fps } from "@/lib/globals";
+import { fps, tile_size } from "@/lib/globals";
 import Map from "@/lib/classes/Map";
 import Timer from "@/lib/classes/Timer";
 import Animal from "@/lib/classes/Animal";
@@ -14,6 +14,7 @@ import StartScreen from "@/lib/classes/Screens/StartScreen";
 import MessageScreen from "@/lib/classes/Screens/MessageScreen";
 import SettingsScreen from "@/lib/classes/Screens/SettingsScreen";
 import InventoryScreen from "@/lib/classes/Screens/InventoryScreen";
+import Vector2 from "./Vector2";
 
 export default class Game {
   raf_id: any;
@@ -63,21 +64,24 @@ export default class Game {
   public continueGame = (): void => {
     const save_data = this.resources.storage.player_save_state;
     const map_name = save_data.map_name ?? "";
-    this.loadMap(map_name, "playing");
+    this.loadMap(map_name);
     if (!this.map) return;
-    const sprite_name = save_data.sprite_name ?? "";
-    const position = save_data?.position ?? this.map.getSpawnPoint("initial");
     const inventory = save_data?.inventory ?? null;
+    const sprite_name = save_data.sprite_name ?? "";
+    this.play_timer.value = save_data?.time_played ?? 0;
+    const position = save_data?.position ?? this.map.getSpawnPoint("initial");
+    this.map.day_cycle_opacity = getDayCycleData(this.play_timer.value).opacity;
+    this.camera.position = Vector2.init(position.x + tile_size / 2, position.y + tile_size / 2);
     this.player = Player.init({
       position,
       inventory,
       sprite_name,
       camera: this.camera
     });
-    this.play_timer.value = save_data?.time_played ?? 0;
-    this.map.day_cycle_opacity = getDayCycleData(this.play_timer.value).opacity;
-    this.start_screen = null;
+    this.state = "playing";
     this.play_timer.start();
+    this.start_screen = null;
+    this.resources.clearLoadingScreen();
   };
 
   private draw = () => {
@@ -99,6 +103,7 @@ export default class Game {
         const animal_sheet = (this.resources.images["animal_sheet"] as ImageResource).image;
         const emotions_sheet = (this.resources.images["emotion_sheet"] as ImageResource).image;
         const character_sheet = (this.resources.images["character_sheet"] as ImageResource).image;
+        const animation_items_sheet = (this.resources.images["animation_items_sheet"] as ImageResource).image;
         this.map.drawBackground(this.canvas, this.camera);
 
         this.canvas.scale(this.map.size, this.camera);
@@ -107,48 +112,45 @@ export default class Game {
         this.map.drawStaticItems(this.canvas, spritesheet, this.camera);
         this.map.drawRespawnItems(this.canvas, spritesheet, this.camera);
 
-        this.map.animals.forEach((a: Animal) => {
-          a.drawLayer({
-            layer: "lower",
-            canvas: this.canvas,
-            camera: this.camera,
-            spritesheet: animal_sheet,
-            m_size: this.map?.size.value as IRectangle
-          });
+        this.player.follower?.drawLayer({
+          layer: "lower",
+          canvas: this.canvas,
+          camera: this.camera,
+          spritesheet: animal_sheet,
+          m_size: this.map?.size.value as IRectangle
         });
-
         this.player.character.drawLayer({
           layer: "lower",
           canvas: this.canvas,
           camera: this.camera,
-          m_size: this.map.size.value,
+          m_size: this.map.size.value as IRectangle,
           spritesheet: character_sheet
         });
 
-        this.map.animals.forEach((a: Animal) => {
-          a.drawLayer({
-            layer: "upper",
-            canvas: this.canvas,
-            camera: this.camera,
-            spritesheet: animal_sheet,
-            m_size: this.map?.size.value as IRectangle
-          });
+        this.map.animation_items.forEach((i) => {
+          i.draw(this.canvas, this.camera, this.map?.size.value as IRectangle, animation_items_sheet);
         });
 
+        this.player.follower?.drawLayer({
+          layer: "upper",
+          canvas: this.canvas,
+          camera: this.camera,
+          spritesheet: animal_sheet,
+          m_size: this.map?.size.value as IRectangle
+        });
         this.player.character.drawLayer({
           layer: "upper",
           canvas: this.canvas,
           camera: this.camera,
-          m_size: this.map.size.value,
+          m_size: this.map.size.value as IRectangle,
           spritesheet: character_sheet
         });
-
         this.player.character.emotion.draw({
           canvas: this.canvas,
           camera: this.camera,
-          m_size: this.map.size.value,
           spritesheet: emotions_sheet,
-          position: this.player.character.position
+          position: this.player.character.position,
+          m_size: this.map.size.value as IRectangle
         });
 
         this.map.drawLayer("canopy", this.canvas, spritesheet, this.camera);
@@ -162,7 +164,7 @@ export default class Game {
     }
   };
 
-  public loadMap = (name: string, state: GameState): void => {
+  public loadMap = (name: string): void => {
     this.state = "loading";
     this.resources.drawLoadingScreen();
     const map_image = new Image();
@@ -183,6 +185,7 @@ export default class Game {
       background_image: map_image,
       overlay_images: { day_cycle: day_cycle_image }
     });
+
     const loading_interval = setInterval(() => {
       this.resources.count = 0;
       if (!this.resources.images["map"]) this.resources.count++;
@@ -192,8 +195,6 @@ export default class Game {
       this.resources.progress_element.style.width = `${(100 * this.resources.count) / 2}%`;
       if (2 < this.resources.count) return;
       clearInterval(loading_interval);
-      this.resources.clearLoadingScreen();
-      this.state = state;
     }, 100);
   };
 
@@ -202,7 +203,7 @@ export default class Game {
     var delta_time: number = timestamp - this.last_frame_time;
     this.last_frame_time = timestamp;
     this.accumulated_time += delta_time;
-    this.canvas.clear(this.canvas.rectangle);
+    this.canvas.clear();
     while (this.accumulated_time >= this.time_step) {
       this.update(this.time_step);
       this.accumulated_time -= this.time_step;
@@ -232,20 +233,23 @@ export default class Game {
 
   public startNewGame = (): void => {
     const save_data = Storage.defaultStorageData;
-    this.loadMap(save_data.map_name, "playing");
+    this.loadMap(save_data.map_name);
     if (!this.map) return;
     const position = this.map.getSpawnPoint("initial");
-    this.camera.position = position;
     this.resources.storage.updatePlayerTempData({ position });
+    this.camera.position = Vector2.init(position.x + tile_size / 2, position.y + tile_size / 2);
     this.player = Player.init({
       position,
       inventory: null,
       camera: this.camera,
-      sprite_name: save_data.sprite_name
+      sprite_name: save_data.sprite_name,
+      follower: Animal.init({ is_follower: true })
     });
     this.save();
+    this.state = "playing";
     this.play_timer.start();
     this.start_screen = null;
+    this.resources.clearLoadingScreen();
   };
 
   public stop = (): void => {
@@ -265,7 +269,6 @@ export default class Game {
       return this.save();
     }
 
-    this.play_timer.update(time_step);
     switch (this.state) {
       case "start":
         if (!this.start_screen) {
@@ -286,6 +289,7 @@ export default class Game {
         break;
 
       case "inventory":
+        this.play_timer.update(time_step);
         if (!this.player?.inventory || key_sets.inventory.has(last_key)) {
           this.state = "playing";
           this.input_timer.start();
@@ -296,7 +300,13 @@ export default class Game {
 
       case "message":
       case "playing":
+        this.play_timer.update(time_step);
         if (!this.map || !this.player) break;
+
+        this.map.animation_items.forEach((i) => {
+          i.update(time_step);
+        });
+
         if (this.state === "message") {
           this.message_screen.update(this);
           break;
@@ -315,10 +325,8 @@ export default class Game {
         }
 
         this.player.update(time_step, this);
+        this.player.follower?.update(this.player as Player, time_step);
         this.camera.update(this.player.character.position, this.input_handler, time_step);
-        this.map.animals.forEach((a: Animal) => {
-          a.update(this.player as Player, time_step);
-        });
         break;
     }
   };

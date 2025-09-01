@@ -91,6 +91,8 @@ export default class Animal {
 
   public update = (p: Player, time_step: number): void => {
     if (this.is_follower) {
+      // if (p.character.state !== "walking") return;
+      if (p.character.position === this.position) return;
       this.state = p.character.state;
       this.velocity = p.character.velocity;
       this.direction = p.character.direction;

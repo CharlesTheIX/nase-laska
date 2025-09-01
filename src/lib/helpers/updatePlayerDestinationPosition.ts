@@ -10,7 +10,6 @@ export default (time_step: number, input_handler: InputHandler, character: Chara
   const last_key: string = input_handler.last_key;
   const movement_key_pressed: boolean = [...input_handler.keys].some((key) => getMovementKeys().has(key));
 
-  if (movement_key_pressed) state = "walking";
   if (key_sets.up.has(last_key)) direction = "up";
   else if (key_sets.down.has(last_key)) direction = "down";
   else if (key_sets.left.has(last_key)) direction = "left";
@@ -19,6 +18,7 @@ export default (time_step: number, input_handler: InputHandler, character: Chara
   if (character.direction !== direction) {
     character.input_timer.start();
   } else {
+    if (movement_key_pressed) state = "walking";
     switch (player_movement_type) {
       case "omni":
         if ([...input_handler.keys].some((key) => key_sets.up.has(key))) character.velocity.y = -character.max_speed;

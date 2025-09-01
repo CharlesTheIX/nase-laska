@@ -18,8 +18,8 @@ export default class Canvas {
 
   static init = (c: HTMLCanvasElement): Canvas => new Canvas(c);
 
-  public clear = (rectangle: IRectangle): void => {
-    this.context.clearRect(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
+  public clear = (): void => {
+    this.context.clearRect(this.rectangle.x, this.rectangle.y, this.rectangle.w, this.rectangle.h);
   };
 
   public drawGrid = (camera: Camera): void => {

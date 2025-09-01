@@ -99,6 +99,7 @@ type IPlayer = {
   position: IVector2;
   sprite_name: string;
   character?: Character;
+  follower?: Character | Animal | null;
   inventory: { name: string; count: number }[] | null;
 };
 
@@ -127,6 +128,7 @@ type MapData = {
   size: { w: number; h: number };
   static_items: StaticItemData[];
   respawn_items: RespawnItemData[];
+  animation_items?: AnimationItemData[];
   layers: { [key: string]: MapLayerData[][] };
   spawn_points: { name: string; dest: IVector2 }[];
 };

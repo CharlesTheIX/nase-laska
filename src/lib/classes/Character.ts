@@ -31,7 +31,7 @@ export default class Character {
     this.direction = c.direction ?? "down";
     this.position = c.position ?? Vector2.zero();
     this.emotion = Emotion.init("blank_1", false);
-    this.input_timer = Timer.init("count_down", 100);
+    this.input_timer = Timer.init("count_down", 0);
     this.animation_timers = { walking: { count: 0, timeout: 60 } };
     this.sprite = Sprite.init("character", c.sprite_name ?? "pavla");
     this.dest_position = c.dest_position ?? this.position.duplicate();
@@ -77,6 +77,8 @@ export default class Character {
     normal = Vector2.scale(normal, this.velocity.length);
     this.position.add(normal);
   };
+
+  public update = (): void => {};
 
   public updateFrame = (time_step: number): void => {
     var offset: number = 0;

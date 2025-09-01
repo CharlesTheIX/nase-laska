@@ -35,7 +35,8 @@ export const initial_resources = {
   emotion_sheet: "./assets/images/emotions.png",
   spritesheet: "./assets/images/spritesheet.png",
   character_sheet: "./assets/images/characters.png",
-  inventory_items_sheet: "./assets/images/inventory_items.png"
+  inventory_items_sheet: "./assets/images/inventory_items.png",
+  animation_items_sheet: "./assets/images/animation_items.png"
 };
 
 /* L */

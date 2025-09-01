@@ -26,5 +26,6 @@
       "respawn_time": 2000,
       "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut convallis lorem."
     }
-  ]
+  ],
+  "animation_items": []
 }

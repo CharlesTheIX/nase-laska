@@ -81,11 +81,11 @@
 </data>
    </layer>
   </group>
+  <group id="13" name="static_items"/>
+  <group id="14" name="respawn_items"/>
   <group id="9" name="canopy"/>
   <group id="8" name="weater_top"/>
  </group>
- <group id="14" name="respawn_items"/>
- <group id="13" name="static_items"/>
  <group id="15" name="transport_points"/>
  <group id="11" name="spawn_points"/>
  <group id="12" name="overlays"/>

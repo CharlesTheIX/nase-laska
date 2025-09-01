@@ -15,6 +15,8 @@ export default class StartScreen {
     if (has_save_data) this.options = ["CONTINUE", ...this.options];
   }
 
+  private static readonly KEY_SETS = getInputKeySets();
+  private static readonly MOVEMENT_KEYS = getMovementKeys();
   static init = (has_save_data: boolean): StartScreen => new StartScreen(has_save_data);
 
   public draw = (canvas: Canvas): void => {
@@ -28,22 +30,21 @@ export default class StartScreen {
   };
 
   public update = (g: Game): void => {
-    const key_sets: KeySetMap = getInputKeySets();
     const last_key: string = g.input_handler.last_key;
-    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "CONTINUE"))
-      return g.continueGame();
-    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "NEW GAME"))
-      return g.startNewGame();
-    if (key_sets.action.has(last_key) && this.active_option === this.options.findIndex((i) => i === "SETTINGS")) {
-      g.state = "settings";
-      return g.input_timer.start();
+    if (StartScreen.KEY_SETS.action.has(last_key)) {
+      if (this.active_option === this.options.findIndex((i) => i === "CONTINUE")) return g.continueGame();
+      if (this.active_option === this.options.findIndex((i) => i === "NEW GAME")) return g.startNewGame();
+      if (this.active_option === this.options.findIndex((i) => i === "SETTINGS")) {
+        g.state = "settings";
+        return g.input_timer.start();
+      }
     }
 
     var next_value: number = this.active_option;
-    const movement_key_pressed: boolean = [...g.input_handler.keys].some((key) => getMovementKeys().has(key));
+    const movement_key_pressed: boolean = [...g.input_handler.keys].some((key) => StartScreen.MOVEMENT_KEYS.has(key));
     if (movement_key_pressed) g.input_timer.start();
-    if (key_sets.up.has(last_key)) next_value -= 1;
-    else if (key_sets.down.has(last_key)) next_value += 1;
+    if (StartScreen.KEY_SETS.up.has(last_key)) next_value -= 1;
+    else if (StartScreen.KEY_SETS.down.has(last_key)) next_value += 1;
 
     // Capped indexing
     if (next_value < 0) next_value = 0;

@@ -46,5 +46,6 @@
       "respawn_time": 1000,
       "message": "This should respawn after 1 min."
     }
-  ]
+  ],
+  "animation_items": []
 }

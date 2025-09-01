@@ -9,8 +9,10 @@ import getMapData from "@/lib/helpers/getMapData";
 import StaticItem from "@/lib/classes/Items/StaticItem";
 import RespawnItem from "@/lib/classes/Items/RespawnItem";
 import getDayCycleData from "@/lib/helpers/getDayCycleData";
+import AnimationItem from "@/lib/classes/Items/AnimationItem";
 import getMapStaticItems from "@/lib/helpers/getMapStaticItems";
 import getMapRespawnItems from "@/lib/helpers/getMapRespawnItems";
+import getMapAnimationItems from "@/lib/helpers/getMapAnimationItems";
 import applyCameraVectorTranslation from "@/lib/helpers/applyCameraVectorTranslation";
 
 export default class Map {
@@ -24,11 +26,13 @@ export default class Map {
   static_items: StaticItem[];
   respawn_items: RespawnItem[];
   background_position: Vector2;
+  animation_items: AnimationItem[];
   background_image: HTMLImageElement | null;
   overlay_images: { [key: string]: HTMLImageElement };
 
   private constructor(m: IMap) {
     this.npcs = [];
+    this.animals = [];
     this.name = m.map_name;
     this.showWeather = false;
     this.day_cycle_opacity = 0;
@@ -36,7 +40,7 @@ export default class Map {
     this.overlay_images = m.overlay_images;
     this.background_position = Vector2.zero();
     this.background_image = m.background_image;
-    this.animals = [Animal.init({ is_follower: true })];
+    this.animation_items = getMapAnimationItems(this.name);
     this.static_items = getMapStaticItems(this.map_data.static_items, this.name);
     this.size = Rectangle.init(0, 0, this.map_data.size.w, this.map_data.size.h);
     this.respawn_items = getMapRespawnItems(this.map_data.respawn_items, this.name);

@@ -20,7 +20,7 @@ export default class Storage {
   static defaultStorageData = {
     time_played: 0,
     inventory: null,
-    map_name: "test_2",
+    map_name: "start",
     sprite_name: "pavla",
     position: { x: 144, y: 96 }
   };

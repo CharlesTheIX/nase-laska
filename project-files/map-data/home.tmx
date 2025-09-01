@@ -41,11 +41,11 @@
    </layer>
   </group>
   <group id="9" name="canopy"/>
-  <group id="8" name="weater_top"/>
+  <group id="8" name="weater_top" visible="0"/>
  </group>
- <group id="14" name="respawn_items"/>
- <group id="13" name="static_items"/>
- <group id="15" name="transport_points">
+ <group id="14" name="respawn_items" visible="0"/>
+ <group id="13" name="static_items" visible="0"/>
+ <group id="15" name="transport_points" visible="0">
   <layer id="18" name="w_square" width="12" height="7">
    <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -58,7 +58,7 @@
 </data>
   </layer>
  </group>
- <group id="11" name="spawn_points">
+ <group id="11" name="spawn_points" visible="0">
   <layer id="17" name="initial" width="12" height="7">
    <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -71,5 +71,5 @@
 </data>
   </layer>
  </group>
- <group id="12" name="overlays"/>
+ <group id="12" name="overlays" visible="0"/>
 </map>
