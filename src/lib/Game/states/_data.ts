@@ -1,3 +1,12 @@
+export const controls_data: { [key: string]: any } = {
+  en: {
+    options: ["Back"],
+  },
+  cz: {
+    options: ["Zpět"],
+  },
+};
+
 export const settings_data: { [key: string]: any } = {
   en: {
     options: ["Music Volume", "SFX Volume", "Language", "Controls", "Back"],

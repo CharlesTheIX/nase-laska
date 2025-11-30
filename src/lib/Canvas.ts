@@ -92,6 +92,12 @@ export default class Canvas {
     this.cxt.fillText(text, pos.x, pos.y);
   };
 
+  public measureText = (text: string, font_size?: number, font_weight?: string): { w: number; h: number } => {
+    this.cxt.font = `${font_weight || "normal"} ${font_size || font.size}px ${font.name}, monospace`;
+    const metrics = this.cxt.measureText(text);
+    return { w: metrics.width, h: font.size };
+  };
+
   public restoreScale = (): void => {
     this.cxt.restore();
   };

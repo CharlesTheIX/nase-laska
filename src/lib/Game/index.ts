@@ -4,6 +4,7 @@ import Start from "./states/Start";
 import Storage from "@/lib/Storage";
 import Resources from "@/lib/Resources";
 import Settings from "./states/Settings";
+import Controls from "./states/Controls";
 import ErrorHandler from "@/lib/ErrorHandler";
 import InputHandler from "@/lib/InputHandler";
 
@@ -13,10 +14,12 @@ export default class Game {
   private _raf_id: any = null;
   private _start_screen: Start;
   private _resources: Resources;
+  private _last_state: string = "";
   private _menu_input_timer: Timer;
   private _state: string = "start";
   private _running: boolean = false;
   private _settings_screen: Settings;
+  private _controls_screen: Controls;
   private _last_frame_time: number = 0;
   private _input_handler: InputHandler;
   private _accumulated_time: number = 0;
@@ -30,6 +33,7 @@ export default class Game {
     const menu_input_timeout = this.resources.audios["menu_move"]!.duration * 1000 * 2; // adjust as per the audio file
     this._menu_input_timer = Timer.init("countdown", menu_input_timeout);
     this._start_screen = Start.init(this._storage, this._menu_input_timer);
+    this._controls_screen = Controls.init(this._storage, this._menu_input_timer);
     this._settings_screen = Settings.init(this._storage, this._menu_input_timer);
   }
 
@@ -37,10 +41,6 @@ export default class Game {
   public static init = (canvas: Canvas, resources: Resources, storage: Storage): Game => new Game(canvas, resources, storage);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  get accumulated_time(): number {
-    return this._accumulated_time;
-  }
-
   get canvas(): Canvas {
     return this._canvas;
   }
@@ -49,28 +49,16 @@ export default class Game {
     return this._input_handler;
   }
 
-  get last_frame_time(): number {
-    return this._last_frame_time;
-  }
-
-  get raf_id(): any {
-    return this._raf_id;
+  get last_state(): string {
+    return this._last_state;
   }
 
   get resources(): Resources {
     return this._resources;
   }
 
-  get running(): boolean {
-    return this._running;
-  }
-
   get settings_screen(): Settings {
     return this._settings_screen;
-  }
-
-  get start_screen(): Start {
-    return this._start_screen;
   }
 
   get state(): string {
@@ -79,10 +67,6 @@ export default class Game {
 
   get storage(): any {
     return this._storage;
-  }
-
-  get time_step(): number {
-    return this._time_step;
   }
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
@@ -95,6 +79,7 @@ export default class Game {
         break;
     }
 
+    this._last_state = this._state;
     this._state = new_state;
   }
 
@@ -109,14 +94,16 @@ export default class Game {
   private draw = (): void => {
     try {
       switch (this.state) {
+        case "controls":
+          this._controls_screen.draw(this);
+          break;
+
         case "start":
-          if (!this.start_screen) throw new Error("Start screen is not initialized.");
-          this.start_screen.draw(this);
+          this._start_screen.draw(this);
           break;
 
         case "settings":
-          if (!this.settings_screen) throw new Error("Settings screen is not initialized.");
-          this.settings_screen.draw(this);
+          this._settings_screen.draw(this);
           break;
       }
       // this.canvas.drawGrid();
@@ -127,41 +114,43 @@ export default class Game {
   };
 
   public mainLoop = (timestamp: number): void => {
-    if (!this.running) return;
-    var delta_time = timestamp - this.last_frame_time;
+    if (!this._running) return;
+    var delta_time = timestamp - this._last_frame_time;
     this._last_frame_time = timestamp;
     this._accumulated_time += delta_time;
     this.canvas.clear();
-    while (this.accumulated_time >= this.time_step) {
-      this.update(this.time_step);
-      this._accumulated_time -= this.time_step;
+    while (this._accumulated_time >= this._time_step) {
+      this.update(this._time_step);
+      this._accumulated_time -= this._time_step;
     }
     this.draw();
     this._raf_id = requestAnimationFrame(this.mainLoop);
   };
 
   public start = (): void => {
-    if (this.running) return;
+    if (this._running) return;
     this._running = true;
     this._raf_id = requestAnimationFrame(this.mainLoop);
   };
 
   public stop = (): void => {
-    if (this.raf_id) cancelAnimationFrame(this.raf_id);
+    if (this._raf_id) cancelAnimationFrame(this._raf_id);
     this._running = false;
   };
 
   private update = (time_step: number): void => {
     try {
       switch (this.state) {
+        case "controls":
+          this._controls_screen.update(this, time_step);
+          break;
+
         case "start":
-          if (!this.start_screen) throw new Error("Start screen is not initialized.");
-          this.start_screen.update(this, time_step);
+          this._start_screen.update(this, time_step);
           break;
 
         case "settings":
-          if (!this.settings_screen) throw new Error("Settings screen is not initialized.");
-          this.settings_screen.update(this, time_step);
+          this._settings_screen.update(this, time_step);
           break;
       }
     } catch (err: any) {

@@ -1,6 +1,6 @@
 import Storage from "@/lib/Storage";
 import ErrorHandler from "@/lib/ErrorHandler";
-import { init_image_srcs, init_audio_srcs } from "./data";
+import { init_image_srcs, init_audio_srcs } from "./_data";
 
 type JsonResource<T = any> = { loaded: boolean; json: T | null };
 type ImageResource = { loaded: boolean; image: HTMLImageElement };
@@ -40,6 +40,8 @@ export default class Resources {
         this._count++;
         const audio = new Audio();
         audio.src = this.audio_srcs[key];
+        if (key === "music") audio.volume = this._storage.settings_data.music_volume / 10;
+        else audio.volume = this._storage.settings_data.sfx_volume / 10;
         this.audios[key] = { audio, loaded: false, duration: 0 };
         audio.oncanplaythrough = () => {
           (this.audios[key] as AudioResource).loaded = true;
@@ -160,6 +162,24 @@ export default class Resources {
       audioResource.audio.pause();
       audioResource.audio.currentTime = 0;
     }
+  };
+
+  public setAudioVolume = (volume: number, music: boolean = true): void => {
+    if (music) {
+      const audioResource = this._audios["music"];
+      if (!audioResource || !audioResource.loaded) return;
+      audioResource.audio.volume = volume;
+      this.storage.settings_data = { music_volume: Math.round(volume * 10) };
+      return;
+    }
+
+    Object.keys(this.audios).forEach((key: string) => {
+      if (key === "music") return;
+      const audioResource = this._audios[key];
+      if (!audioResource || !audioResource.loaded) return;
+      audioResource.audio.volume = volume;
+    });
+    this.storage.settings_data = { sfx_volume: Math.round(volume * 10) };
   };
 
   public unloadJson = (key: string): void => {
