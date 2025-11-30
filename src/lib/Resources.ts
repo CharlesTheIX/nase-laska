@@ -2,12 +2,15 @@ import ErrorHandler from "./ErrorHandler";
 
 type JsonResource<T = any> = { loaded: boolean; json: T | null };
 type ImageResource = { loaded: boolean; image: HTMLImageElement };
+type AudioResource = { loaded: boolean; audio: HTMLAudioElement };
 
 const init_image_srcs = {
   spritesheet: "./assets/images/spritesheet.webp",
   start_screen: "./assets/images/start-screen/background.png",
   settings_screen: "./assets/images/settings-screen/background.png",
 };
+
+const init_audio_srcs: { [key: string]: string } = {};
 
 export default class Resources {
   private _count: number = 0;
@@ -16,11 +19,14 @@ export default class Resources {
   private _progress_elmt: HTMLDivElement;
   private _loading_transition_duration = 600;
   private _image_srcs: { [key: string]: string };
+  private _audio_srcs: { [key: string]: string } = {};
   private _jsons: { [key: string]: JsonResource | null } = {};
   private _images: { [key: string]: ImageResource | null } = {};
+  private _audios: { [key: string]: AudioResource | null } = {};
 
   private constructor(storage?: any) {
     this._storage = storage || null;
+    this._audio_srcs = { ...init_audio_srcs };
     this._image_srcs = { ...init_image_srcs };
     this._loading_elmt = document.getElementById(`loading`) as HTMLDivElement;
     this._progress_elmt = document.getElementById(`progress`) as HTMLDivElement;
@@ -36,6 +42,17 @@ export default class Resources {
           (this.images[key] as ImageResource).loaded = true;
         };
       });
+
+      Object.keys(this.audio_srcs).forEach((key: string) => {
+        if (!this.audio_srcs[key]) return;
+        this._count++;
+        const audio = new Audio();
+        audio.src = this.image_srcs[key];
+        this.audios[key] = { audio, loaded: false };
+        audio.onload = () => {
+          (this.audios[key] as AudioResource).loaded = true;
+        };
+      });
     } catch (err: any) {
       const msg = `Resources initialization error: ${err.message}`;
       ErrorHandler.fatal(msg);
@@ -47,6 +64,14 @@ export default class Resources {
   public static init = (storage?: any): Resources => new Resources(storage);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
+  get audios(): { [key: string]: AudioResource | null } {
+    return this._audios;
+  }
+
+  get audio_srcs(): { [key: string]: string } {
+    return this._audio_srcs;
+  }
+
   get count(): number {
     return this._count;
   }
