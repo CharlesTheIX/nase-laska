@@ -5,8 +5,8 @@ export const init_audio_srcs = {
 };
 
 export const init_image_srcs = {
-  control_screen: "./assets/images/controls-screen/background.png",
-  settings_screen: "./assets/images/settings-screen/background.png",
+  controls_screen: "./assets/images/start-screen/background.png",
+  settings_screen: "./assets/images/start-screen/background.png",
   spritesheet: "./assets/images/spritesheet.webp",
   start_screen: "./assets/images/start-screen/background.png",
 };

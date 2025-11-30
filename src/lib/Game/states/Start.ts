@@ -45,7 +45,7 @@ export default class Start {
     const option_count = save_data ? 3 : 2;
     while (count < option_count) {
       var text_index = 0;
-      const color = this._menu_index === count ? Color.white : Color.gray;
+      const color = this._menu_index === count ? Color.white : Color.grey;
       if (save_data && count === 0) text_index = 1;
       else if ((save_data && count === 1) || (!save_data && count === 0)) text_index = 0;
       else if ((save_data && count === 2) || (!save_data && count === 1)) text_index = 2;

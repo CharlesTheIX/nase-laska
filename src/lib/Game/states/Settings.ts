@@ -39,16 +39,17 @@ export default class Settings {
   private drawBackgroundLayer = (game: Game): void => {
     const rect = Rectangle.init(0, 0, game.canvas.rect.w, game.canvas.rect.h);
     const resource_img = game.resources.images[this._resource_name];
-    const img_rect = rect.duplicate().scale(1).translate(Vector2.init(0, 300));
+    const img_rect = rect.duplicate().scale(1.2).translate(Vector2.init(0, 150));
     if (resource_img && resource_img.loaded) game.canvas.drawImage(resource_img.image, img_rect, rect);
   };
 
   private drawTextLayer = (game: Game): void => {
     var count = 0;
-    var y_pos = game.canvas.rect.h / 2 + 4 * 16;
+    var color: string;
+    var y_pos = 3 * 16;
     const settings = this._storage.settings_data;
     while (count < data[settings.language].options.length) {
-      const color = this._menu_index === count ? Color.white : Color.gray;
+      color = this._menu_index === count ? Color.white : Color.grey;
       var text = data[settings.language].options[count];
       if (count < 3) text += ": ";
       game.canvas.drawText(text, Vector2.init(3 * 16, y_pos + count * 32), color);
@@ -59,6 +60,9 @@ export default class Settings {
       else if (count === 2) game.canvas.drawText(`< ${settings.language.toUpperCase()} >`, Vector2.init(pos_x, y_pos + count * 32), color);
       count++;
     }
+    y_pos = game.canvas.rect.h - 3 * 16;
+    color = this._menu_index === 4 ? Color.white : Color.grey;
+    game.canvas.drawText(settings.language === "en" ? "Back" : "Zpět", Vector2.init(3 * 16, y_pos), color);
   };
 
   public update(game: Game, time_step: number): void {
@@ -66,7 +70,7 @@ export default class Settings {
     if (this._input_timer.state === "running") return;
 
     const last_key = game.input_handler.lastKeyPressed();
-    const option_count = data[this._storage.settings_data.language].options.length;
+    const option_count = data[this._storage.settings_data.language].options.length + 1;
     switch (last_key) {
       case "w":
       case "W":
