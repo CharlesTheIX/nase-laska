@@ -4,30 +4,23 @@ import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
 import Rectangle from "@/lib/Rectangle";
-
-const data: { [key: string]: any } = {
-  en: {
-    options: ["Music Volume", "SFX Volume", "Language", "Controls", "Back"],
-  },
-  cz: {
-    options: ["Hlasitost hudby", "Hlasitost efektů", "Jazyk", "Ovládání", "Zpět"],
-  },
-};
+import { settings_data as data } from "./data";
 
 export default class Settings {
   private _storage: Storage;
+  private _input_timer: Timer;
   private _menu_index: number = 0;
   private _sfx_volume: number = 5;
   private _music_volume: number = 5;
   private _resource_name: string = "settings_screen";
-  private _input_timer: Timer = Timer.init("countdown", 120);
 
-  constructor(storage: Storage) {
+  constructor(storage: Storage, timer: Timer) {
     this._storage = storage;
+    this._input_timer = timer;
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage): Settings => new Settings(storage);
+  public static init = (storage: Storage, timer: Timer): Settings => new Settings(storage, timer);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   get menu_index(): number {
@@ -77,32 +70,34 @@ export default class Settings {
   public update(game: Game, time_step: number): void {
     this._input_timer.update();
     if (this._input_timer.state === "running") return;
-    this._input_timer.reset();
 
     const last_key = game.input_handler.lastKeyPressed();
-    console.log(this._menu_index);
+    const option_count = data[this._storage.language].options.length;
     switch (last_key) {
       case "w":
       case "W":
       case "KeyW":
       case "ArrowUp":
-        // play sound effect
-        this._menu_index = (this._menu_index - 1 + data[this._storage.language].options.length) % data[this._storage.language].options.length;
+        this._input_timer.reset();
+        game.resources.playAudio("menu_move");
+        this._menu_index = (this._menu_index - 1 + option_count) % option_count;
         break;
 
       case "s":
       case "S":
       case "KeyS":
       case "ArrowDown":
-        // play sound effect
-        this._menu_index = (this._menu_index + 1) % data[this._storage.language].options.length;
+        this._input_timer.reset();
+        game.resources.playAudio("menu_move");
+        this._menu_index = (this._menu_index + 1) % option_count;
         break;
 
       case " ":
       case "Space":
       case "Enter":
         if (this._menu_index === 4) {
-          // play sound effect
+          this._input_timer.reset();
+          game.resources.playAudio("menu_move");
           this._menu_index = 0;
           game.state = "start";
         }

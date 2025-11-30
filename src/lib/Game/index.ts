@@ -1,3 +1,4 @@
+import Timer from "@/lib/Timer";
 import Canvas from "@/lib/Canvas";
 import Start from "./states/Start";
 import Storage from "@/lib/Storage";
@@ -7,35 +8,33 @@ import ErrorHandler from "@/lib/ErrorHandler";
 import InputHandler from "@/lib/InputHandler";
 
 export default class Game {
-  private _raf_id: any;
   private _canvas: Canvas;
-  private _running: boolean;
   private _storage: Storage;
-  private _time_step: number;
+  private _raf_id: any = null;
   private _start_screen: Start;
   private _resources: Resources;
-  private _last_frame_time: number;
+  private _menu_input_timer: Timer;
   private _state: string = "start";
-  private _accumulated_time: number;
+  private _running: boolean = false;
   private _settings_screen: Settings;
+  private _last_frame_time: number = 0;
   private _input_handler: InputHandler;
+  private _accumulated_time: number = 0;
+  private _time_step: number = 1000 / 60;
 
-  private constructor(canvas: Canvas, resources: Resources) {
-    this._raf_id = null;
-    this._running = false;
+  private constructor(canvas: Canvas, resources: Resources, storage: Storage) {
     this._canvas = canvas;
-    this._last_frame_time = 0;
-    this._accumulated_time = 0;
-    this._time_step = 1000 / 60;
+    this._storage = storage;
     this._resources = resources;
-    this._storage = Storage.init();
     this._input_handler = InputHandler.init();
-    this._start_screen = Start.init(this._storage);
-    this._settings_screen = Settings.init(this._storage);
+    const menu_input_timeout = this.resources.audios["menu_move"]!.duration * 1000 * 2; // adjust as per the audio file
+    this._menu_input_timer = Timer.init("countdown", menu_input_timeout);
+    this._start_screen = Start.init(this._storage, this._menu_input_timer);
+    this._settings_screen = Settings.init(this._storage, this._menu_input_timer);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (canvas: Canvas, resources: Resources): Game => new Game(canvas, resources);
+  public static init = (canvas: Canvas, resources: Resources, storage: Storage): Game => new Game(canvas, resources, storage);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   get accumulated_time(): number {
@@ -66,11 +65,11 @@ export default class Game {
     return this._running;
   }
 
-  get settings_screen(): Settings | null {
+  get settings_screen(): Settings {
     return this._settings_screen;
   }
 
-  get start_screen(): Start | null {
+  get start_screen(): Start {
     return this._start_screen;
   }
 
@@ -90,11 +89,9 @@ export default class Game {
   set state(new_state: string) {
     switch (new_state) {
       case "start":
-        if (!this._start_screen) this._start_screen = Start.init(this._storage);
         break;
 
       case "settings":
-        if (!this._settings_screen) this._settings_screen = Settings.init(this._storage);
         break;
     }
 
@@ -122,7 +119,7 @@ export default class Game {
           this.settings_screen.draw(this);
           break;
       }
-      this.canvas.drawGrid();
+      // this.canvas.drawGrid();
     } catch (err: any) {
       ErrorHandler.fatal(err.message);
       throw new Error(err.message);

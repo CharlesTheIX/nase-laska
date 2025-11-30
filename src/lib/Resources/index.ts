@@ -1,33 +1,25 @@
-import ErrorHandler from "./ErrorHandler";
+import Storage from "@/lib/Storage";
+import ErrorHandler from "@/lib/ErrorHandler";
+import { init_image_srcs, init_audio_srcs } from "./data";
 
 type JsonResource<T = any> = { loaded: boolean; json: T | null };
 type ImageResource = { loaded: boolean; image: HTMLImageElement };
-type AudioResource = { loaded: boolean; audio: HTMLAudioElement };
-
-const init_image_srcs = {
-  spritesheet: "./assets/images/spritesheet.webp",
-  start_screen: "./assets/images/start-screen/background.png",
-  settings_screen: "./assets/images/settings-screen/background.png",
-};
-
-const init_audio_srcs: { [key: string]: string } = {};
+type AudioResource = { loaded: boolean; audio: HTMLAudioElement; duration: number };
 
 export default class Resources {
+  private _storage: Storage;
   private _count: number = 0;
-  private _storage: any | null;
   private _loading_elmt: HTMLDivElement;
   private _progress_elmt: HTMLDivElement;
   private _loading_transition_duration = 600;
-  private _image_srcs: { [key: string]: string };
-  private _audio_srcs: { [key: string]: string } = {};
   private _jsons: { [key: string]: JsonResource | null } = {};
   private _images: { [key: string]: ImageResource | null } = {};
   private _audios: { [key: string]: AudioResource | null } = {};
+  private _image_srcs: { [key: string]: string } = { ...init_image_srcs };
+  private _audio_srcs: { [key: string]: string } = { ...init_audio_srcs };
 
-  private constructor(storage?: any) {
-    this._storage = storage || null;
-    this._audio_srcs = { ...init_audio_srcs };
-    this._image_srcs = { ...init_image_srcs };
+  private constructor(storage: Storage) {
+    this._storage = storage;
     this._loading_elmt = document.getElementById(`loading`) as HTMLDivElement;
     this._progress_elmt = document.getElementById(`progress`) as HTMLDivElement;
 
@@ -47,10 +39,11 @@ export default class Resources {
         if (!this.audio_srcs[key]) return;
         this._count++;
         const audio = new Audio();
-        audio.src = this.image_srcs[key];
-        this.audios[key] = { audio, loaded: false };
-        audio.onload = () => {
+        audio.src = this.audio_srcs[key];
+        this.audios[key] = { audio, loaded: false, duration: 0 };
+        audio.oncanplaythrough = () => {
           (this.audios[key] as AudioResource).loaded = true;
+          (this.audios[key] as AudioResource).duration = audio.duration;
         };
       });
     } catch (err: any) {
@@ -61,7 +54,7 @@ export default class Resources {
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage?: any): Resources => new Resources(storage);
+  public static init = (storage: Storage): Resources => new Resources(storage);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   get audios(): { [key: string]: AudioResource | null } {
@@ -118,8 +111,9 @@ export default class Resources {
     this._count = 0;
     this._jsons = {};
     this._images = {};
-    this._storage = null;
+    this._audios = {};
     this._image_srcs = {};
+    this._audio_srcs = {};
     this._loading_elmt = null as any;
     this._progress_elmt = null as any;
   };
@@ -144,6 +138,27 @@ export default class Resources {
       const msg = `Failed to load JSON resource "${key}" from "${src}": ${err.message}`;
       ErrorHandler.fatal(msg);
       throw new Error(msg);
+    }
+  };
+
+  public playAudio = (key: string, loop: boolean = false): void => {
+    const audioResource = this._audios[key];
+    if (audioResource && audioResource.loaded) {
+      audioResource.audio.loop = loop;
+      audioResource.audio.play().catch((err) => ErrorHandler.warn(`Failed to play audio "${key}": ${err.message}`));
+    }
+  };
+
+  public pauseAudio = (key: string): void => {
+    const audioResource = this._audios[key];
+    if (audioResource && audioResource.loaded) audioResource.audio.pause();
+  };
+
+  public stopAudio = (key: string): void => {
+    const audioResource = this._audios[key];
+    if (audioResource && audioResource.loaded) {
+      audioResource.audio.pause();
+      audioResource.audio.currentTime = 0;
     }
   };
 

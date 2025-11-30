@@ -29,4 +29,22 @@ export default class ErrorHandler {
     button.focus();
     if (game) game.deinit();
   };
+
+  public static warn = (message: string): void => {
+    const p = document.createElement("p");
+    const msg = `WARNING: ${message}`.trim();
+    const html = document.createElement("div");
+    const body = document.getElementsByTagName("body")[0];
+    p.innerText = msg;
+    html.id = "warning";
+    html.appendChild(p);
+    body.appendChild(html);
+    console.warn(msg);
+    setTimeout((): void => {
+      html.classList.add("hide");
+      setTimeout((): void => {
+        body.removeChild(html);
+      }, 300);
+    }, 3300);
+  };
 }

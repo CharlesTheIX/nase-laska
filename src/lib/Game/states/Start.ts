@@ -4,28 +4,21 @@ import Timer from "@/lib/Timer";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
 import Rectangle from "@/lib/Rectangle";
-
-const data: { [key: string]: any } = {
-  en: {
-    options: ["New Game", "Load Game", "Settings"],
-  },
-  cz: {
-    options: ["Nová hra", "Načíst hru", "Nastavení"],
-  },
-};
+import { start_data as data } from "./data";
 
 export default class Start {
   private _storage: Storage;
+  private _input_timer: Timer;
   private _menu_index: number = 0;
   private _resource_name: string = "start_screen";
-  private _input_timer: Timer = Timer.init("countdown", 120);
 
-  constructor(storage: Storage) {
+  constructor(storage: Storage, timer: Timer) {
     this._storage = storage;
+    this._input_timer = timer;
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage): Start => new Start(storage);
+  public static init = (storage: Storage, timer: Timer): Start => new Start(storage, timer);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   get menu_index(): number {
@@ -39,7 +32,6 @@ export default class Start {
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
   public deinit = (): void => {
     this._menu_index = 0;
-    this._input_timer.deinit();
   };
 
   public draw(game: Game): void {
@@ -74,7 +66,6 @@ export default class Start {
   public update(game: Game, time_step: number): void {
     this._input_timer.update();
     if (this._input_timer.state === "running") return;
-    this._input_timer.reset();
 
     const option_count = game.storage.save_data ? 3 : 2;
     const last_key = game.input_handler.lastKeyPressed();
@@ -83,7 +74,8 @@ export default class Start {
       case "W":
       case "KeyW":
       case "ArrowUp":
-        // play sound effect
+        this._input_timer.reset();
+        game.resources.playAudio("menu_move");
         this._menu_index = (this._menu_index - 1 + option_count) % option_count;
         break;
 
@@ -91,37 +83,37 @@ export default class Start {
       case "S":
       case "KeyS":
       case "ArrowDown":
-        // play sound effect
+        this._input_timer.reset();
+        game.resources.playAudio("menu_move");
         this._menu_index = (this._menu_index + 1) % option_count;
         break;
 
       case " ":
       case "Space":
       case "Enter":
-        // play sound effect
+        this._input_timer.reset();
         switch (this._menu_index) {
           case 0:
+            game.resources.playAudio("start_game");
             if (game.storage.save_data) {
-              // load game
             } else {
-              // new game
             }
             break;
           case 1:
             if (game.storage.save_data) {
-              // new game
+              game.resources.playAudio("start_game");
             } else {
-              this._menu_index = 0;
+              this.deinit();
               game.state = "settings";
+              game.resources.playAudio("menu_move");
             }
             break;
           case 2:
-            this._menu_index = 0;
+            this.deinit();
             game.state = "settings";
+            game.resources.playAudio("menu_move");
             break;
         }
-        break;
-      default:
         break;
     }
   }

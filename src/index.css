@@ -26,6 +26,7 @@ body {
   justify-content: center;
   line-height: 1.5;
   overflow: hidden;
+  position: relative;
   text-transform: uppercase;
 }
 
@@ -135,6 +136,49 @@ main > p {
 #restart {
   color: #bbbbbb;
   cursor: pointer;
+}
+
+#warning {
+  animation: slide-down 300ms linear 0s 1 forwards;
+  border-bottom: #ff5555 2px solid;
+  color: #ff5555;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+}
+#warning.hide {
+  animation: slide-up 300ms linear 0s 1 forwards;
+}
+
+#warning p {
+  font-size: 8px;
+  max-width: 90%;
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@keyframes slid-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
 }
 
 @keyframes on-off-1 {
