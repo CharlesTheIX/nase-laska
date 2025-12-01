@@ -45,13 +45,25 @@ export default class Start {
     const option_count = save_data ? 3 : 2;
     while (count < option_count) {
       var text_index = 0;
-      const color = this._menu_index === count ? Color.white : Color.grey;
+      const color = this._menu_index === count ? Color.white() : Color.grey();
       if (save_data && count === 0) text_index = 1;
       else if ((save_data && count === 1) || (!save_data && count === 0)) text_index = 0;
       else if ((save_data && count === 2) || (!save_data && count === 1)) text_index = 2;
       game.canvas.drawText(data[language].options[text_index], Vector2.init(3 * 16, y_pos + count * 32), color);
       count++;
     }
+  };
+
+  private newGameConfirmationCallback = (result: boolean | number, game: Game): void => {
+    if (result) {
+      game.state = "new_game";
+      game.storage.save_data = null;
+      game.resources.playAudio("start_game");
+    } else {
+      game.state = "start";
+      game.resources.playAudio("menu_move");
+    }
+    this.deinit();
   };
 
   public update(game: Game, time_step: number): void {
@@ -83,29 +95,45 @@ export default class Start {
       case "Space":
       case "Enter":
         this._input_timer.reset();
-        switch (this._menu_index) {
-          case 0:
-            game.resources.playAudio("start_game");
-            if (game.storage.save_data) {
-            } else {
-            }
-            break;
-
-          case 1:
-            if (game.storage.save_data) {
+        if (game.storage.save_data) {
+          switch (this._menu_index) {
+            case 0:
+              this.deinit();
+              game.state = "play";
               game.resources.playAudio("start_game");
-            } else {
+              break;
+
+            case 1:
+              game.resources.playAudio("menu_move");
+              game.message_screen.msgs = [
+                {
+                  type: "yes_no",
+                  text: data[game.storage.settings_data.language].new_game_confirm_msg,
+                  callback: (result: boolean | number, game: Game) => this.newGameConfirmationCallback(result, game),
+                },
+              ];
+              game.state = "message";
+              break;
+
+            case 2:
               this.deinit();
               game.state = "settings";
               game.resources.playAudio("menu_move");
-            }
-            break;
+              break;
+          }
+        } else {
+          this.deinit();
+          switch (this._menu_index) {
+            case 0:
+              game.state = "new_game";
+              game.resources.playAudio("start_game");
+              break;
 
-          case 2:
-            this.deinit();
-            game.state = "settings";
-            game.resources.playAudio("menu_move");
-            break;
+            case 1:
+              game.state = "settings";
+              game.resources.playAudio("menu_move");
+              break;
+          }
         }
         break;
     }

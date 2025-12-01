@@ -20,6 +20,8 @@ export default class Controls {
   public static init = (storage: Storage, timer: Timer): Controls => new Controls(storage, timer);
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
+  public deinit = (): void => {};
+
   public draw(game: Game): void {
     this.drawBackgroundLayer(game);
     this.drawTextLayer(game);
@@ -36,10 +38,10 @@ export default class Controls {
     var y_pos = 3 * 16;
     const language = this._storage.settings_data.language;
     Object.keys(data[language]).forEach((key: string, index: number) => {
-      game.canvas.drawText(data[language][key], Vector2.init(3 * 16, y_pos + index * 32), Color.grey);
+      game.canvas.drawText(data[language][key], Vector2.init(3 * 16, y_pos + index * 32), Color.grey());
     });
     y_pos = game.canvas.rect.h - 3 * 16;
-    game.canvas.drawText(language === "en" ? "Back" : "Zpět", Vector2.init(3 * 16, y_pos), Color.white);
+    game.canvas.drawText(language === "en" ? "Back" : "Zpět", Vector2.init(3 * 16, y_pos), Color.white());
   };
 
   public update(game: Game, time_step: number): void {

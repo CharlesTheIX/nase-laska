@@ -23,6 +23,15 @@ export const controls_data: { [key: string]: any } = {
   },
 };
 
+export const message_data: { [key: string]: any } = {
+  en: {
+    yes_no_options: ["Yes", "No"],
+  },
+  cz: {
+    yes_no_options: ["Ano", "Ne"],
+  },
+};
+
 export const settings_data: { [key: string]: any } = {
   en: {
     options: ["Music Volume", "SFX Volume", "Language", "Controls"],
@@ -35,8 +44,10 @@ export const settings_data: { [key: string]: any } = {
 export const start_data: { [key: string]: any } = {
   en: {
     options: ["New Game", "Load Game", "Settings"],
+    new_game_confirm_msg: "Are you sure you want to start a new game? Your current progress will be lost.",
   },
   cz: {
     options: ["Nová hra", "Načíst hru", "Nastavení"],
+    new_game_confirm_msg: "Opravdu chcete začít novou hru? Váš současný postup bude ztracen.",
   },
 };

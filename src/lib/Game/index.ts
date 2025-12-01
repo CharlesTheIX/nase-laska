@@ -2,6 +2,8 @@ import Timer from "@/lib/Timer";
 import Canvas from "@/lib/Canvas";
 import Start from "./states/Start";
 import Storage from "@/lib/Storage";
+import { GameState } from "@/types";
+import Message from "./states/Message";
 import Resources from "@/lib/Resources";
 import Settings from "./states/Settings";
 import Controls from "./states/Controls";
@@ -14,16 +16,17 @@ export default class Game {
   private _raf_id: any = null;
   private _start_screen: Start;
   private _resources: Resources;
-  private _last_state: string = "";
   private _menu_input_timer: Timer;
-  private _state: string = "start";
+  private _message_screen: Message;
   private _running: boolean = false;
   private _settings_screen: Settings;
   private _controls_screen: Controls;
+  private _state: GameState = "start";
   private _last_frame_time: number = 0;
   private _input_handler: InputHandler;
   private _accumulated_time: number = 0;
   private _time_step: number = 1000 / 60;
+  private _last_state: GameState = "start";
 
   private constructor(canvas: Canvas, resources: Resources, storage: Storage) {
     this._canvas = canvas;
@@ -35,6 +38,7 @@ export default class Game {
     this._start_screen = Start.init(this._storage, this._menu_input_timer);
     this._controls_screen = Controls.init(this._storage, this._menu_input_timer);
     this._settings_screen = Settings.init(this._storage, this._menu_input_timer);
+    this._message_screen = Message.init(null, this._storage, this._menu_input_timer, this._canvas.rect);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
@@ -49,8 +53,12 @@ export default class Game {
     return this._input_handler;
   }
 
-  get last_state(): string {
+  get last_state(): GameState {
     return this._last_state;
+  }
+
+  get message_screen(): Message {
+    return this._message_screen;
   }
 
   get resources(): Resources {
@@ -61,7 +69,7 @@ export default class Game {
     return this._settings_screen;
   }
 
-  get state(): string {
+  get state(): GameState {
     return this._state;
   }
 
@@ -70,11 +78,11 @@ export default class Game {
   }
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  set state(new_state: string) {
+  set state(new_state: GameState) {
     switch (new_state) {
+      case "controls":
+      case "message":
       case "start":
-        break;
-
       case "settings":
         break;
     }
@@ -89,6 +97,12 @@ export default class Game {
     this.canvas.deinit();
     this.resources.deinit();
     this.input_handler.deinit();
+    this._storage = null as any;
+    this._start_screen.deinit();
+    this._message_screen.deinit();
+    this._settings_screen.deinit();
+    this._controls_screen.deinit();
+    this._menu_input_timer.deinit();
   };
 
   private draw = (): void => {
@@ -98,6 +112,7 @@ export default class Game {
           this._controls_screen.draw(this);
           break;
 
+        case "message":
         case "start":
           this._start_screen.draw(this);
           break;
@@ -106,6 +121,8 @@ export default class Game {
           this._settings_screen.draw(this);
           break;
       }
+
+      if (this.state === "message") this._message_screen.draw(this);
       // this.canvas.drawGrid();
     } catch (err: any) {
       ErrorHandler.fatal(err.message);
@@ -139,10 +156,26 @@ export default class Game {
   };
 
   private update = (time_step: number): void => {
+    const last_key = this.input_handler.areKeysPressed(["z", "Z", "KeyZ"]);
+    if (last_key && this.state !== "message") {
+    }
+
     try {
       switch (this.state) {
         case "controls":
           this._controls_screen.update(this, time_step);
+          break;
+
+        case "message":
+          this._message_screen.update(this, time_step);
+          break;
+
+        case "new_game":
+          // this._new_game_screen.update(this, time_step);
+          break;
+
+        case "play":
+          // this._play_screen.update(this, time_step);
           break;
 
         case "start":

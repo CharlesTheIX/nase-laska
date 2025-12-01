@@ -1,3 +1,4 @@
+import Color from "./Color";
 import Vector2 from "./Vector2";
 import Rectangle from "@/lib/Rectangle";
 
@@ -45,7 +46,7 @@ export default class Canvas {
   };
 
   public drawGrid = (grid_size: number = 16, clr?: string): void => {
-    this.cxt.strokeStyle = clr || "#222222";
+    this.cxt.strokeStyle = clr || Color.black();
     for (var x = 0; x <= this.rect.w; x += grid_size) {
       this.cxt.beginPath();
       this.cxt.moveTo(x, 0);
@@ -67,14 +68,14 @@ export default class Canvas {
   };
 
   public drawRectangle = (rect: Rectangle, clr?: string): void => {
-    this.cxt.fillStyle = clr || "#ffffff";
+    this.cxt.fillStyle = clr || Color.white();
     this.cxt.fillRect(rect.x, rect.y, rect.w, rect.h);
   };
 
   public drawTextLines = (lines: string[], pos: Vector2, clr?: string, align?: CanvasTextAlign): void => {
     this.cxt.textBaseline = "top";
     this.cxt.textAlign = align || "left";
-    this.cxt.fillStyle = clr || "#222222";
+    this.cxt.fillStyle = clr || Color.black();
     this.cxt.font = `bold ${font.size}px ${font.name}, monospace`;
     var count = 1;
     const getStartY = (index: number): number => Math.floor(pos.y + font.size * 2.5 * index);
@@ -87,7 +88,7 @@ export default class Canvas {
   public drawText = (text: string, pos: Vector2, clr?: string, font_size?: number, font_weight?: string, align?: CanvasTextAlign): void => {
     this.cxt.textBaseline = "top";
     this.cxt.textAlign = align || "left";
-    this.cxt.fillStyle = clr || "#222222";
+    this.cxt.fillStyle = clr || Color.black();
     this.cxt.font = `${font_weight || "normal"} ${font_size || font.size}px ${font.name}, monospace`;
     this.cxt.fillText(text, pos.x, pos.y);
   };

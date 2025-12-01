@@ -3,6 +3,7 @@ import Timer from "@/lib/Timer";
 import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
+import { GameState } from "@/types";
 import Rectangle from "@/lib/Rectangle";
 import { settings_data as data } from "./_data";
 
@@ -10,7 +11,7 @@ export default class Settings {
   private _storage: Storage;
   private _input_timer: Timer;
   private _menu_index: number = 0;
-  private _came_from: string = "start";
+  private _came_from: GameState = "start";
   private _resource_name: string = "settings_screen";
 
   constructor(storage: Storage, timer: Timer) {
@@ -22,7 +23,7 @@ export default class Settings {
   public static init = (storage: Storage, timer: Timer): Settings => new Settings(storage, timer);
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  set came_from(state: string) {
+  set came_from(state: GameState) {
     this._came_from = state;
   }
 
@@ -49,7 +50,7 @@ export default class Settings {
     var y_pos = 3 * 16;
     const settings = this._storage.settings_data;
     while (count < data[settings.language].options.length) {
-      color = this._menu_index === count ? Color.white : Color.grey;
+      color = this._menu_index === count ? Color.white() : Color.grey();
       var text = data[settings.language].options[count];
       if (count < 3) text += ": ";
       game.canvas.drawText(text, Vector2.init(3 * 16, y_pos + count * 32), color);
@@ -61,7 +62,7 @@ export default class Settings {
       count++;
     }
     y_pos = game.canvas.rect.h - 3 * 16;
-    color = this._menu_index === 4 ? Color.white : Color.grey;
+    color = this._menu_index === 4 ? Color.white() : Color.grey();
     game.canvas.drawText(settings.language === "en" ? "Back" : "Zpět", Vector2.init(3 * 16, y_pos), color);
   };
 
