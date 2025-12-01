@@ -12,17 +12,20 @@ export default class ErrorHandler {
       GAME_SAVED: false\n
       Click "Restart Game" below to reload the game. If the problem persists, call David!
     `.trim();
+
     html.id = "fatal-error";
     msg.split("\n").forEach((line) => {
       const p = document.createElement("p");
       p.innerText = line;
       html.appendChild(p);
     });
+
     button.id = "restart";
     button.innerText = "Restart Game";
     button.onclick = (): void => {
       window.location.reload();
     };
+
     main.innerHTML = "";
     html.appendChild(button);
     main.appendChild(html);
@@ -35,6 +38,7 @@ export default class ErrorHandler {
     const msg = `WARNING: ${message}`.trim();
     const html = document.createElement("div");
     const body = document.getElementsByTagName("body")[0];
+
     p.innerText = msg;
     html.id = "warning";
     html.appendChild(p);

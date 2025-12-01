@@ -43,12 +43,15 @@ export default class Start {
     var y_pos = game.canvas.rect.h / 2 + 4 * 16;
     const language = this._storage.settings_data.language;
     const option_count = save_data ? 3 : 2;
+
     while (count < option_count) {
       var text_index = 0;
       const color = this._menu_index === count ? Color.white() : Color.grey();
+
       if (save_data && count === 0) text_index = 1;
       else if ((save_data && count === 1) || (!save_data && count === 0)) text_index = 0;
       else if ((save_data && count === 2) || (!save_data && count === 1)) text_index = 2;
+
       game.canvas.drawText(data[language].options[text_index], Vector2.init(3 * 16, y_pos + count * 32), color);
       count++;
     }
@@ -63,6 +66,7 @@ export default class Start {
       game.state = "start";
       game.resources.playAudio("menu_move");
     }
+
     this.deinit();
   };
 

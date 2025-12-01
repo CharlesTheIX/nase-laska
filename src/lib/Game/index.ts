@@ -136,10 +136,12 @@ export default class Game {
     this._last_frame_time = timestamp;
     this._accumulated_time += delta_time;
     this.canvas.clear();
+
     while (this._accumulated_time >= this._time_step) {
       this.update(this._time_step);
       this._accumulated_time -= this._time_step;
     }
+
     this.draw();
     this._raf_id = requestAnimationFrame(this.mainLoop);
   };

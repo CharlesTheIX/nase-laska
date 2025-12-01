@@ -53,6 +53,7 @@ export default class Canvas {
       this.cxt.lineTo(x, this.rect.h);
       this.cxt.stroke();
     }
+
     for (var y = 0; y <= this.rect.h; y += grid_size) {
       this.cxt.beginPath();
       this.cxt.moveTo(0, y);
@@ -77,6 +78,7 @@ export default class Canvas {
     this.cxt.textAlign = align || "left";
     this.cxt.fillStyle = clr || Color.black();
     this.cxt.font = `bold ${font.size}px ${font.name}, monospace`;
+
     var count = 1;
     const getStartY = (index: number): number => Math.floor(pos.y + font.size * 2.5 * index);
     lines.forEach((line: string, index: number) => {

@@ -12,6 +12,7 @@ export default class Storage {
     const map_data = localStorage.getItem(`${this._storage_prefix}_map`);
     const save_data = localStorage.getItem(`${this._storage_prefix}_save`);
     const settings_data = localStorage.getItem(`${this._storage_prefix}_settings`);
+
     if (map_data) this._map_data = JSON.parse(map_data);
     if (save_data) this._save_data = JSON.parse(save_data);
     if (!settings_data) {

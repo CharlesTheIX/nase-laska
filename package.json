@@ -3,16 +3,19 @@
   "type": "module",
   "license": "MIT",
   "version": "0.0.1",
-  "description": ".",
   "name": "Nase_Laska",
   "main": "dist/index.js",
   "author": "CharlesTheIX",
+  "description": "An RPG made with HTML, CSS and TypeScript",
   "scripts": {
     "build": "./.app.sh build",
     "clean": "./.app.sh clean",
+    "kill_service": "./.app.sh kill_service",
     "start": "./.app.sh start",
-    "start_up": "chmod +x ./.app.sh",
-    "kill_service": "./.app.sh kill_service"
+    "start_up": "chmod +x ./.app.sh"
+  },
+  "dependencies": {
+    "@types/node": "^24.9.2"
   },
   "devDependencies": {
     "ts-loader": "^9.5.2",
@@ -21,8 +24,5 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
-  "dependencies": {
-    "@types/node": "^24.9.2"
-  }
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

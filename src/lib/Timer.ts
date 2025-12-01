@@ -36,6 +36,7 @@ export default class Timer {
     this._elapsed_time = 0;
     this._state = "running";
     this._start_time = Date.now();
+
     if (limit !== undefined) this._limit = limit;
     return this;
   };

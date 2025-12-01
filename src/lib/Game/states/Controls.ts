@@ -47,6 +47,7 @@ export default class Controls {
   public update(game: Game, time_step: number): void {
     this._input_timer.update();
     if (this._input_timer.state === "running") return;
+
     const last_key = game.input_handler.lastKeyPressed();
     switch (last_key) {
       case " ":

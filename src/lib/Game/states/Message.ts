@@ -81,6 +81,7 @@ export default class Message {
     const language = this._storage.settings_data.language;
     if (this.msgs && this.msgs[this._msg_index].type === "yes_no") options = data[language].yes_no_options;
     else return;
+
     var x_pos = this._rect.x + 3 * 16;
     var y_pos = this._rect.y + 5 * 16;
     options.forEach((option: string, i: number) => {
@@ -114,6 +115,7 @@ export default class Message {
         }
         return;
       }
+
       const next = `${content} ${word}`.trim();
       const measured_width = game.canvas.measureText(next).w;
       if (measured_width >= max_width) {
@@ -125,10 +127,13 @@ export default class Message {
         content = word;
         return;
       }
+
       content = next;
     });
+
     if (content) page.push(content);
     if (page.length > 0) pages.push(page);
+
     return pages;
   };
 
@@ -164,6 +169,7 @@ export default class Message {
       case "Enter":
         this._input_timer.reset();
         game.resources.playAudio("menu_move");
+
         const next_page_index = this._page_index + 1;
         if (this._msgs && next_page_index < this.messagePagesFromString(this._msgs[this._msg_index].text, this._max_width, game).length) {
           this._page_index = next_page_index;

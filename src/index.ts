@@ -25,10 +25,12 @@ const init = (): void => {
 
       resources.progress_elmt.style.width = `${(count / resources.count) * 100}%`;
       if (count < resources.count) return;
+
       clearInterval(loading_interval);
       resources.clearLoadingScreen();
       const canvas = Canvas.init(canvas_element);
       const game = Game.init(canvas, resources, storage);
+
       game.start();
     }, 100);
   } catch (err: any) {
