@@ -3,6 +3,7 @@ import Color from "@/lib/Color";
 import Timer from "@/lib/Timer";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { start_data as data } from "./_data";
 
@@ -12,7 +13,7 @@ export default class Start {
   private _menu_index: number = 0;
   private _resource_name: string = "start_screen";
 
-  constructor(storage: Storage, timer: Timer) {
+  private constructor(storage: Storage, timer: Timer) {
     this._storage = storage;
     this._input_timer = timer;
   }
@@ -40,7 +41,7 @@ export default class Start {
   private drawTextLayer = (game: Game): void => {
     var count = 0;
     const save_data = game.storage.save_data;
-    var y_pos = game.canvas.rect.h / 2 + 4 * 16;
+    var y_pos = game.canvas.rect.h / 2 + 4 * tile_size;
     const language = this._storage.settings_data.language;
     const option_count = save_data ? 3 : 2;
 
@@ -52,7 +53,7 @@ export default class Start {
       else if ((save_data && count === 1) || (!save_data && count === 0)) text_index = 0;
       else if ((save_data && count === 2) || (!save_data && count === 1)) text_index = 2;
 
-      game.canvas.drawText(data[language].options[text_index], Vector2.init(3 * 16, y_pos + count * 32), color);
+      game.canvas.drawText(data[language].options[text_index], Vector2.init(3 * tile_size, y_pos + count * (1.5 * tile_size)), color);
       count++;
     }
   };
@@ -102,13 +103,14 @@ export default class Start {
         if (game.storage.save_data) {
           switch (this._menu_index) {
             case 0:
-              this.deinit();
               game.state = "play";
               game.resources.playAudio("start_game");
+              this.deinit();
               break;
 
             case 1:
               game.resources.playAudio("menu_move");
+              game.message_screen.state = "input";
               game.message_screen.msgs = [
                 {
                   type: "yes_no",
@@ -120,22 +122,23 @@ export default class Start {
               break;
 
             case 2:
-              this.deinit();
               game.state = "settings";
               game.resources.playAudio("menu_move");
+              this.deinit();
               break;
           }
         } else {
-          this.deinit();
           switch (this._menu_index) {
             case 0:
               game.state = "new_game";
               game.resources.playAudio("start_game");
+              this.deinit();
               break;
 
             case 1:
               game.state = "settings";
               game.resources.playAudio("menu_move");
+              this.deinit();
               break;
           }
         }

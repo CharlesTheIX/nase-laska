@@ -4,6 +4,7 @@ import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
 import { GameState } from "@/types";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { settings_data as data } from "./_data";
 
@@ -14,7 +15,7 @@ export default class Settings {
   private _came_from: GameState = "start";
   private _resource_name: string = "settings_screen";
 
-  constructor(storage: Storage, timer: Timer) {
+  private constructor(storage: Storage, timer: Timer) {
     this._storage = storage;
     this._input_timer = timer;
   }
@@ -23,7 +24,7 @@ export default class Settings {
   public static init = (storage: Storage, timer: Timer): Settings => new Settings(storage, timer);
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  set came_from(state: GameState) {
+  public set came_from(state: GameState) {
     this._came_from = state;
   }
 
@@ -47,7 +48,7 @@ export default class Settings {
   private drawTextLayer = (game: Game): void => {
     var count = 0;
     var color: string;
-    var y_pos = 3 * 16;
+    var y_pos = 3 * tile_size;
     const settings = this._storage.settings_data;
 
     while (count < data[settings.language].options.length) {
@@ -55,19 +56,21 @@ export default class Settings {
       var text = data[settings.language].options[count];
       if (count < 3) text += ": ";
 
-      game.canvas.drawText(text, Vector2.init(3 * 16, y_pos + count * 32), color);
+      game.canvas.drawText(text, Vector2.init(3 * tile_size, y_pos + count * 2 * tile_size), color);
 
       const text_width = game.canvas.measureText(text).w;
-      var pos_x = 3 * 16 + text_width + 8;
-      if (count === 0) game.canvas.drawText(`< ${settings.music_volume} >`, Vector2.init(pos_x, y_pos + count * 32), color);
-      else if (count === 1) game.canvas.drawText(`< ${settings.sfx_volume} >`, Vector2.init(pos_x, y_pos + count * 32), color);
-      else if (count === 2) game.canvas.drawText(`< ${settings.language.toUpperCase()} >`, Vector2.init(pos_x, y_pos + count * 32), color);
+      var pos_x = 3 * tile_size + text_width + 0.5 * tile_size;
+      if (count === 0) game.canvas.drawText(`< ${settings.music_volume} >`, Vector2.init(pos_x, y_pos + count * (2 * tile_size)), color);
+      else if (count === 1) game.canvas.drawText(`< ${settings.sfx_volume} >`, Vector2.init(pos_x, y_pos + count * (2 * tile_size)), color);
+      else if (count === 2) {
+        game.canvas.drawText(`< ${settings.language.toUpperCase()} >`, Vector2.init(pos_x, y_pos + count * (2 * tile_size)), color);
+      }
       count++;
     }
 
-    y_pos = game.canvas.rect.h - 3 * 16;
+    y_pos = game.canvas.rect.h - 3 * tile_size;
     color = this._menu_index === 4 ? Color.white() : Color.grey();
-    game.canvas.drawText(settings.language === "en" ? "Back" : "Zpět", Vector2.init(3 * 16, y_pos), color);
+    game.canvas.drawText(settings.language === "en" ? "Back" : "Zpět", Vector2.init(3 * tile_size, y_pos), color);
   };
 
   public update(game: Game, time_step: number): void {
@@ -162,6 +165,7 @@ export default class Settings {
             game.resources.playAudio("menu_move");
             this._menu_index = 0;
             game.state = "controls";
+            this.deinit();
             break;
 
           case 4:
@@ -169,6 +173,7 @@ export default class Settings {
             game.resources.playAudio("menu_move");
             this._menu_index = 0;
             game.state = this._came_from;
+            this.deinit();
             break;
         }
         break;

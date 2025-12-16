@@ -1,9 +1,10 @@
 import Color from "./Color";
 import Vector2 from "./Vector2";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 
-export const font = { name: "GameFont", size: 16 };
-export const canvas_size = Vector2.init(45, 33).scale(16);
+export const font = { name: "GameFont", size: tile_size };
+export const canvas_size = Vector2.init(45, 33).scale(tile_size);
 
 export default class Canvas {
   private _rect: Rectangle;
@@ -45,7 +46,7 @@ export default class Canvas {
     this.canvas.remove();
   };
 
-  public drawGrid = (grid_size: number = 16, clr?: string): void => {
+  public drawGrid = (grid_size: number = tile_size, clr?: string): void => {
     this.cxt.strokeStyle = clr || Color.black();
     for (var x = 0; x <= this.rect.w; x += grid_size) {
       this.cxt.beginPath();

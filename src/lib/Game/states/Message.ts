@@ -3,6 +3,7 @@ import Timer from "@/lib/Timer";
 import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { message_data as data } from "./_data";
 
@@ -22,12 +23,12 @@ export default class Message {
   private _state: MsgState = "write";
   private _msgs: Msg[] | null = null;
 
-  constructor(messages: Msg[] | null, storage: Storage, timer: Timer, canvas_rect: Rectangle) {
+  private constructor(messages: Msg[] | null, storage: Storage, timer: Timer, canvas_rect: Rectangle) {
     this._msgs = messages;
     this._storage = storage;
     this._input_timer = timer;
-    this._max_width = canvas_rect.w - 6 * 16;
-    this._rect = Rectangle.init(0, canvas_rect.h - 7 * 16, canvas_rect.w, 7 * 16);
+    this._max_width = canvas_rect.w - 6 * tile_size;
+    this._rect = Rectangle.init(0, canvas_rect.h - 7 * tile_size, canvas_rect.w, 7 * tile_size);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
@@ -36,24 +37,24 @@ export default class Message {
   };
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  get state(): MsgState {
+  public get state(): MsgState {
     return this._state;
   }
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  set msg_index(new_index: number) {
+  public set msg_index(new_index: number) {
     this._msg_index = new_index;
   }
 
-  set msgs(new_content: Msg[] | null) {
+  public set msgs(new_content: Msg[] | null) {
     this._msgs = new_content;
   }
 
-  get page_index(): number {
+  public get page_index(): number {
     return this._page_index;
   }
 
-  set state(new_state: MsgState) {
+  public set state(new_state: MsgState) {
     this._state = new_state;
   }
 
@@ -79,25 +80,25 @@ export default class Message {
   private drawInputLayer = (game: Game): void => {
     var options: string[] = [];
     const language = this._storage.settings_data.language;
-    if (this.msgs && this.msgs[this._msg_index].type === "yes_no") options = data[language].yes_no_options;
+    if (this._msgs && this._msgs[this._msg_index].type === "yes_no") options = data[language].yes_no_options;
     else return;
 
-    var x_pos = this._rect.x + 3 * 16;
-    var y_pos = this._rect.y + 5 * 16;
+    var x_pos = this._rect.x + 3 * tile_size;
+    var y_pos = this._rect.y + 5 * tile_size;
     options.forEach((option: string, i: number) => {
       const color = i === this._input_index ? Color.white() : Color.grey();
-      game.canvas.drawText(option, Vector2.init(x_pos + i * 8 * 16, y_pos), color);
+      game.canvas.drawText(option, Vector2.init(x_pos + i * 8 * tile_size, y_pos), color);
     });
   };
 
   private drawTextLayer = (game: Game): void => {
     if (!this._msgs) return;
-    var x_pos = this._rect.x + 3 * 16;
-    var y_pos = this._rect.y + 2 * 16;
+    var x_pos = this._rect.x + 3 * tile_size;
+    var y_pos = this._rect.y + 2 * tile_size;
     const msg = this._msgs[this._msg_index];
     const pages = this.messagePagesFromString(msg.text, this._max_width, game);
     const page = pages[this._page_index];
-    page.forEach((line: string, i: number) => game.canvas.drawText(line, Vector2.init(x_pos, y_pos + i * 16), Color.white()));
+    page.forEach((line: string, i: number) => game.canvas.drawText(line, Vector2.init(x_pos, y_pos + i * (1.5 * tile_size)), Color.white()));
   };
 
   public messagePagesFromString = (text: string, max_width: number, game: Game): string[][] => {
@@ -139,8 +140,8 @@ export default class Message {
 
   public update(game: Game, time_step: number): void {
     if (!this._msgs) {
-      this.deinit();
       game.state = game.last_state;
+      this.deinit();
       return;
     }
 
@@ -152,22 +153,26 @@ export default class Message {
       case "A":
       case "KeyA":
       case "ArrowLeft":
-        if (this._state === "input") {
-        }
+        if (this._state === "input") this._input_index = Math.max(0, this._input_index - 1);
         break;
 
       case "d":
       case "D":
       case "KeyD":
       case "ArrowRight":
-        if (this._state === "input") {
-        }
+        if (this._state === "input") this._input_index = Math.min(1, this._input_index + 1);
         break;
 
       case " ":
       case "Space":
       case "Enter":
         this._input_timer.reset();
+
+        if (this._state === "input") {
+          this._msgs[this._msg_index].callback?.(this._input_index, game);
+          return;
+        }
+
         game.resources.playAudio("menu_move");
 
         const next_page_index = this._page_index + 1;
@@ -191,8 +196,8 @@ export default class Message {
               this._page_index = 0;
               this._msg_index = next_msg_index;
             } else {
-              this.deinit();
               game.state = game.last_state;
+              this.deinit();
             }
             break;
         }

@@ -1,4 +1,5 @@
 import Vector2 from "./Vector2";
+import { tile_size } from "@/globals";
 
 export default class Rectangle {
   private _x: number;
@@ -16,7 +17,7 @@ export default class Rectangle {
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
   public static init = (x: number, y: number, w: number, h: number): Rectangle => new Rectangle(x, y, w, h);
 
-  public static tile = (v: Vector2): Rectangle => new Rectangle(v.x, v.y, 16, 16);
+  public static tile = (v: Vector2): Rectangle => new Rectangle(v.x, v.y, tile_size, tile_size);
 
   public static zero = (): Rectangle => new Rectangle(0, 0, 0, 0);
 

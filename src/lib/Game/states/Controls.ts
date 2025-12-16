@@ -3,6 +3,7 @@ import Timer from "@/lib/Timer";
 import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { controls_data as data } from "./_data";
 
@@ -11,7 +12,7 @@ export default class Controls {
   private _input_timer: Timer;
   private _resource_name: string = "controls_screen";
 
-  constructor(storage: Storage, timer: Timer) {
+  private constructor(storage: Storage, timer: Timer) {
     this._storage = storage;
     this._input_timer = timer;
   }
@@ -35,13 +36,13 @@ export default class Controls {
   };
 
   private drawTextLayer = (game: Game): void => {
-    var y_pos = 3 * 16;
+    var y_pos = 3 * tile_size;
     const language = this._storage.settings_data.language;
     Object.keys(data[language]).forEach((key: string, index: number) => {
-      game.canvas.drawText(data[language][key], Vector2.init(3 * 16, y_pos + index * 32), Color.grey());
+      game.canvas.drawText(data[language][key], Vector2.init(3 * tile_size, y_pos + index * (2 * tile_size)), Color.grey());
     });
-    y_pos = game.canvas.rect.h - 3 * 16;
-    game.canvas.drawText(language === "en" ? "Back" : "Zpět", Vector2.init(3 * 16, y_pos), Color.white());
+    y_pos = game.canvas.rect.h - 3 * tile_size;
+    game.canvas.drawText(language === "en" ? "Back" : "Zpět", Vector2.init(3 * tile_size, y_pos), Color.white());
   };
 
   public update(game: Game, time_step: number): void {
@@ -56,6 +57,8 @@ export default class Controls {
         this._input_timer.reset();
         game.resources.playAudio("menu_move");
         game.state = "settings";
+        this.deinit();
+        break;
     }
   }
 }

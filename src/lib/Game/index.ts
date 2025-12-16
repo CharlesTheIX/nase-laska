@@ -1,4 +1,5 @@
 import Timer from "@/lib/Timer";
+import Play from "./states/Play";
 import Canvas from "@/lib/Canvas";
 import Start from "./states/Start";
 import Storage from "@/lib/Storage";
@@ -13,6 +14,7 @@ import InputHandler from "@/lib/InputHandler";
 export default class Game {
   private _canvas: Canvas;
   private _storage: Storage;
+  private _play_screen: Play;
   private _raf_id: any = null;
   private _start_screen: Start;
   private _resources: Resources;
@@ -32,7 +34,9 @@ export default class Game {
     this._canvas = canvas;
     this._storage = storage;
     this._resources = resources;
+    this._play_screen = Play.init();
     this._input_handler = InputHandler.init();
+
     const menu_input_timeout = this.resources.audios["menu_move"]!.duration * 1000 * 2; // adjust as per the audio file
     this._menu_input_timer = Timer.init("countdown", menu_input_timeout);
     this._start_screen = Start.init(this._storage, this._menu_input_timer);
@@ -45,43 +49,45 @@ export default class Game {
   public static init = (canvas: Canvas, resources: Resources, storage: Storage): Game => new Game(canvas, resources, storage);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  get canvas(): Canvas {
+  public get canvas(): Canvas {
     return this._canvas;
   }
 
-  get input_handler(): InputHandler {
+  public get input_handler(): InputHandler {
     return this._input_handler;
   }
 
-  get last_state(): GameState {
+  public get last_state(): GameState {
     return this._last_state;
   }
 
-  get message_screen(): Message {
+  public get message_screen(): Message {
     return this._message_screen;
   }
 
-  get resources(): Resources {
+  public get resources(): Resources {
     return this._resources;
   }
 
-  get settings_screen(): Settings {
+  public get settings_screen(): Settings {
     return this._settings_screen;
   }
 
-  get state(): GameState {
+  public get state(): GameState {
     return this._state;
   }
 
-  get storage(): any {
+  public get storage(): any {
     return this._storage;
   }
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
-  set state(new_state: GameState) {
+  public set state(new_state: GameState) {
     switch (new_state) {
       case "controls":
       case "message":
+      case "new_game":
+      case "play":
       case "start":
       case "settings":
         break;
@@ -96,6 +102,7 @@ export default class Game {
     this.stop();
     this.canvas.deinit();
     this.resources.deinit();
+    this._play_screen.deinit();
     this.input_handler.deinit();
     this._storage = null as any;
     this._start_screen.deinit();
@@ -107,26 +114,38 @@ export default class Game {
 
   private draw = (): void => {
     try {
-      switch (this.state) {
-        case "controls":
-          this._controls_screen.draw(this);
-          break;
-
-        case "message":
-        case "start":
-          this._start_screen.draw(this);
-          break;
-
-        case "settings":
-          this._settings_screen.draw(this);
-          break;
-      }
-
-      if (this.state === "message") this._message_screen.draw(this);
+      if (this.state === "message") {
+        this.drawState(this.last_state);
+        this._message_screen.draw(this);
+      } else this.drawState(this.state);
       // this.canvas.drawGrid();
     } catch (err: any) {
       ErrorHandler.fatal(err.message);
       throw new Error(err.message);
+    }
+  };
+
+  private drawState = (state: GameState): void => {
+    switch (state) {
+      case "controls":
+        this._controls_screen.draw(this);
+        break;
+
+      case "start":
+        this._start_screen.draw(this);
+        break;
+
+      case "new_game":
+      // this._new_game_screen.draw(this);
+      // break;
+
+      case "play":
+        this._play_screen.draw(this);
+        break;
+
+      case "settings":
+        this._settings_screen.draw(this);
+        break;
     }
   };
 
@@ -163,34 +182,34 @@ export default class Game {
     }
 
     try {
-      switch (this.state) {
-        case "controls":
-          this._controls_screen.update(this, time_step);
-          break;
-
-        case "message":
-          this._message_screen.update(this, time_step);
-          break;
-
-        case "new_game":
-          // this._new_game_screen.update(this, time_step);
-          break;
-
-        case "play":
-          // this._play_screen.update(this, time_step);
-          break;
-
-        case "start":
-          this._start_screen.update(this, time_step);
-          break;
-
-        case "settings":
-          this._settings_screen.update(this, time_step);
-          break;
-      }
+      this.updateState(this.state);
     } catch (err: any) {
       ErrorHandler.fatal(err.message);
       throw new Error(err.message);
+    }
+  };
+
+  private updateState = (state: GameState): void => {
+    switch (state) {
+      case "controls":
+        this._controls_screen.draw(this);
+        break;
+
+      case "start":
+        this._start_screen.draw(this);
+        break;
+
+      case "new_game":
+      // this._new_game_screen.draw(this);
+      // break;
+
+      case "play":
+        this._play_screen.draw(this);
+        break;
+
+      case "settings":
+        this._settings_screen.draw(this);
+        break;
     }
   };
 }

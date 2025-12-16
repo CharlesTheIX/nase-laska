@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+PORT=8000
+
 # Functions -----------------------------------------------------------------------------------------------------------------------------------------
 build() {
   echo "Building..."
@@ -54,15 +56,15 @@ build() {
 
 clean() {
   echo "Cleaning..."
-  kill_service
   rm -rf dist node_modules yarn.lock package-lock.json
+  kill_service
   echo "Clean complete"
   echo ""
 }
 
 kill_service() {
   echo "Killing service..."
-  lsof -ti:8000 | xargs kill -9
+  lsof -ti:$PORT | xargs -r kill -9
   echo "Service killed."
   echo ""
 }
@@ -76,7 +78,6 @@ help() {
 start() {
   echo "Starting the server..."
 
-  PORT=8000
   PWD=$(pwd)
   DIR=$PWD/dist
 

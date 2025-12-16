@@ -14,10 +14,8 @@
     "start": "./.app.sh start",
     "start_up": "chmod +x ./.app.sh"
   },
-  "dependencies": {
-    "@types/node": "^24.9.2"
-  },
   "devDependencies": {
+    "@types/node": "^24.9.2",
     "ts-loader": "^9.5.2",
     "typescript": "^5.9.2",
     "webpack": "^5.101.1",
