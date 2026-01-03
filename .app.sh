@@ -7,7 +7,6 @@ PORT=8000
 build() {
   echo "Building..."
   yarn install
-
   if [ -d dist ]; then
     rm -rf dist
   fi
@@ -30,56 +29,42 @@ build() {
     return
   fi
 
-  if [ ! -f "./src/favicon.ico" ]; then
-    echo "No favicon.ico file found in src directory, skipping static file copy."
-    return
-  fi
-
   if [ ! -d "./assets" ]; then
     echo "No assets directory found, skipping static file copy."
     return
   fi
 
-  if [ ! -d "./dist" ]; then
-    echo "No dist directory found, cannot copy static files."
-    return
-  fi
- 
-  cp ./src/favicon.ico ./dist/favicon.ico
   cp ./src/index.html ./dist/index.html
   cp ./src/index.css ./dist/index.css
   cp -R ./assets ./dist/assets
-  echo ""
   echo "Build complete"
-  echo ""
+
+  # calc the size of dist
+  DIST_SIZE=$(du -sh ./dist | cut -f1)
+  echo "Bindle: $DIST_SIZE"
 }
 
 clean() {
   echo "Cleaning..."
-  rm -rf dist node_modules yarn.lock package-lock.json
   kill_service
+  rm -rf dist node_modules yarn.lock package-lock.json
   echo "Clean complete"
-  echo ""
 }
 
 kill_service() {
   echo "Killing service..."
-  lsof -ti:$PORT | xargs -r kill -9
-  echo "Service killed."
-  echo ""
+  lsof -ti:$PORT | xargs -r kill -9 && echo "Service on port $PORT killed." || echo "No service running on port $PORT."
 }
 
 help() {
   echo "Usage: $0 [build | clean | kill_service | start]"
-  echo ""
   exit 1
 }
 
 start() {
-  echo "Starting the server..."
-
   PWD=$(pwd)
   DIR=$PWD/dist
+  echo "Starting the server..."
 
   if [ -d "$DIR" ]; then
     cd $DIR
@@ -90,10 +75,10 @@ start() {
 
   if command -v python3 &>/dev/null; then
     echo "Serving $DIR at http://localhost:$PORT"
-    python3 -m http.server $PORT &
+    python3 -m http.server $PORT 2>/dev/null &
   elif command -v python &>/dev/null; then
     echo "Serving $DIR at http://localhost:$PORT"
-    python -m SimpleHTTPServer $PORT &
+    python -m SimpleHTTPServer $PORT 2>/dev/null &
   else
     echo "Python is not installed - please install Python to use this script"
     exit 1

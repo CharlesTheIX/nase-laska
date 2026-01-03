@@ -2,8 +2,7 @@
   font-style: normal;
   font-weight: normal;
   font-family: "GameFont";
-  src: url("./assets/fonts/game_font.woff2") format("woff2"), url("./assets/fonts/game_font.woff") format("woff"),
-    url("./assets/fonts/game_font.ttf") format("truetype");
+  src: url("./assets/game_font.woff2") format("woff2");
 }
 
 :root {

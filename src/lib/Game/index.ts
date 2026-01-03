@@ -157,6 +157,7 @@ export default class Game {
     this.canvas.clear();
 
     while (this._accumulated_time >= this._time_step) {
+      console.log(this._state);
       this.update(this._time_step);
       this._accumulated_time -= this._time_step;
     }
@@ -177,6 +178,7 @@ export default class Game {
   };
 
   private update = (time_step: number): void => {
+    if (!this._running) return;
     const last_key = this.input_handler.areKeysPressed(["z", "Z", "KeyZ"]);
     if (last_key && this.state !== "message") {
     }

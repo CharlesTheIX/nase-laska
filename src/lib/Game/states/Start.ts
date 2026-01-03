@@ -72,11 +72,14 @@ export default class Start {
   };
 
   public update(game: Game, time_step: number): void {
+    console.log(time_step);
+    console.log("Start State Update");
     this._input_timer.update();
     if (this._input_timer.state === "running") return;
 
     const option_count = game.storage.save_data ? 3 : 2;
     const last_key = game.input_handler.lastKeyPressed();
+    console.log("Last Key:", last_key);
     switch (last_key) {
       case "w":
       case "W":
