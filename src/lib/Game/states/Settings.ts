@@ -4,9 +4,9 @@ import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
 import { GameState } from "@/types";
-import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { settings_data as data } from "./_data";
+import { tile_size, input_timeout } from "@/globals";
 
 export default class Settings {
   private _storage: Storage;
@@ -15,13 +15,13 @@ export default class Settings {
   private _came_from: GameState = "start";
   private _resource_name: string = "settings_screen";
 
-  private constructor(storage: Storage, timer: Timer) {
+  private constructor(storage: Storage) {
     this._storage = storage;
-    this._input_timer = timer;
+    this._input_timer = Timer.init("countdown", input_timeout);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage, timer: Timer): Settings => new Settings(storage, timer);
+  public static init = (storage: Storage): Settings => new Settings(storage);
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   public set came_from(state: GameState) {

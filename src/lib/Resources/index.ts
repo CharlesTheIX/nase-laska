@@ -149,6 +149,7 @@ export default class Resources {
     const audioResource = this._audios[key];
     if (audioResource && audioResource.loaded) {
       audioResource.audio.loop = loop;
+      audioResource.audio.currentTime = 0;
       audioResource.audio.play().catch((err) => ErrorHandler.warn(`Failed to play audio "${key}": ${err.message}`));
     }
   };

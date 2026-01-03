@@ -3,22 +3,22 @@ import Timer from "@/lib/Timer";
 import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
-import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { controls_data as data } from "./_data";
+import { tile_size, input_timeout } from "@/globals";
 
 export default class Controls {
   private _storage: Storage;
   private _input_timer: Timer;
   private _resource_name: string = "controls_screen";
 
-  private constructor(storage: Storage, timer: Timer) {
+  private constructor(storage: Storage) {
     this._storage = storage;
-    this._input_timer = timer;
+    this._input_timer = Timer.init("countdown", input_timeout);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage, timer: Timer): Controls => new Controls(storage, timer);
+  public static init = (storage: Storage): Controls => new Controls(storage);
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
   public deinit = (): void => {};

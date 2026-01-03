@@ -1,4 +1,3 @@
-import Timer from "@/lib/Timer";
 import Play from "./states/Play";
 import Canvas from "@/lib/Canvas";
 import Start from "./states/Start";
@@ -18,7 +17,6 @@ export default class Game {
   private _raf_id: any = null;
   private _start_screen: Start;
   private _resources: Resources;
-  private _menu_input_timer: Timer;
   private _message_screen: Message;
   private _running: boolean = false;
   private _settings_screen: Settings;
@@ -36,13 +34,10 @@ export default class Game {
     this._resources = resources;
     this._play_screen = Play.init();
     this._input_handler = InputHandler.init();
-
-    const menu_input_timeout = this.resources.audios["menu_move"]!.duration * 1000 * 2; // adjust as per the audio file
-    this._menu_input_timer = Timer.init("countdown", menu_input_timeout);
-    this._start_screen = Start.init(this._storage, this._menu_input_timer);
-    this._controls_screen = Controls.init(this._storage, this._menu_input_timer);
-    this._settings_screen = Settings.init(this._storage, this._menu_input_timer);
-    this._message_screen = Message.init(null, this._storage, this._menu_input_timer, this._canvas.rect);
+    this._start_screen = Start.init(this._storage);
+    this._controls_screen = Controls.init(this._storage);
+    this._settings_screen = Settings.init(this._storage);
+    this._message_screen = Message.init(null, this._storage, this._canvas.rect);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
@@ -109,7 +104,6 @@ export default class Game {
     this._message_screen.deinit();
     this._settings_screen.deinit();
     this._controls_screen.deinit();
-    this._menu_input_timer.deinit();
   };
 
   private draw = (): void => {
@@ -157,7 +151,6 @@ export default class Game {
     this.canvas.clear();
 
     while (this._accumulated_time >= this._time_step) {
-      console.log(this._state);
       this.update(this._time_step);
       this._accumulated_time -= this._time_step;
     }
@@ -178,39 +171,39 @@ export default class Game {
   };
 
   private update = (time_step: number): void => {
-    if (!this._running) return;
-    const last_key = this.input_handler.areKeysPressed(["z", "Z", "KeyZ"]);
-    if (last_key && this.state !== "message") {
-    }
-
     try {
-      this.updateState(this.state);
+      if (!this._running) return;
+      this.updateState(this.state, time_step);
     } catch (err: any) {
       ErrorHandler.fatal(err.message);
       throw new Error(err.message);
     }
   };
 
-  private updateState = (state: GameState): void => {
+  private updateState = (state: GameState, time_step: number): void => {
     switch (state) {
       case "controls":
-        this._controls_screen.draw(this);
+        this._controls_screen.update(this, time_step);
         break;
 
       case "start":
-        this._start_screen.draw(this);
+        this._start_screen.update(this, time_step);
+        break;
+
+      case "message":
+        this._message_screen.update(this, time_step);
         break;
 
       case "new_game":
-      // this._new_game_screen.draw(this);
+      // this._new_game_screen.update(this, time_step);
       // break;
 
       case "play":
-        this._play_screen.draw(this);
+        this._play_screen.update(this, time_step);
         break;
 
       case "settings":
-        this._settings_screen.draw(this);
+        this._settings_screen.update(this, time_step);
         break;
     }
   };

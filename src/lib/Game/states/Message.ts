@@ -3,9 +3,9 @@ import Timer from "@/lib/Timer";
 import Color from "@/lib/Color";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
-import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { message_data as data } from "./_data";
+import { tile_size, input_timeout } from "@/globals";
 
 type Msg = { text: string; type?: MsgType; callback?: MsgCallback };
 type MsgCallback = (result: boolean | number, game: Game) => void;
@@ -23,17 +23,17 @@ export default class Message {
   private _state: MsgState = "write";
   private _msgs: Msg[] | null = null;
 
-  private constructor(messages: Msg[] | null, storage: Storage, timer: Timer, canvas_rect: Rectangle) {
+  private constructor(messages: Msg[] | null, storage: Storage, canvas_rect: Rectangle) {
     this._msgs = messages;
     this._storage = storage;
-    this._input_timer = timer;
     this._max_width = canvas_rect.w - 6 * tile_size;
+    this._input_timer = Timer.init("countdown", input_timeout);
     this._rect = Rectangle.init(0, canvas_rect.h - 7 * tile_size, canvas_rect.w, 7 * tile_size);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (messages: Msg[] | null, storage: Storage, timer: Timer, canvas_rect: Rectangle): Message => {
-    return new Message(messages, storage, timer, canvas_rect);
+  public static init = (messages: Msg[] | null, storage: Storage, canvas_rect: Rectangle): Message => {
+    return new Message(messages, storage, canvas_rect);
   };
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------

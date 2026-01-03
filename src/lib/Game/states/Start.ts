@@ -3,9 +3,9 @@ import Color from "@/lib/Color";
 import Timer from "@/lib/Timer";
 import Storage from "@/lib/Storage";
 import Vector2 from "@/lib/Vector2";
-import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 import { start_data as data } from "./_data";
+import { tile_size, input_timeout } from "@/globals";
 
 export default class Start {
   private _storage: Storage;
@@ -13,17 +13,18 @@ export default class Start {
   private _menu_index: number = 0;
   private _resource_name: string = "start_screen";
 
-  private constructor(storage: Storage, timer: Timer) {
+  private constructor(storage: Storage) {
     this._storage = storage;
-    this._input_timer = timer;
+    this._input_timer = Timer.init("countdown", input_timeout);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage, timer: Timer): Start => new Start(storage, timer);
+  public static init = (storage: Storage): Start => new Start(storage);
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
   public deinit = (): void => {
     this._menu_index = 0;
+    this._input_timer.deinit();
   };
 
   public draw(game: Game): void {
@@ -72,14 +73,11 @@ export default class Start {
   };
 
   public update(game: Game, time_step: number): void {
-    console.log(time_step);
-    console.log("Start State Update");
     this._input_timer.update();
     if (this._input_timer.state === "running") return;
 
     const option_count = game.storage.save_data ? 3 : 2;
     const last_key = game.input_handler.lastKeyPressed();
-    console.log("Last Key:", last_key);
     switch (last_key) {
       case "w":
       case "W":
