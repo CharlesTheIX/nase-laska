@@ -1,22 +1,25 @@
+type TimerType = "countdown" | "continuous";
+
 export default class Timer {
   private _state: string;
   private _limit: number = 0;
-  private _start_time: number;
   private _elapsed_time: number;
 
-  constructor(type?: string, limit?: number) {
+  constructor(type?: TimerType, limit?: number) {
     this._elapsed_time = 0;
     this._state = "finished";
-    this._start_time = Date.now();
-    if (type === "countdown") this._limit = limit || 0;
+    switch (type) {
+      case "countdown":
+        this._limit = limit || 0;
+        break;
+    }
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (type?: string, limit?: number): Timer => new Timer(type, limit);
+  public static init = (type?: TimerType, limit?: number): Timer => new Timer(type, limit);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   get elapsed_time(): number {
-    this._elapsed_time = Date.now() - this._start_time;
     return this._elapsed_time;
   }
 
@@ -24,10 +27,14 @@ export default class Timer {
     return this._state;
   }
 
+  // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
+  set elapsed_time(t: number) {
+    this._elapsed_time = t;
+  }
+
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
   public deinit = (): void => {
     this._limit = 0;
-    this._start_time = 0;
     this._elapsed_time = 0;
     this._state = "stopped";
   };
@@ -35,15 +42,12 @@ export default class Timer {
   public reset = (limit?: number): Timer => {
     this._elapsed_time = 0;
     this._state = "running";
-    this._start_time = Date.now();
-
     if (limit !== undefined) this._limit = limit;
     return this;
   };
 
   public start = (): Timer => {
     this._state = "running";
-    this._start_time = Date.now() - this._elapsed_time;
     return this;
   };
 
@@ -52,12 +56,11 @@ export default class Timer {
     return this;
   };
 
-  public update = (): void => {
+  public update = (time_Step: number): void => {
     switch (this._state) {
       case "running":
-        this._elapsed_time = Date.now() - this._start_time;
-        if (this._limit <= 0) break;
-        if (this.elapsed_time >= this._limit) this._state = "finished";
+        this._elapsed_time = this._elapsed_time + time_Step;
+        if (this._limit > 0 && this.elapsed_time >= this._limit) this._state = "finished";
         break;
     }
   };

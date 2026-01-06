@@ -1,30 +1,26 @@
 import Game from "@/lib/Game";
 import Color from "@/lib/Color";
-import Timer from "@/lib/Timer";
-import Storage from "@/lib/Storage";
+import Memory from "@/lib/Memory";
 import Vector2 from "@/lib/Vector2";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
-import { start_data as data } from "./_data";
-import { tile_size, input_timeout } from "@/globals";
+import { start_data as data } from "@/lib/Game/states/_data";
 
 export default class Start {
-  private _storage: Storage;
-  private _input_timer: Timer;
+  private _memory: Memory;
   private _menu_index: number = 0;
   private _resource_name: string = "start_screen";
 
-  private constructor(storage: Storage) {
-    this._storage = storage;
-    this._input_timer = Timer.init("countdown", input_timeout);
+  private constructor(memory: Memory) {
+    this._memory = memory;
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage): Start => new Start(storage);
+  public static init = (memory: Memory): Start => new Start(memory);
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
   public deinit = (): void => {
     this._menu_index = 0;
-    this._input_timer.deinit();
   };
 
   public draw(game: Game): void {
@@ -41,9 +37,9 @@ export default class Start {
 
   private drawTextLayer = (game: Game): void => {
     var count = 0;
-    const save_data = game.storage.save_data;
+    const save_data = game.memory.save_data;
     var y_pos = game.canvas.rect.h / 2 + 4 * tile_size;
-    const language = this._storage.settings_data.language;
+    const language = this._memory.settings_data.language;
     const option_count = save_data ? 3 : 2;
 
     while (count < option_count) {
@@ -62,7 +58,7 @@ export default class Start {
   private newGameConfirmationCallback = (result: boolean | number, game: Game): void => {
     if (result) {
       game.state = "new_game";
-      game.storage.save_data = null;
+      game.memory.save_data = null;
       game.resources.playAudio("start_game");
     } else {
       game.state = "start";
@@ -73,17 +69,16 @@ export default class Start {
   };
 
   public update(game: Game, time_step: number): void {
-    this._input_timer.update();
-    if (this._input_timer.state === "running") return;
-
-    const option_count = game.storage.save_data ? 3 : 2;
+    game.menu_input_timer.update(time_step);
+    if (game.menu_input_timer.state === "running") return;
+    const option_count = game.memory.save_data ? 3 : 2;
     const last_key = game.input_handler.lastKeyPressed();
     switch (last_key) {
       case "w":
       case "W":
       case "KeyW":
       case "ArrowUp":
-        this._input_timer.reset();
+        game.menu_input_timer.reset();
         game.resources.playAudio("menu_move");
         this._menu_index = (this._menu_index - 1 + option_count) % option_count;
         break;
@@ -92,7 +87,7 @@ export default class Start {
       case "S":
       case "KeyS":
       case "ArrowDown":
-        this._input_timer.reset();
+        game.menu_input_timer.reset();
         game.resources.playAudio("menu_move");
         this._menu_index = (this._menu_index + 1) % option_count;
         break;
@@ -100,8 +95,8 @@ export default class Start {
       case " ":
       case "Space":
       case "Enter":
-        this._input_timer.reset();
-        if (game.storage.save_data) {
+        game.menu_input_timer.reset();
+        if (game.memory.save_data) {
           switch (this._menu_index) {
             case 0:
               game.state = "play";
@@ -115,7 +110,7 @@ export default class Start {
               game.message_screen.msgs = [
                 {
                   type: "yes_no",
-                  text: data[game.storage.settings_data.language].new_game_confirm_msg,
+                  text: data[game.memory.settings_data.language].new_game_confirm_msg,
                   callback: (result: boolean | number, game: Game) => this.newGameConfirmationCallback(result, game),
                 },
               ];

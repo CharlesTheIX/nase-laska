@@ -1,3 +1,8 @@
+export interface Vector2Value {
+  x: number;
+  y: number;
+}
+
 export default class Vector2 {
   private _x: number;
   private _y: number;
@@ -15,6 +20,8 @@ export default class Vector2 {
   public static dot = (v1: Vector2, v2: Vector2): number => v1.x * v2.x + v1.y * v2.y;
 
   public static equal = (v1: Vector2, v2: Vector2): boolean => v1.x === v2.x && v1.y === v2.y;
+
+  public static fromObject = (obj: Vector2Value): Vector2 => new Vector2(obj.x, obj.y);
 
   public static init = (x: number, y: number): Vector2 => new Vector2(x, y);
 
@@ -48,6 +55,15 @@ export default class Vector2 {
 
   get y(): number {
     return this._y;
+  }
+
+  // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
+  set x(x: number) {
+    this._x = x;
+  }
+
+  set y(y: number) {
+    this._y = y;
   }
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import Game from "@/lib/Game";
 import Canvas from "@/lib/Canvas";
-import Storage from "@/lib/Storage";
+import Memory from "@/lib/Memory";
 import Resources from "@/lib/Resources";
 import ErrorHandler from "@/lib/ErrorHandler";
 
@@ -9,8 +9,8 @@ const init = (): void => {
     const canvas_element = document.getElementById("canvas") as HTMLCanvasElement;
     if (!canvas_element) ErrorHandler.fatal("Canvas element not found");
 
-    const storage = Storage.init();
-    const resources: Resources = Resources.init(storage);
+    const memory = Memory.init();
+    const resources: Resources = Resources.init(memory);
     const loading_interval = setInterval(() => {
       var count = 0;
       Object.keys(resources.images).forEach((key: string) => {
@@ -29,7 +29,7 @@ const init = (): void => {
       clearInterval(loading_interval);
       resources.clearLoadingScreen();
       const canvas = Canvas.init(canvas_element);
-      const game = Game.init(canvas, resources, storage);
+      const game = Game.init(canvas, resources, memory);
 
       game.start();
     }, 100);

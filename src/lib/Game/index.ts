@@ -1,22 +1,30 @@
-import Play from "./states/Play";
+import Map from "@/lib/Map";
+import Timer from "@/lib/Timer";
+import Camera from "@/lib/Camera";
 import Canvas from "@/lib/Canvas";
-import Start from "./states/Start";
-import Storage from "@/lib/Storage";
+import Memory from "@/lib/Memory";
+import Player from "@/lib//Player";
 import { GameState } from "@/types";
-import Message from "./states/Message";
 import Resources from "@/lib/Resources";
-import Settings from "./states/Settings";
-import Controls from "./states/Controls";
+import { input_timeout } from "@/globals";
+import Play from "@/lib/Game/states/Play";
+import Start from "@/lib/Game/states/Start";
 import ErrorHandler from "@/lib/ErrorHandler";
 import InputHandler from "@/lib/InputHandler";
+import Message from "@/lib/Game/states/Message";
+import Controls from "@/lib/Game/states/Controls";
+import Settings from "@/lib/Game/states/Settings";
 
 export default class Game {
+  private _map: Map;
+  private _player: Player;
   private _canvas: Canvas;
-  private _storage: Storage;
+  private _memory: Memory;
   private _play_screen: Play;
   private _raf_id: any = null;
   private _start_screen: Start;
   private _resources: Resources;
+  private _camera = Camera.init();
   private _message_screen: Message;
   private _running: boolean = false;
   private _settings_screen: Settings;
@@ -27,23 +35,32 @@ export default class Game {
   private _accumulated_time: number = 0;
   private _time_step: number = 1000 / 60;
   private _last_state: GameState = "start";
+  private _game_timer: Timer = new Timer("continuous");
+  private _menu_input_timer: Timer = new Timer("countdown", input_timeout);
 
-  private constructor(canvas: Canvas, resources: Resources, storage: Storage) {
+  private constructor(canvas: Canvas, resources: Resources, memory: Memory) {
     this._canvas = canvas;
-    this._storage = storage;
+    this._memory = memory;
     this._resources = resources;
+    this._map = Map.init(memory);
     this._play_screen = Play.init();
+    this._player = Player.init(memory);
     this._input_handler = InputHandler.init();
-    this._start_screen = Start.init(this._storage);
-    this._controls_screen = Controls.init(this._storage);
-    this._settings_screen = Settings.init(this._storage);
-    this._message_screen = Message.init(null, this._storage, this._canvas.rect);
+    this._start_screen = Start.init(this._memory);
+    this._controls_screen = Controls.init(this._memory);
+    this._settings_screen = Settings.init(this._memory);
+    this._message_screen = Message.init(null, this._memory, this._canvas.rect);
+    if (this._memory.save_data) this._game_timer.elapsed_time = this._memory.save_data.game_time;
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (canvas: Canvas, resources: Resources, storage: Storage): Game => new Game(canvas, resources, storage);
+  public static init = (canvas: Canvas, resources: Resources, memory: Memory): Game => new Game(canvas, resources, memory);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
+  public get camera(): Camera {
+    return this._camera;
+  }
+
   public get canvas(): Canvas {
     return this._canvas;
   }
@@ -56,8 +73,20 @@ export default class Game {
     return this._last_state;
   }
 
+  public get map(): Map {
+    return this._map;
+  }
+
+  public get menu_input_timer(): Timer {
+    return this._menu_input_timer;
+  }
+
   public get message_screen(): Message {
     return this._message_screen;
+  }
+
+  public get player(): Player {
+    return this._player;
   }
 
   public get resources(): Resources {
@@ -72,19 +101,23 @@ export default class Game {
     return this._state;
   }
 
-  public get storage(): any {
-    return this._storage;
+  public get memory(): any {
+    return this._memory;
   }
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   public set state(new_state: GameState) {
     switch (new_state) {
+      case "play":
+        this._game_timer.start();
+        break;
+
       case "controls":
       case "message":
       case "new_game":
-      case "play":
       case "start":
       case "settings":
+        this._game_timer.stop();
         break;
     }
 
@@ -98,8 +131,8 @@ export default class Game {
     this.canvas.deinit();
     this.resources.deinit();
     this._play_screen.deinit();
+    this._memory = null as any;
     this.input_handler.deinit();
-    this._storage = null as any;
     this._start_screen.deinit();
     this._message_screen.deinit();
     this._settings_screen.deinit();
@@ -130,9 +163,6 @@ export default class Game {
         break;
 
       case "new_game":
-      // this._new_game_screen.draw(this);
-      // break;
-
       case "play":
         this._play_screen.draw(this);
         break;
@@ -195,9 +225,6 @@ export default class Game {
         break;
 
       case "new_game":
-      // this._new_game_screen.update(this, time_step);
-      // break;
-
       case "play":
         this._play_screen.update(this, time_step);
         break;

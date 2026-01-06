@@ -1,11 +1,10 @@
 import Game from "@/lib/Game";
-import Timer from "@/lib/Timer";
 import Color from "@/lib/Color";
-import Storage from "@/lib/Storage";
+import Memory from "@/lib/Memory";
 import Vector2 from "@/lib/Vector2";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
-import { message_data as data } from "./_data";
-import { tile_size, input_timeout } from "@/globals";
+import { message_data as data } from "@/lib/Game/states/_data";
 
 type Msg = { text: string; type?: MsgType; callback?: MsgCallback };
 type MsgCallback = (result: boolean | number, game: Game) => void;
@@ -14,26 +13,24 @@ type MsgType = "default" | "yes_no" | "action";
 
 export default class Message {
   private _rect: Rectangle;
-  private _storage: Storage;
+  private _memory: Memory;
   private _max_width: number;
-  private _input_timer: Timer;
   private _msg_index: number = 0;
   private _page_index: number = 0;
   private _input_index: number = 0;
   private _state: MsgState = "write";
   private _msgs: Msg[] | null = null;
 
-  private constructor(messages: Msg[] | null, storage: Storage, canvas_rect: Rectangle) {
+  private constructor(messages: Msg[] | null, memory: Memory, canvas_rect: Rectangle) {
     this._msgs = messages;
-    this._storage = storage;
+    this._memory = memory;
     this._max_width = canvas_rect.w - 6 * tile_size;
-    this._input_timer = Timer.init("countdown", input_timeout);
     this._rect = Rectangle.init(0, canvas_rect.h - 7 * tile_size, canvas_rect.w, 7 * tile_size);
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (messages: Msg[] | null, storage: Storage, canvas_rect: Rectangle): Message => {
-    return new Message(messages, storage, canvas_rect);
+  public static init = (messages: Msg[] | null, memory: Memory, canvas_rect: Rectangle): Message => {
+    return new Message(messages, memory, canvas_rect);
   };
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
@@ -79,7 +76,7 @@ export default class Message {
 
   private drawInputLayer = (game: Game): void => {
     var options: string[] = [];
-    const language = this._storage.settings_data.language;
+    const language = this._memory.settings_data.language;
     if (this._msgs && this._msgs[this._msg_index].type === "yes_no") options = data[language].yes_no_options;
     else return;
 
@@ -145,8 +142,8 @@ export default class Message {
       return;
     }
 
-    this._input_timer.update();
-    if (this._input_timer.state === "running") return;
+    game.menu_input_timer.update(time_step);
+    if (game.menu_input_timer.state === "running") return;
     const last_key = game.input_handler.lastKeyPressed();
     switch (last_key) {
       case "a":
@@ -166,7 +163,7 @@ export default class Message {
       case " ":
       case "Space":
       case "Enter":
-        this._input_timer.reset();
+        game.menu_input_timer.reset();
 
         if (this._state === "input") {
           this._msgs[this._msg_index].callback?.(this._input_index, game);

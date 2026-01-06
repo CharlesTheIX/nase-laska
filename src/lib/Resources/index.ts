@@ -1,13 +1,13 @@
-import Storage from "@/lib/Storage";
+import Memory from "@/lib/Memory";
 import ErrorHandler from "@/lib/ErrorHandler";
-import { init_image_srcs, init_audio_srcs } from "./_data";
+import { init_image_srcs, init_audio_srcs } from "@/lib/Resources/_data";
 
 type JsonResource<T = any> = { loaded: boolean; json: T | null };
 type ImageResource = { loaded: boolean; image: HTMLImageElement };
 type AudioResource = { loaded: boolean; audio: HTMLAudioElement; duration: number };
 
 export default class Resources {
-  private _storage: Storage;
+  private _memory: Memory;
   private _count: number = 0;
   private _loading_elmt: HTMLDivElement;
   private _progress_elmt: HTMLDivElement;
@@ -18,8 +18,8 @@ export default class Resources {
   private _image_srcs: { [key: string]: string } = { ...init_image_srcs };
   private _audio_srcs: { [key: string]: string } = { ...init_audio_srcs };
 
-  private constructor(storage: Storage) {
-    this._storage = storage;
+  private constructor(memory: Memory) {
+    this._memory = memory;
     this._loading_elmt = document.getElementById(`loading`) as HTMLDivElement;
     this._progress_elmt = document.getElementById(`progress`) as HTMLDivElement;
 
@@ -40,8 +40,8 @@ export default class Resources {
         this._count++;
         const audio = new Audio();
         audio.src = this.audio_srcs[key];
-        if (key === "music") audio.volume = this._storage.settings_data.music_volume / 10;
-        else audio.volume = this._storage.settings_data.sfx_volume / 10;
+        if (key === "music") audio.volume = this._memory.settings_data.music_volume / 10;
+        else audio.volume = this._memory.settings_data.sfx_volume / 10;
 
         this.audios[key] = { audio, loaded: false, duration: 0 };
         audio.oncanplaythrough = () => {
@@ -57,7 +57,7 @@ export default class Resources {
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage): Resources => new Resources(storage);
+  public static init = (memory: Memory): Resources => new Resources(memory);
 
   // GETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   get audios(): { [key: string]: AudioResource | null } {
@@ -96,8 +96,8 @@ export default class Resources {
     return this._progress_elmt;
   }
 
-  get storage(): any | null {
-    return this._storage;
+  get memory(): any | null {
+    return this._memory;
   }
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ export default class Resources {
       if (!audioResource || !audioResource.loaded) return;
 
       audioResource.audio.volume = volume;
-      this.storage.settings_data = { music_volume: Math.round(volume * 10) };
+      this.memory.settings_data = { music_volume: Math.round(volume * 10) };
       return;
     }
 
@@ -185,7 +185,7 @@ export default class Resources {
       audioResource.audio.volume = volume;
     });
 
-    this.storage.settings_data = { sfx_volume: Math.round(volume * 10) };
+    this.memory.settings_data = { sfx_volume: Math.round(volume * 10) };
   };
 
   public unloadJson = (key: string): void => {

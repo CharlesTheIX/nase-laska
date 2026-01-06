@@ -1,5 +1,11 @@
-import Vector2 from "./Vector2";
+import Vector2 from "@/lib/Vector2";
 import { tile_size } from "@/globals";
+export interface RectangleValue {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
 
 export default class Rectangle {
   private _x: number;
@@ -15,6 +21,8 @@ export default class Rectangle {
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
+  public static fromObject = (obj: RectangleValue): Rectangle => new Rectangle(obj.x, obj.y, obj.w, obj.h);
+
   public static init = (x: number, y: number, w: number, h: number): Rectangle => new Rectangle(x, y, w, h);
 
   public static tile = (v: Vector2): Rectangle => new Rectangle(v.x, v.y, tile_size, tile_size);
@@ -48,6 +56,23 @@ export default class Rectangle {
 
   get y(): number {
     return this._y;
+  }
+
+  // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
+  set h(h: number) {
+    this._h = h;
+  }
+
+  set w(w: number) {
+    this._w = w;
+  }
+
+  set x(x: number) {
+    this._x = x;
+  }
+
+  set y(y: number) {
+    this._y = y;
   }
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------

@@ -1,27 +1,24 @@
 import Game from "@/lib/Game";
-import Timer from "@/lib/Timer";
 import Color from "@/lib/Color";
-import Storage from "@/lib/Storage";
+import Memory from "@/lib/Memory";
 import Vector2 from "@/lib/Vector2";
 import { GameState } from "@/types";
+import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
-import { settings_data as data } from "./_data";
-import { tile_size, input_timeout } from "@/globals";
+import { settings_data as data } from "@/lib/Game/states/_data";
 
 export default class Settings {
-  private _storage: Storage;
-  private _input_timer: Timer;
+  private _memory: Memory;
   private _menu_index: number = 0;
   private _came_from: GameState = "start";
   private _resource_name: string = "settings_screen";
 
-  private constructor(storage: Storage) {
-    this._storage = storage;
-    this._input_timer = Timer.init("countdown", input_timeout);
+  private constructor(memory: Memory) {
+    this._memory = memory;
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
-  public static init = (storage: Storage): Settings => new Settings(storage);
+  public static init = (memory: Memory): Settings => new Settings(memory);
 
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   public set came_from(state: GameState) {
@@ -49,7 +46,7 @@ export default class Settings {
     var count = 0;
     var color: string;
     var y_pos = 3 * tile_size;
-    const settings = this._storage.settings_data;
+    const settings = this._memory.settings_data;
 
     while (count < data[settings.language].options.length) {
       color = this._menu_index === count ? Color.white() : Color.grey();
@@ -74,17 +71,16 @@ export default class Settings {
   };
 
   public update(game: Game, time_step: number): void {
-    this._input_timer.update();
-    if (this._input_timer.state === "running") return;
-
+    game.menu_input_timer.update(time_step);
+    if (game.menu_input_timer.state === "running") return;
     const last_key = game.input_handler.lastKeyPressed();
-    const option_count = data[this._storage.settings_data.language].options.length + 1;
+    const option_count = data[this._memory.settings_data.language].options.length + 1;
     switch (last_key) {
       case "w":
       case "W":
       case "KeyW":
       case "ArrowUp":
-        this._input_timer.reset();
+        game.menu_input_timer.reset();
         game.resources.stopAudio("music");
         game.resources.playAudio("menu_move");
         this._menu_index = (this._menu_index - 1 + option_count) % option_count;
@@ -94,7 +90,7 @@ export default class Settings {
       case "S":
       case "KeyS":
       case "ArrowDown":
-        this._input_timer.reset();
+        game.menu_input_timer.reset();
         game.resources.stopAudio("music");
         game.resources.playAudio("menu_move");
         this._menu_index = (this._menu_index + 1) % option_count;
@@ -106,24 +102,24 @@ export default class Settings {
       case "ArrowLeft":
         switch (this._menu_index) {
           case 0:
-            this._input_timer.reset();
+            game.menu_input_timer.reset();
             game.resources.playAudio("music");
             game.resources.playAudio("menu_move");
-            const music_volume = Math.max(0, this._storage.settings_data.music_volume - 1);
+            const music_volume = Math.max(0, this._memory.settings_data.music_volume - 1);
             game.resources.setAudioVolume(music_volume / 10, true);
             break;
 
           case 1:
-            this._input_timer.reset();
-            const sfx_volume = Math.max(0, this._storage.settings_data.sfx_volume - 1);
+            game.menu_input_timer.reset();
+            const sfx_volume = Math.max(0, this._memory.settings_data.sfx_volume - 1);
             game.resources.setAudioVolume(sfx_volume / 10, false);
             game.resources.playAudio("menu_move");
             break;
 
           case 2:
-            this._input_timer.reset();
+            game.menu_input_timer.reset();
             game.resources.playAudio("menu_move");
-            this._storage.settings_data = { language: this._storage.settings_data.language === "en" ? "cz" : "en" };
+            this._memory.settings_data = { language: this._memory.settings_data.language === "en" ? "cz" : "en" };
             break;
         }
         break;
@@ -134,24 +130,24 @@ export default class Settings {
       case "ArrowRight":
         switch (this._menu_index) {
           case 0:
-            this._input_timer.reset();
+            game.menu_input_timer.reset();
             game.resources.playAudio("music");
             game.resources.playAudio("menu_move");
-            const music_volume = Math.min(10, this._storage.settings_data.music_volume + 1);
+            const music_volume = Math.min(10, this._memory.settings_data.music_volume + 1);
             game.resources.setAudioVolume(music_volume / 10, true);
             break;
 
           case 1:
-            this._input_timer.reset();
-            const sfx_volume = Math.min(10, this._storage.settings_data.sfx_volume + 1);
+            game.menu_input_timer.reset();
+            const sfx_volume = Math.min(10, this._memory.settings_data.sfx_volume + 1);
             game.resources.setAudioVolume(sfx_volume / 10, false);
             game.resources.playAudio("menu_move");
             break;
 
           case 2:
-            this._input_timer.reset();
+            game.menu_input_timer.reset();
             game.resources.playAudio("menu_move");
-            this._storage.settings_data = { language: this._storage.settings_data.language === "en" ? "cz" : "en" };
+            this._memory.settings_data = { language: this._memory.settings_data.language === "en" ? "cz" : "en" };
             break;
         }
         break;
@@ -161,7 +157,7 @@ export default class Settings {
       case "Enter":
         switch (this._menu_index) {
           case 3:
-            this._input_timer.reset();
+            game.menu_input_timer.reset();
             game.resources.playAudio("menu_move");
             this._menu_index = 0;
             game.state = "controls";
@@ -169,7 +165,7 @@ export default class Settings {
             break;
 
           case 4:
-            this._input_timer.reset();
+            game.menu_input_timer.reset();
             game.resources.playAudio("menu_move");
             this._menu_index = 0;
             game.state = this._came_from;

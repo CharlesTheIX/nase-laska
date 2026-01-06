@@ -1,5 +1,5 @@
-import Color from "./Color";
-import Vector2 from "./Vector2";
+import Color from "@/lib/Color";
+import Vector2 from "@/lib/Vector2";
 import { tile_size } from "@/globals";
 import Rectangle from "@/lib/Rectangle";
 

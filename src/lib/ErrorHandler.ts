@@ -1,4 +1,4 @@
-import Game from "./Game";
+import Game from "@/lib/Game";
 
 export default class ErrorHandler {
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
