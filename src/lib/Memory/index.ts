@@ -1,10 +1,5 @@
 import { memory_prefix } from "@/globals";
-import { Vector2Value } from "@/lib/Vector2";
-import { RectangleValue } from "@/lib/Rectangle";
-
-type MapData = { name: string; rect: RectangleValue };
-type SettingsData = { language: string; music_volume: number; sfx_volume: number };
-type SaveData = { game_time: number; player: { position: Vector2Value; name: string; hit_box: RectangleValue } };
+import { validateSaveData, validateMapData, validateSettingsData, SaveData, MapData, SettingsData } from "./lib/validation";
 
 export default class Memory {
   private _map_data: MapData;
@@ -12,23 +7,32 @@ export default class Memory {
   private _settings_data: SettingsData;
 
   private constructor() {
-    const save_data = localStorage.getItem(`${memory_prefix}_save`);
-    if (!save_data) {
+    try {
+      const save_data = localStorage.getItem(`${memory_prefix}_save`) || "";
+      this._save_data = JSON.parse(save_data);
+      validateSaveData(this._save_data);
+    } catch {
       this._save_data = { game_time: 0, player: { position: { x: 0, y: 0 }, name: "Player", hit_box: { x: 0, y: 0, w: 50, h: 50 } } };
       localStorage.setItem(`${memory_prefix}_save`, JSON.stringify(this._save_data));
-    } else this._save_data = JSON.parse(save_data);
+    }
 
-    const map_data = localStorage.getItem(`${memory_prefix}_map`);
-    if (!map_data) {
-      this._map_data = { name: "level_1", rect: { x: 0, y: 0, w: 100, h: 100 } };
+    try {
+      const map_data = localStorage.getItem(`${memory_prefix}_map`) || "";
+      this._map_data = JSON.parse(map_data);
+      validateMapData(this._map_data);
+    } catch {
+      this._map_data = { name: "level_1", rect: { x: 0, y: 0, w: 720, h: 528 } };
       localStorage.setItem(`${memory_prefix}_map`, JSON.stringify(this._map_data));
-    } else this._map_data = JSON.parse(map_data);
+    }
 
-    const settings_data = localStorage.getItem(`${memory_prefix}_settings`);
-    if (!settings_data) {
+    try {
+      const settings_data = localStorage.getItem(`${memory_prefix}_settings`) || "";
+      this._settings_data = JSON.parse(settings_data);
+      validateSettingsData(this._settings_data);
+    } catch {
       this._settings_data = { language: "en", music_volume: 5, sfx_volume: 5 };
       localStorage.setItem(`${memory_prefix}_settings`, JSON.stringify(this._settings_data));
-    } else this._settings_data = JSON.parse(settings_data);
+    }
   }
 
   // STATICS ----------------------------------------------------------------------------------------------------------------------------------------
@@ -63,5 +67,15 @@ export default class Memory {
   set settings_data(data: Partial<SettingsData>) {
     this._settings_data = { ...this._settings_data, ...data };
     localStorage.setItem(`${memory_prefix}_settings`, JSON.stringify(this._settings_data));
+  }
+
+  // METHODS -----------------------------------------------------------------------------------------------------------------------------------------
+  public print(): void {
+    console.log(`\n`);
+    console.log("----- Memory -----");
+    console.log("Map Data:", this._map_data);
+    console.log("Save Data:", this._save_data);
+    console.log("Settings Data:", this._settings_data);
+    console.log(`\n`);
   }
 }

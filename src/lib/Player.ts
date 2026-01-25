@@ -9,6 +9,7 @@ export default class Player {
   private _name: string;
   private _position: Vector2;
   private _hit_box: Rectangle;
+  private direction: "up" | "down" | "left" | "right" = "down";
 
   constructor(memory: Memory) {
     this._name = memory.save_data.player.name;
@@ -35,13 +36,43 @@ export default class Player {
   // METHODS -----------------------------------------------------------------------------------------------------------------------------------------
   private applyCollisions = (target_position: Vector2, map: Map): void => {
     const target_hit_box = Rectangle.init(target_position.x, target_position.y, this._hit_box.w, this._hit_box.h);
-    if (map.collisionRectangle(target_hit_box)) return;
+    if (!map.rect.containsRectangle(target_hit_box, "all")) return;
+
     this._hit_box = target_hit_box;
     this._position = target_position;
   };
 
-  public draw = (game: Game): void => {
-    game.canvas.drawRectangle(this._hit_box, "green");
+  public draw = (game: Game, layer: string): void => {
+    const image = game.resources.images["spritesheet"]?.image;
+    if (!image) return;
+
+    var _i = 1;
+    switch (this.direction) {
+      case "up":
+        _i = 5;
+        break;
+      case "down":
+        _i = 1;
+        break;
+      case "left":
+        _i = 9;
+        break;
+      case "right":
+        _i = 13;
+        break;
+    }
+    switch (layer) {
+      case "base":
+        var spritesheet_frame = Rectangle.init(_i * tile_size, 6 * tile_size, tile_size, tile_size);
+        game.canvas.drawImage(image, spritesheet_frame, this._hit_box);
+        break;
+      case "overlay":
+        var spritesheet_frame = Rectangle.init(_i * tile_size, 5 * tile_size, tile_size, tile_size);
+        game.canvas.drawImage(image, spritesheet_frame, this._hit_box.duplicate().translate(Vector2.init(0, -tile_size)));
+        break;
+      default:
+        return;
+    }
   };
 
   private handleMovement = (game: Game, time_step: number): void => {
@@ -59,6 +90,7 @@ export default class Player {
       case "KeyW":
       case "ArrowUp":
         movement.y -= 1;
+        this.direction = "up";
         break;
 
       case "s":
@@ -66,12 +98,14 @@ export default class Player {
       case "KeyS":
       case "ArrowDown":
         movement.y += 1;
+        this.direction = "down";
         break;
 
       case "a":
       case "A":
       case "KeyA":
       case "ArrowLeft":
+        this.direction = "left";
         movement.x -= 1;
         break;
 
@@ -79,6 +113,7 @@ export default class Player {
       case "D":
       case "KeyD":
       case "ArrowRight":
+        this.direction = "right";
         movement.x += 1;
         break;
     }

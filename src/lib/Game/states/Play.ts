@@ -18,7 +18,8 @@ export default class Play {
     const rect = Rectangle.init(0, 0, game.camera.rectangle.w, game.camera.rectangle.h);
     game.canvas.drawRectangle(rect, "lightgrey");
     game.map.draw(game);
-    game.player.draw(game);
+    game.player.draw(game, "base");
+    game.player.draw(game, "overlay");
   };
 
   public update(game: Game, time_step: number): void {

@@ -10,7 +10,9 @@ const init = (): void => {
     if (!canvas_element) ErrorHandler.fatal("Canvas element not found");
 
     const memory = Memory.init();
+    memory.print();
     const resources: Resources = Resources.init(memory);
+    resources.print();
     const loading_interval = setInterval(() => {
       var count = 0;
       Object.keys(resources.images).forEach((key: string) => {
@@ -29,6 +31,7 @@ const init = (): void => {
       clearInterval(loading_interval);
       resources.clearLoadingScreen();
       const canvas = Canvas.init(canvas_element);
+      canvas.print();
       const game = Game.init(canvas, resources, memory);
 
       game.start();

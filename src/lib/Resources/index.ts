@@ -137,6 +137,7 @@ export default class Resources {
 
       const json: T = await res.json();
       this._jsons[key] = { loaded: true, json };
+      console.log(this._jsons);
       return json;
     } catch (err: any) {
       const msg = `Failed to load JSON resource "${key}" from "${src}": ${err.message}`;
@@ -158,6 +159,15 @@ export default class Resources {
     const audioResource = this._audios[key];
     if (audioResource && audioResource.loaded) audioResource.audio.pause();
   };
+
+  public print(): void {
+    console.log(`\n`);
+    console.log("----- Resources -----");
+    console.log("Images:", this._images);
+    console.log("Audios:", this._audios);
+    console.log("Jsons:", this._jsons);
+    console.log(`\n`);
+  }
 
   public stopAudio = (key: string): void => {
     const audioResource = this._audios[key];

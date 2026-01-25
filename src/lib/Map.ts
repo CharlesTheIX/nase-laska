@@ -33,11 +33,26 @@ export default class Map {
   }
 
   // Methods -----------------------------------------------------------------------------------------------------------------------------------------
-  public draw(game: Game): void {
+  public draw = (game: Game): void => {
     game.canvas.drawRectangle(this._rect, "blue");
-  }
+  };
 
-  public collisionRectangle(rect: Rectangle): boolean {
-    return false;
-  }
+  public collisionRectangle = (rect: Rectangle): boolean => {
+    const t = this._rect.containsRectangle(rect, "all");
+    return t;
+  };
+
+  public load = async (game: Game, name: string): Promise<void> => {
+    try {
+      game.resources.drawLoadingScreen();
+      const data = await game.resources.loadJson(`${name}`, `assets/data/${name}.json`);
+      this._name = name;
+      this._rect = Rectangle.fromObject(data.rect);
+      game.resources.clearLoadingScreen();
+    } catch (err: any) {
+      game.state = "start";
+      game.resources.clearLoadingScreen();
+      console.error(`Error loading map ${name}: ${err.message}`);
+    }
+  };
 }

@@ -108,13 +108,13 @@ export default class Game {
   // SETTERS -----------------------------------------------------------------------------------------------------------------------------------------
   public set state(new_state: GameState) {
     switch (new_state) {
+      case "new_game":
       case "play":
         this._game_timer.start();
         break;
 
       case "controls":
       case "message":
-      case "new_game":
       case "start":
       case "settings":
         this._game_timer.stop();
@@ -123,6 +123,9 @@ export default class Game {
 
     this._last_state = this._state;
     this._state = new_state;
+    setTimeout(() => {
+      this.map.load(this, "map_1");
+    });
   }
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
@@ -186,6 +189,11 @@ export default class Game {
     }
 
     this.draw();
+    // console.log(`Frame Time: ${delta_time.toFixed(2)} ms`);
+    // console.log(`Game Time: ${this._game_timer.elapsed_time.toFixed(2)} ms`);
+    // console.log(`State: ${this.state}`);
+    // console.log(`Player Position: x=${this.player.position.x}, y=${this.player.position.y}`);
+    // console.log(`\n`);
     this._raf_id = requestAnimationFrame(this.mainLoop);
   };
 
@@ -227,6 +235,7 @@ export default class Game {
       case "new_game":
       case "play":
         this._play_screen.update(this, time_step);
+        this._game_timer.update(time_step);
         break;
 
       case "settings":

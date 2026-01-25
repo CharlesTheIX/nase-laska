@@ -102,6 +102,15 @@ export default class Canvas {
     return { w: metrics.width, h: font.size };
   };
 
+  public print(): void {
+    console.log(`\n`);
+    console.log("----- Canvas -----");
+    console.log("Rectangle:", this.rect);
+    console.log("Canvas Element:", this.canvas);
+    console.log("Canvas Context:", this.cxt);
+    console.log(`\n`);
+  }
+
   public restoreScale = (): void => {
     this.cxt.restore();
   };

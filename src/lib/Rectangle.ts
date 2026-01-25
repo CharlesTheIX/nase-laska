@@ -76,8 +76,19 @@ export default class Rectangle {
   }
 
   // METHODS ----------------------------------------------------------------------------------------------------------------------------------------
-  public containsRectangle = (r: Rectangle): boolean => {
-    return r.x >= this.x && r.y >= this.y && r.x + r.w <= this.x + this.w && r.y + r.h <= this.y + this.h;
+  public containsRectangle = (r: Rectangle, type: "any" | "all"): boolean => {
+    switch (type) {
+      case "any":
+        return (
+          (r.x >= this.x && r.x <= this.x + this.w && r.y >= this.y && r.y <= this.y + this.h) ||
+          (r.x + r.w >= this.x && r.x + r.w <= this.x + this.w && r.y >= this.y && r.y <= this.y + this.h) ||
+          (r.x >= this.x && r.x <= this.x + this.w && r.y + r.h >= this.y && r.y + r.h <= this.y + this.h) ||
+          (r.x + r.w >= this.x && r.x + r.w <= this.x + this.w && r.y + r.h >= this.y && r.y + r.h <= this.y + this.h)
+        );
+
+      case "all":
+        return r.x >= this.x && r.y >= this.y && r.x + r.w <= this.x + this.w && r.y + r.h <= this.y + this.h;
+    }
   };
 
   public containsVector2 = (v: Vector2): boolean => {
