@@ -34,6 +34,7 @@ build() {
     return
   fi
 
+  python3 /Users/davidcharles/repos/rpg/.python/main.py
   cp ./src/index.html ./dist/index.html
   cp ./src/index.css ./dist/index.css
   cp -R ./assets ./dist/assets

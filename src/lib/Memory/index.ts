@@ -30,7 +30,7 @@ export default class Memory {
       this._settings_data = JSON.parse(settings_data);
       validateSettingsData(this._settings_data);
     } catch {
-      this._settings_data = { language: "en", music_volume: 5, sfx_volume: 5 };
+      this._settings_data = { language: "en", music_volume: 5, sfx_volume: 5, movement_mode: "tiled" };
       localStorage.setItem(`${memory_prefix}_settings`, JSON.stringify(this._settings_data));
     }
   }

@@ -3,7 +3,7 @@ import { RectangleValue } from "@/lib/Rectangle";
 
 export type MapData = { name: string; rect: RectangleValue };
 export type SaveData = { game_time: number; player: { position: Vector2Value; name: string; hit_box: RectangleValue } };
-export type SettingsData = { language: string; music_volume: number; sfx_volume: number };
+export type SettingsData = { language: string; music_volume: number; sfx_volume: number; movement_mode: "continuous" | "tiled" };
 
 export const validateMapData = (data: MapData): void => {
   if (!data || typeof data !== "object") {
